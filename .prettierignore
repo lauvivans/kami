@@ -6,3 +6,6 @@ bin
 .github
 src
 public
+
+# Generated files
+CHANGELOG.md

@@ -1,6 +1,6 @@
 {
-  "name": "@lauravivan/notion-portfolio",
-  "version": "1.1.6",
+  "name": "@lauvivans/kami",
+  "version": "0.0.0-development",
   "description": "A Notion-based portfolio",
   "type": "module",
   "main": "./dist/index.es.js",
@@ -16,15 +16,15 @@
   ],
   "author": "Laura Vivan",
   "bin": {
-    "create-notion-portfolio": "bin/cli.js"
+    "create-kami": "bin/cli.js"
   },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
     "build:pkg": "vue-tsc -b && vite build --config vite.config.package.ts",
     "preview": "vite preview",
-    "sass": "npx sass src/assets/scss/main.scss:src/assets/css/main.css",
-    "watch-sass": "npx sass packages/core/assets/scss/main.scss:packages/core/assets/css/main.css --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "test:cli": "node ./bin/cli.js",
     "format": "npx prettier --write .",
     "lint": "npx eslint .",
@@ -35,15 +35,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lauravivan/notion-portfolio.git"
+    "url": "git+https://github.com/lauvivans/kami.git"
   },
   "bugs": {
-    "url": "https://github.com/lauravivan/notion-portfolio/issues"
+    "url": "https://github.com/lauvivans/kami/issues"
   },
-  "homepage": "https://github.com/lauravivan/notion-portfolio#readme",
+  "homepage": "https://github.com/lauvivans/kami#readme",
   "files": [
     "dist",
     "bin",
+    "template",
     "README.md",
     "License"
   ],
@@ -53,45 +54,48 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx,vue}": [
       "eslint --fix",
-      "prettier --write"
+      "prettier --write",
+      "vitest related --run --passWithNoTests"
     ]
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
+    "@eslint/js": "^10.0.1",
     "@eslint/json": "^0.14.0",
-    "@iconify/vue": "^5.0.0",
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/git": "^10.0.1",
-    "@types/node": "^25.0.3",
-    "@vitejs/plugin-vue": "^6.0.3",
-    "@vue/tsconfig": "^0.8.1",
-    "eslint": "^9.39.2",
+    "@iconify/vue": "^5.0.5",
+    "@types/node": "^25.9.9",
+    "@vitejs/plugin-vue": "^6.0.10",
+    "@vue/language-core": "^3.3.14",
+    "@vue/test-utils": "^2.5.1",
+    "@vue/tsconfig": "^0.9.1",
+    "eslint": "^10.14.0",
     "eslint-config-prettier": "^10.1.8",
-    "eslint-plugin-vue": "^10.6.2",
+    "eslint-plugin-vue": "^10.12.0",
     "globals": "^16.5.0",
+    "happy-dom": "^21.0.4",
     "husky": "^9.1.7",
-    "jiti": "^2.6.1",
-    "lint-staged": "^16.2.7",
+    "jiti": "^2.7.0",
+    "lint-staged": "^16.4.0",
     "mitt": "^3.0.1",
-    "prettier": "3.7.4",
-    "sass": "^1.97.1",
-    "semantic-release": "^25.0.2",
-    "stylelint": "^16.26.1",
-    "stylelint-config-standard": "^39.0.1",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.50.1",
-    "vite": "^7.3.0",
-    "vite-plugin-dts": "^4.5.4",
-    "vue-eslint-parser": "^10.2.0",
-    "vue-tsc": "^3.2.1"
+    "prettier": "3.9.10",
+    "sass": "^1.108.1",
+    "semantic-release": "^25.0.9",
+    "stylelint": "^18.0.0",
+    "stylelint-config-standard": "^41.0.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.1",
+    "vite": "^8.3.5",
+    "vite-plugin-dts": "^5.1.2",
+    "vitest": "^5.1.0",
+    "vue-eslint-parser": "^10.4.2",
+    "vue-tsc": "^3.3.14"
   },
   "dependencies": {
-    "@vueuse/core": "^14.1.0",
+    "@vue/devtools-api": "^8.2.1",
     "chalk": "^5.6.2",
-    "dotenv": "^17.2.3",
-    "flatted": "^3.3.3",
-    "pinia": "^3.0.4",
-    "vue": "^3.5.26",
+    "flatted": "^3.4.4",
+    "highlight.js": "^11.12.0",
+    "pinia": "^4.1.0",
+    "vue": "^3.5.45",
     "vue-router": "^4.6.4"
   }
 }
