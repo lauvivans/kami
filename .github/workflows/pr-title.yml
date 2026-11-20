@@ -1,0 +1,28 @@
+name: PR title
+
+# The squash commit takes the PR title, and semantic-release reads it to pick
+# the version, so the title must follow Conventional Commits.
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, edited, reopened, synchronize]
+
+permissions: {}
+
+jobs:
+  check:
+    name: Conventional Commits title
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check the PR title
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          types='feat|fix|perf|refactor|docs|style|test|build|ci|chore|revert'
+          if [[ "$TITLE" =~ ^($types)(\([a-z0-9._/-]+\))?!?:\ [^[:space:]].*$ ]]; then
+            echo "OK: $TITLE"
+          else
+            echo "::error::PR title \"$TITLE\" must look like 'type(scope)!: subject', with type one of: ${types//|/, }."
+            exit 1
+          fi
