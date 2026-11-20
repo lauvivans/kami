@@ -59,7 +59,7 @@ $TOGGLE-BTN-HEIGHT: 18px;
   font-size: 0.73rem;
 
   &:hover {
-    @extend .hover-default;
+    @extend %hover-default;
     font-size: 0.73rem;
   }
 }

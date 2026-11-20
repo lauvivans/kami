@@ -136,7 +136,7 @@ onBeforeUnmount(() => {
     color: $black-6;
 
     span {
-      @extend .ellipsis;
+      @extend %ellipsis;
     }
 
     @media (max-width: $screen-small) {
@@ -172,7 +172,7 @@ onBeforeUnmount(() => {
 
   &__add,
   &__tab--close {
-    @extend .button;
+    @extend %button;
   }
 }
 </style>

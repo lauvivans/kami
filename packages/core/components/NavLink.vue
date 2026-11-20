@@ -108,7 +108,7 @@ function updateTabs(page: PageInfo) {
   }
 
   &__pagename {
-    @extend .ellipsis;
+    @extend %ellipsis;
     max-width: 160px;
   }
 }
