@@ -20,6 +20,7 @@ const props = defineProps(["previousRoute"]);
 <style lang="scss">
 .not-found {
   position: relative;
+
   @include sizing(100%, 100vh);
 
   > div {

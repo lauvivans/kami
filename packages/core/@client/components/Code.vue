@@ -32,9 +32,8 @@ function slotText(): string {
   font-size: $fs-small;
 
   &--inline {
-    padding: calc($DEFAULT_SPACING / 9) calc($DEFAULT_SPACING / 2);
+    padding: calc($default-spacing / 9) calc($default-spacing / 2);
     border-radius: $radius-small;
-
     color: $latte-red;
     background-color: $black-1;
   }
@@ -47,15 +46,12 @@ function slotText(): string {
     --code-comment: #{$code-comment};
 
     overflow-x: auto;
-
-    margin: $DEFAULT_SPACING 0;
-    padding: calc($DEFAULT_SPACING * 3) calc($DEFAULT_SPACING * 2);
+    margin: $default-spacing 0;
+    padding: calc($default-spacing * 3) calc($default-spacing * 2);
     border-radius: $radius;
-
     line-height: 1.5;
     white-space: pre;
     tab-size: 2;
-
     background-color: $gray;
   }
 }
@@ -77,6 +73,7 @@ function slotText(): string {
 
   :deep(.hljs-title),
   :deep(.hljs-section),
+  /* stylelint-disable-next-line selector-class-pattern -- class name set by highlight.js */
   :deep(.hljs-built_in) {
     color: var(--code-function) !important;
   }

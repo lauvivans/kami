@@ -20,15 +20,14 @@ const store = useStore;
 
 <style lang="scss">
 .page-wrapper {
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden auto;
   position: relative;
   width: 100%;
-  margin-top: calc($HEADER_HEIGHT + $TABS_HEIGHT);
-  height: calc(100vh - ($HEADER_HEIGHT + $TABS_HEIGHT));
+  margin-top: calc($header-height + $tabs-height);
+  height: calc(100vh - ($header-height + $tabs-height));
 
   @media (max-width: $screen-small) {
-    margin-top: $HEADER_HEIGHT;
+    margin-top: $header-height;
   }
 }
 

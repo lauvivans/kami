@@ -251,6 +251,7 @@ onBeforeUnmount(() => {
 
   .nav-btn {
     @extend %button;
+
     margin-left: 13px;
   }
 
@@ -260,14 +261,17 @@ onBeforeUnmount(() => {
 
   .nav-hover {
     @include flex-layout($row-gap: 2rem);
+
     border-radius: 3px;
     width: 250px;
 
     .nav-list {
       box-shadow: $box-shadow-1;
+
       @include spacing($mt: 0.1rem, $pb: 0.6rem);
+
       transform: translateX(-100%);
-      animation: slideIn 0.4s ease-in-out;
+      animation: slide-in 0.4s ease-in-out;
       animation-fill-mode: forwards;
       padding-right: 1rem;
       background-color: $white;
@@ -309,11 +313,14 @@ onBeforeUnmount(() => {
   .nav-click {
     .nav-list {
       @include flex-layout($row-gap: 1.5rem);
+
       font-size: $fs-small;
 
       &__nav-item:nth-child(1) {
         @include flex-layout($row-gap: 0.3rem);
+
         font-size: $fs-xs;
+
         @include spacing($ml: 0.8rem, $pt: 0.9rem);
 
         span {
@@ -324,11 +331,14 @@ onBeforeUnmount(() => {
 
       &__nav-item:nth-child(2) {
         @include flex-layout($row-gap: 0.2rem);
+
         margin: 10px 0.6rem;
 
         & > div {
           @include flex-layout($flex-direction: row, $column-gap: 0.4rem);
+
           align-items: center;
+
           @extend %hover-default;
         }
       }
@@ -337,17 +347,13 @@ onBeforeUnmount(() => {
         display: flex;
         flex-direction: column;
         row-gap: 30px;
-
         height: max-content;
-        width: $NESTED_LINK_SIZE;
-
+        width: $nested-link-size;
         margin: 0 0.2rem 0.7rem 0.7rem;
-
-        overflow-y: auto;
-        overflow-x: hidden;
+        overflow: hidden auto;
 
         .nested-link {
-          width: $NESTED_LINK_SIZE;
+          width: $nested-link-size;
         }
       }
 

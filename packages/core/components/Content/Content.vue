@@ -19,14 +19,15 @@ const { page } = defineProps<{ page: PageInfo }>();
 
 <style lang="scss">
 .page-content {
-  @include grid-layout();
+  @include grid-layout;
+
   position: absolute;
   top: 100px;
   left: 50%;
   transform: translate(-50%, 0%);
   z-index: 1;
   width: 50%;
-  row-gap: $DEFAULT_SPACING;
+  row-gap: $default-spacing;
 
   &--icon {
     top: 160px;
