@@ -11,7 +11,7 @@ Which branching workflow does Kami follow: the git flow it used until now (`deve
 ## Short answer
 
 - **GitHub flow.** `main` is the only long-lived branch. Each change goes in a short-lived branch named `<type>/<issue>-kebab-case-name`, opened as a pull request into `main` and squash-merged.
-- **Every merge can release.** semantic-release runs on `main` and publishes a version when a merged commit is a `fix` (patch), a `feat` (minor) or a breaking change (major). `chore`, `docs`, `test`, `ci` and `refactor` merges don't publish.
+- **Every merge can release.** semantic-release runs on `main` and publishes a version when a merged commit is a `fix`, a `perf` or a revert (patch), a `feat` (minor) or a breaking change (major). `chore`, `docs`, `test`, `ci` and `refactor` merges don't publish.
 - **The pull request title picks the version.** The squash commit takes the PR title, so the title must follow Conventional Commits.
 - **Staging is the pull request preview.** Cloudflare Pages builds a preview of the site for each pull request. `main` deploys production.
 - **Extra branches only when needed.** A `next` branch can publish prereleases to the `next` channel on npm, for a change that needs testing before it reaches `latest`. A maintenance branch such as `1.x` can publish fixes for an older major. Neither exists until it is needed.
@@ -31,6 +31,6 @@ Options compared: git flow, GitHub flow, trunk-based development, GitLab flow (e
 
 - `develop` is retired after its last release to `main`. CI runs on pull requests into `main`, and Dependabot drops `target-branch`.
 - `Closes #<issue>` closes the issue when its pull request is merged. The board loses the "In staging" status: a merged pull request moves the issue to **Done**.
-- Changes can't be batched into one release. Each `fix` or `feat` merged becomes a version on npm, so related changes that must ship together go in the same pull request, or in a `next` branch.
+- Changes can't be batched into one release. Each `fix`, `perf` or `feat` merged becomes a version on npm, so related changes that must ship together go in the same pull request, or in a `next` branch.
 - A wrong PR title publishes a wrong version, or none. CI should check that PR titles follow Conventional Commits.
 - Pull requests from forks get no Pages preview and no repository secrets. A maintainer checks those changes locally before merging.
