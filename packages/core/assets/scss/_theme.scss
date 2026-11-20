@@ -1,3 +1,4 @@
+@use "sass:map";
 @use "var";
 
 @mixin defineTheme(
@@ -72,8 +73,6 @@
     color: var.$dark !important;
   }
 
-  .hover-default:hover,
-  .button:hover,
   .nav-link__toggle-list--active .details > .details__summary {
     background-color: $bgHover !important;
   }
@@ -134,7 +133,7 @@
     var.$dark,
     var.$dark-lighter,
     var.$black,
-    var.$gray-3,
+    map.get(var.$theme-bg-hover, "dark-theme"),
     var.$gray-1,
     var.$active,
     var.$gray,
@@ -150,7 +149,7 @@
     var.$latte-mantle,
     var.$latte-base,
     var.$latte-surface0,
-    var.$latte-surface1,
+    map.get(var.$theme-bg-hover, "cat-latte"),
     var.$latte-surface0,
     var.$latte-sky,
     var.$latte-overlay2,
@@ -166,7 +165,7 @@
     var.$mocha-crust,
     var.$mocha-base,
     var.$mocha-mantle,
-    var.$mocha-surface1,
+    map.get(var.$theme-bg-hover, "cat-mocha"),
     var.$mocha-base,
     var.$mocha-sapphire,
     var.$mocha-subtext0,

@@ -250,7 +250,7 @@ onBeforeUnmount(() => {
   user-select: none;
 
   .nav-btn {
-    @extend .button;
+    @extend %button;
     margin-left: 13px;
   }
 
@@ -329,7 +329,7 @@ onBeforeUnmount(() => {
         & > div {
           @include flex-layout($flex-direction: row, $column-gap: 0.4rem);
           align-items: center;
-          @extend .hover-default;
+          @extend %hover-default;
         }
       }
 

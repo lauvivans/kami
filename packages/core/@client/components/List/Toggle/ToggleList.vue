@@ -71,14 +71,14 @@ th {
   width: 100%;
 
   &__summary {
-    @extend .hover-default;
+    @extend %hover-default;
 
     &--icon {
       width: 10%;
       padding: 4px;
 
       > div {
-        @extend .button;
+        @extend %button;
         font-size: $fs-medium + 0.1rem;
         color: $black;
       }

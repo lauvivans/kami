@@ -1,3 +1,5 @@
+@use "var";
+
 @mixin sizing($width, $height) {
   width: $width;
   height: $height;
@@ -20,4 +22,49 @@
   grid-template-columns: $grid-template-columns;
   row-gap: $row-gap;
   column-gap: $column-gap;
+}
+
+// Placeholders emit CSS only where they are extended, so components can
+// @extend them without pulling in the global styles of main.scss.
+%hover-default {
+  cursor: pointer;
+  padding: 0.35rem;
+  border-radius: 3px;
+  transition: background-color 0.1s;
+  font-size: 0.85rem;
+  font-weight: var.$fw-600;
+  width: 100%;
+  color: var.$black-5;
+
+  &:hover {
+    background-color: var.$gray;
+  }
+}
+
+%button {
+  all: unset;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  padding: 0.1rem;
+  width: max-content;
+
+  &:hover {
+    border-radius: 10%;
+    background-color: var.$black-1;
+  }
+}
+
+%ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@each $theme, $bg-hover in var.$theme-bg-hover {
+  .#{$theme} %hover-default:hover,
+  .#{$theme} %button:hover {
+    background-color: $bg-hover !important;
+  }
 }

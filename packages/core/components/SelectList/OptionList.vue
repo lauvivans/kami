@@ -58,7 +58,7 @@ const toSelect = (option: string) => {
     @include flex-layout($flex-direction: row);
     justify-content: space-between;
     align-items: center;
-    @extend .hover-default;
+    @extend %hover-default;
   }
 }
 </style>
