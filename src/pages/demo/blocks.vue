@@ -17,8 +17,8 @@ import {
   Bookmark,
   Image,
   Loader,
+  Icons,
 } from "@core/index.ts";
-import { Icons } from "@core/enum";
 import metadata from "@/metadata";
 
 // vue-tsc 3.3 misreads a URL passed to a component in the template and
@@ -113,10 +113,6 @@ console.log(greeting);`;
     <template #detailsContent><Text>Hidden content.</Text></template>
   </ToggleList>
   <Code lang="vue">{{ code.toggle }}</Code>
-  <Callout emoji="⚠️"
-    >The icons come from the <Code inline>Icons</Code> enum, which the package
-    doesn't export yet.</Callout
-  >
 
   <Heading :level="3">Columns</Heading>
   <Columns :numberOfColumns="2" :col1Size="30" :col2Size="60">
