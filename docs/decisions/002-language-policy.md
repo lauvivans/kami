@@ -16,7 +16,6 @@ Which language does the project use in the repository, on GitHub and in the libr
 
 ## Why
 
-- It follows the same rule as Yoko, Gaku and Haru, so the projects read the same way.
 - Kami is a public npm package. English docs and messages reach the widest group of people who might use it.
 
 ## Consequences
