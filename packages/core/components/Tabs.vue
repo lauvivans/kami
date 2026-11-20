@@ -96,7 +96,7 @@ onBeforeUnmount(() => {
   display: flex;
   background-color: $gray-4;
   top: 0;
-  height: $TABS_HEIGHT;
+  height: $tabs-height;
   z-index: 888;
 
   @media (max-width: $screen-small) {
@@ -126,7 +126,7 @@ onBeforeUnmount(() => {
   }
 
   &__tab {
-    padding: 10px 10px;
+    padding: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;

@@ -106,7 +106,6 @@ watch(activeFontSize, (newFontSize) => {
   &__style {
     padding: 0.5rem 0;
     border-bottom: 1px solid $black-1;
-
     display: flex;
     flex-direction: column;
     row-gap: 1rem;
@@ -139,7 +138,6 @@ watch(activeFontSize, (newFontSize) => {
     display: flex;
     flex-direction: column;
     row-gap: 0.5rem;
-
     align-items: center;
     border-radius: 5%;
     cursor: pointer;

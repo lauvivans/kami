@@ -40,11 +40,10 @@ dialog {
 
 .overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
+
   @include sizing(100%, 100%);
+
   background-color: $black-5;
   z-index: 999;
 }
@@ -54,7 +53,7 @@ dialog {
   box-shadow: $box-shadow-1;
   border-radius: 5px;
   background-color: $white;
-  animation: fadeIn 1s;
+  animation: fade-in 1s;
   transition: width 0.3s;
   user-select: none;
   outline: none;
@@ -86,7 +85,7 @@ dialog {
   background-color: $white;
   border-radius: 6px;
   outline: none;
-  animation: fadeIn 0.4s ease-in-out;
+  animation: fade-in 0.4s ease-in-out;
   animation-fill-mode: forwards;
   left: unset;
   transform: unset;

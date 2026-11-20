@@ -50,7 +50,7 @@ const { showModal, hideModal, addModalListener } = useModal({
 <style lang="scss">
 .header {
   background-color: $white;
-  height: $HEADER_HEIGHT;
+  height: $header-height;
 
   &__content {
     display: flex;

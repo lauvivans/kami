@@ -17,7 +17,7 @@
   }
 
   .header {
-    top: var.$TABS_HEIGHT;
+    top: var.$tabs-height;
 
     @media (max-width: var.$screen-small) {
       top: 0;
@@ -28,7 +28,7 @@
     .aside-default {
       display: flex;
       position: fixed;
-      top: calc(var.$TABS_HEIGHT + 13px);
+      top: calc(var.$tabs-height + 13px);
       z-index: 3;
 
       @media (max-width: var.$screen-small) {
@@ -50,11 +50,11 @@
 
   .main-container-click {
     position: relative;
-    margin-left: var.$ASIDE_CLICK_SIZE;
+    margin-left: var.$aside-click-size;
 
     .aside-click {
       position: fixed;
-      width: var.$ASIDE_CLICK_SIZE;
+      width: var.$aside-click-size;
       inset: 0;
       box-shadow: var.$box-shadow-2;
       background-color: var.$gray-2;
@@ -63,8 +63,8 @@
 
     .header,
     .tabs {
-      margin-left: var.$ASIDE_CLICK_SIZE;
-      width: calc(100% - var.$ASIDE_CLICK_SIZE);
+      margin-left: var.$aside-click-size;
+      width: calc(100% - var.$aside-click-size);
     }
 
     .header {
@@ -87,7 +87,7 @@
     padding: 15px 14px;
 
     @media (max-width: var.$screen-small) {
-      bottom: calc(var.$TABS_HEIGHT + 0.9rem);
+      bottom: calc(var.$tabs-height + 0.9rem);
     }
   }
 }
