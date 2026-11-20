@@ -74,7 +74,7 @@ onMounted(() => {
   display: grid;
   gap: $default-spacing 20px;
 
-  @media (width <= 480px) {
+  @media (width <= $screen-xs) {
     grid-template-columns: 1fr !important;
   }
 }
