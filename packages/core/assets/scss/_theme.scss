@@ -102,7 +102,7 @@
     background-color: $thumbColor !important;
   }
 
-  :-webkit-any-link {
+  :any-link {
     color: $text;
 
     &:hover {

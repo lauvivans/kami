@@ -42,7 +42,7 @@ body {
     background-color: var.$gray-4;
   }
 
-  :-webkit-any-link {
+  :any-link {
     color: var.$black-5;
     transition: color 0.3s;
 
