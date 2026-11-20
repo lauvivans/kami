@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { execSync } from "child_process";
-import chalk from 'chalk'
+import { styleText } from "util";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,9 +23,9 @@ if (fs.existsSync(targetDir)) {
 fs.cpSync(templateDir, targetDir, { recursive: true });
 // npm drops .gitignore from published packages, so the template ships it as "gitignore"
 fs.renameSync(path.join(targetDir, "gitignore"), path.join(targetDir, ".gitignore"));
-console.log(chalk.bgWhite(`✅ Project created in ./${projectName}`));
+console.log(styleText("bgWhite", `✅ Project created in ./${projectName}`));
 
-console.log(chalk.bgWhite("📦 Installing dependencies..."));
+console.log(styleText("bgWhite", "📦 Installing dependencies..."));
 execSync(`npm install`, {
   cwd: targetDir,
   stdio: "inherit",
@@ -38,6 +38,6 @@ execSync(installer, {
   stdio: "inherit",
 });
 
-console.log(chalk.yellow("🚀 All ready! Run commands below:"));
-console.log(chalk.yellow(`\n  cd ${projectName}`));
-console.log(chalk.yellow("  npm run dev\n"));
+console.log(styleText("yellow", "🚀 All ready! Run commands below:"));
+console.log(styleText("yellow", `\n  cd ${projectName}`));
+console.log(styleText("yellow", "  npm run dev\n"));
