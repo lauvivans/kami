@@ -1,4 +1,4 @@
-> Versions up to 1.1.6 were published as `@lauravivan/notion-portfolio`.
+> This file covers versions up to 1.1.6, published as `@lauravivan/notion-portfolio`. From 2.0.0 on, release notes are on the [GitHub releases page](https://github.com/lauvivans/kami/releases).
 
 ## [1.1.6](https://github.com/lauvivans/kami/compare/v1.1.5...v1.1.6) (2025-12-31)
 
