@@ -9,7 +9,6 @@ const props = defineProps<{ href: string }>();
 <style lang="scss">
 .link {
   all: unset;
-
   color: $latte-overlay0 !important;
   text-decoration: underline;
   font-weight: $fw-700;

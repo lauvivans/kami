@@ -80,6 +80,7 @@ function getColor() {
     column-gap: 5px;
     align-items: center;
     flex-wrap: wrap;
+
     @extend %hover-default;
 
     &--val {

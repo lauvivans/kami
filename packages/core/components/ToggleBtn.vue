@@ -29,43 +29,27 @@ defineExpose({
 </template>
 
 <style lang="scss">
-$TOGGLE-BTN-WIDTH: 30px;
-$TOGGLE-BTN-HEIGHT: 18px;
-
-@keyframes toggleBtn {
-  0% {
-    transform: rotate(0deg);
-    left: 0;
-  }
-
-  50% {
-    transform: rotate(20deg);
-    left: 50;
-  }
-
-  100% {
-    transform: rotate(50deg);
-    left: 100;
-  }
-}
+$toggle-btn-width: 30px;
+$toggle-btn-height: 18px;
 
 .toggle {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: $fs-xs;
   color: $black-7;
   padding: 0.35rem;
   font-size: 0.73rem;
 
   &:hover {
     @extend %hover-default;
+
     font-size: 0.73rem;
   }
 }
 
 .toggle-btn {
-  @include sizing($TOGGLE-BTN-WIDTH, $TOGGLE-BTN-HEIGHT);
+  @include sizing($toggle-btn-width, $toggle-btn-height);
+
   border-radius: 34px;
   padding: 2px;
   cursor: pointer;
@@ -80,8 +64,8 @@ $TOGGLE-BTN-HEIGHT: 18px;
     transition: left 0.3s ease-in-out;
 
     @include sizing(
-      calc($TOGGLE-BTN-WIDTH / 2),
-      calc($TOGGLE-BTN-HEIGHT - 4px)
+      calc($toggle-btn-width / 2),
+      calc($toggle-btn-height - 4px)
     );
   }
 
@@ -89,7 +73,7 @@ $TOGGLE-BTN-HEIGHT: 18px;
     background-color: $active;
 
     .toggle-btn__circle {
-      left: calc(($TOGGLE-BTN-WIDTH / 2) - 2px);
+      left: calc(($toggle-btn-width / 2) - 2px);
     }
   }
 }

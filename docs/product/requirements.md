@@ -12,7 +12,7 @@ What Kami offers and the rules it follows.
 
 ## Creating a portfolio
 
-- `npx create-kami <name>` creates a folder with the template, installs its dependencies and installs the library. The name defaults to `my-portfolio`.
+- `npx @lauvivans/kami <name>` creates a folder with the template, installs its dependencies and installs the library. The name defaults to `my-portfolio`.
 - If the folder already exists, the CLI stops with an error and changes nothing.
 - The template comes with one example page, a banner and an icon, so `npm run dev` shows a working portfolio right away.
 
