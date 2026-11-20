@@ -83,13 +83,13 @@ const handleNavigate = () => {
     justify-content: space-between;
 
     button {
-      @extend .button;
+      @extend %button;
     }
   }
 
   &__btn-settings,
   &__expand {
-    @extend .button;
+    @extend %button;
   }
 }
 

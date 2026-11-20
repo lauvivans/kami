@@ -86,12 +86,12 @@ const handleCrumb = (page: PageInfo) => {
       column-gap: 0.4rem;
       align-items: center;
 
-      @extend .hover-default;
+      @extend %hover-default;
 
       span {
         width: auto;
         max-width: 7rem;
-        @extend .ellipsis;
+        @extend %ellipsis;
       }
     }
   }
