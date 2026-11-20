@@ -19,7 +19,8 @@ updates:
           - minor
           - patch
 
-  # The project create-kami copies, with its own lockfile.
+  # The project create-kami copies, with its own lockfile. It ships inside the
+  # npm package, so updates use `fix` to trigger a patch release.
   - package-ecosystem: npm
     directory: /template
     schedule:
@@ -28,7 +29,7 @@ updates:
     labels:
       - chore
     commit-message:
-      prefix: chore
+      prefix: fix
       include: scope
     groups:
       minor-and-patch:
