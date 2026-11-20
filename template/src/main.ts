@@ -1,11 +1,6 @@
 import { createApp } from "vue";
 import "@lauvivans/kami/dist/kami.css";
-import {
-  createRouter,
-  createWebHistory,
-  type NavigationGuardNext,
-  type RouteLocationNormalized,
-} from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import {
   MainLayout,
   NotFoundPage,
@@ -22,14 +17,8 @@ const mainChildren = Object.values(metadata.pages).map((page: PageInfo) => ({
   path: page.path,
   component: page.component,
   name: page.id,
-  beforeEnter: (
-    _to: RouteLocationNormalized,
-    _from: RouteLocationNormalized,
-    next: NavigationGuardNext
-  ) => {
-    const store = useStore;
-    store.storeActivePage(page);
-    next();
+  beforeEnter: () => {
+    useStore.storeActivePage(page);
   },
 }));
 
@@ -40,9 +29,8 @@ const router = createRouter({
       path: "/:pathMatch(.*)",
       component: NotFoundPage,
       name: "NotFound",
-      beforeEnter: (to, from, next) => {
+      beforeEnter: (to, from) => {
         to.meta.previousRoute = from.path;
-        next();
       },
     },
     {

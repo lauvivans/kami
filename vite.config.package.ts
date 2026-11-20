@@ -41,7 +41,7 @@ export default defineConfig({
       formats: ["es"],
     },
     rolldownOptions: {
-      external: ["vue", "vue-router"],
+      external: ["vue", "vue-router", "pinia"],
     },
   },
 });
