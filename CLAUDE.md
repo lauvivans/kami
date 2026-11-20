@@ -37,12 +37,12 @@ Vue 3, Vue Router, Pinia, Sass and TypeScript, built with Vite in library mode. 
 
 ## Workflow
 
-- **Base branch:** `develop`. PRs target it. `main` is the default branch and holds the published package.
+- **GitHub flow** (decision 003): `main` is the only long-lived branch. Every change goes in a short-lived branch, opened as a PR into `main`.
 - **Branch name:** `<type>/<issue>-kebab-case-name`.
-- **Commits and PR title:** Conventional Commits. semantic-release reads them on `main` to pick the next version, so the type matters: `fix` is a patch, `feat` a minor, `!` or `BREAKING CHANGE` a major.
+- **PR title:** Conventional Commits. The squash commit takes the PR title, and semantic-release reads it on `main` to pick the version: `fix` and `perf` are a patch, `feat` a minor, `!` or a `BREAKING CHANGE` footer a major. `chore`, `docs`, `test`, `ci` and `refactor` don't release.
 - **PR body:** ends with `Closes #<issue>`, also on fixes made after QA.
-- **Merge:** squash into `develop`. Releases go from a `release/<version>` branch, cut from `develop`, into `main` with a merge commit (never squash). The version in the branch name follows the commits since the last tag (`fix` → patch, `feat` → minor, `!` → major), the same rule semantic-release applies on `main`. Head branches are deleted on merge, so a PR must never come straight from `develop`.
-- **After a release:** semantic-release pushes a `chore(release)` commit to `main` (version and `CHANGELOG.md`), so merge `main` back into `develop` after every release. Never rebase `develop`.
+- **Merge:** squash into `main`. Every merge with a `fix`, `perf` or `feat` publishes a version on npm, so changes that must ship together go in the same PR. Head branches are deleted on merge.
+- **Releases:** semantic-release publishes to npm and creates the GitHub release with the notes. It pushes nothing to `main`, so `package.json` keeps `0.0.0-development`. `CHANGELOG.md` covers versions up to 1.1.6.
 - **Attribution:** no `Co-Authored-By` or "Generated with Claude Code" in commits and PRs.
 - **Draft before creating:** show the full text of any issue and only create it after approval. Pull requests are opened directly; say when one is open, with its link. They are reviewed on GitHub before merge.
 - **Dependencies:** every PR that adds or updates a dependency gets a supply chain check in its review (new packages in the lockfile, install scripts, `npm audit signatures`, publish dates, `npm audit`).
@@ -50,12 +50,11 @@ Vue 3, Vue Router, Pinia, Sass and TypeScript, built with Vite in library mode. 
 ## Issues and board
 
 - **Issues:** use the templates in `.github/ISSUE_TEMPLATE/` (bug, feature, chore, design, spike). The type goes in the label, not in the title. Documentation counts as `chore`.
-- **Board:** "Kami" (GitHub Project #5 of `lauvivans`). Status: Backlog → Ready → In progress → In review → In staging → Done.
+- **Board:** "Kami" (GitHub Project #5 of `lauvivans`). Status: Backlog → Ready → In progress → In review → Done.
   - When starting an issue, move it to **In progress**.
-  - When opening the PR, move it to **In review**.
-  - When the PR is merged into `develop`, move it to **In staging**.
-  - If QA fails, move it back to **In progress** and fix it in a new PR on the same issue.
-  - The release to `main` closes the issue and moves it to **Done**. `develop` isn't the default branch, so `Closes #<issue>` only closes it once the release reaches `main`. A problem found after that is a new bug issue that links the original.
+  - When opening the PR, move it to **In review**. QA happens on the PR's Cloudflare Pages preview.
+  - If QA fails, move it back to **In progress** and push the fix to the same PR.
+  - Merging the PR closes the issue through `Closes #<issue>` and moves it to **Done**. A problem found after that is a new bug issue that links the original.
 
 ## Security
 
