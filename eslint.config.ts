@@ -20,7 +20,6 @@ export default [
       ".gitignore",
       ".releaserc.json",
       "template",
-      "src",
       "**/*.css",
       "*.json",
     ],
