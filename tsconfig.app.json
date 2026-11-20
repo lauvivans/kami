@@ -22,6 +22,9 @@
       "@core/*": ["./packages/core/*"]
     }
   },
+  "vueCompilerOptions": {
+    "checkUnknownComponents": true
+  },
   "include": ["packages/core", "src"],
   "exclude": ["node_modules", "dist", "bin", "template"]
 }
