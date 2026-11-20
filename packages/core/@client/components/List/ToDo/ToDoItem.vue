@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import Text from "@core/@client/components/Text.vue";
+
 const value = defineModel<boolean>("isChecked");
 </script>
 
