@@ -34,6 +34,10 @@ Kami was born based on Nitin Ranganath‘s VsCode Portfolio idea. You can create
 ![Vite Badge](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=fff&style=for-the-badge)
 ![JavaScript Badge](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=000&style=for-the-badge)
 
+## Requirements
+
+Node.js `^20.19.0 || >=22.12.0`, for both the CLI and the project it creates.
+
 ## Project Setup
 
 ```sh
