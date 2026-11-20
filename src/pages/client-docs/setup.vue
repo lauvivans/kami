@@ -2,7 +2,7 @@
 import { Text, Heading, Callout, LinkMention, Code } from "@core/index.ts";
 import metadata from "@/metadata";
 
-const create = `npx create-kami my-portfolio`;
+const create = `npx @lauvivans/kami my-portfolio`;
 const run = `cd my-portfolio
 npm run dev`;
 const tree = `my-portfolio/
