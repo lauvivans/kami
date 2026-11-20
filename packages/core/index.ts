@@ -31,3 +31,4 @@ export { useStore, piniaInstance } from "./store";
 export { useAside, useDisplay } from "./hooks";
 export type { PageInfo, IMetadata } from "./@types";
 export type { CodeLanguage } from "./util/highlight";
+export { Icons } from "./enum";

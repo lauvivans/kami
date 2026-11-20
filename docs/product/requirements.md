@@ -67,6 +67,6 @@ The components a page uses for its content, named after Notion's blocks:
 
 ## Public API
 
-- The package exports the layout components, the blocks, `MainLayout`, `NotFoundPage`, `useStore`, `piniaInstance`, `useAside`, `useDisplay`, `isTouchDevice`, and the types `IMetadata` and `PageInfo`. The full list is in `packages/core/index.ts`.
+- The package exports the layout components, the blocks, `MainLayout`, `NotFoundPage`, `useStore`, `piniaInstance`, `useAside`, `useDisplay`, `isTouchDevice`, the `Icons` enum (the icons `ToggleList` takes), and the types `IMetadata` and `PageInfo`. The full list is in `packages/core/index.ts`.
 - The styles ship in one CSS file, `dist/kami.css`, which the portfolio imports once.
 - Changing any of these in a way that breaks an existing portfolio needs a major version. See [decision 001](../decisions/001-stack-and-hosting.md).
