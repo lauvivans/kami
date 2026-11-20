@@ -1,61 +1,82 @@
 # Kami
 
-## Description
+A Vue component library for building a portfolio that looks and works like Notion: a sidebar with nested pages, tabs, themes and Notion-style blocks. It ships as the npm package [`@lauvivans/kami`](https://www.npmjs.com/package/@lauvivans/kami), with a CLI that creates a new portfolio from a template.
 
-Kami was born based on Nitin Ranganath‘s VsCode Portfolio idea. You can create dynamic pages based on your needs, with a pallet of Notion components available.
+The idea came from Nitin Ranganath's VS Code Portfolio. Documentation and a demo: [kami.arualvivan.com](https://kami.arualvivan.com).
 
 ## Features
 
-- Themes and customizations
-  - Light themes
-    - [x] Light theme (default)
-    - [x] Catpuccin Latte
-  - Dark themes
-    - [x] Dark theme (default)
-    - [x] Catpuccin Mocha
-  - Font styles
-    - [x] Roboto default
-    - [x] Roboto serif
-    - [x] Roboto mono
-  - Font sizes
-    - [x] Default size
-    - [x] Small text
-  - Page width
-    - [x] Full width
-    - [x] Centralized
-- [x] Tabs for navigation (as in Notion Desktop)
-- [ ] Search
+- Sidebar with the author, Favorites and nested pages. It can be pinned open or closed.
+- Tabs for navigation, as in Notion Desktop. Open tabs survive a reload.
+- Four themes: Light, Dark, Catppuccin Latte and Catppuccin Mocha.
+- Page settings: font (Roboto, Roboto Serif or Roboto Mono), small text and full width.
+- Blocks for page content: text, headings, code with syntax highlighting, callouts, lists, columns, links, bookmarks, images and a database gallery.
+- Preferences are kept in the browser's local storage. There is no backend.
+- Search is not built yet.
 
-## Tools
-
-![Vue.js Badge](https://img.shields.io/badge/Vue.js-4FC08D?logo=vuedotjs&logoColor=fff&style=for-the-badge)
-![Sass Badge](https://img.shields.io/badge/Sass-C69?logo=sass&logoColor=fff&style=for-the-badge)
-![HTML5 Badge](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=fff&style=for-the-badge)
-![Vite Badge](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=fff&style=for-the-badge)
-![JavaScript Badge](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=000&style=for-the-badge)
+The full list is in [docs/product/requirements.md](docs/product/requirements.md).
 
 ## Requirements
 
 Node.js `^20.19.0 || >=22.12.0`, for both the CLI and the project it creates.
 
-## Project Setup
+## Create a portfolio
 
 ```sh
-npm install
+npx @lauvivans/kami my-portfolio
 ```
 
-### Compile and Hot-Reload for Development
+The CLI copies the template into `./my-portfolio` (the name defaults to `my-portfolio`), installs its dependencies and then installs `@lauvivans/kami`. The template has one example page, a banner and an icon. It stops with an error if the folder already exists.
 
 ```sh
+cd my-portfolio
 npm run dev
 ```
 
-### Compile and Minify for Production
+Each page is a Vue component listed in `src/metadata/index.ts`. The [client docs](https://kami.arualvivan.com/client-docs) explain how to add pages and deploy.
+
+## Develop locally
+
+Use the Node version in `.nvmrc`.
 
 ```sh
-npm run build
+git clone https://github.com/lauvivans/kami.git
+cd kami
+npm install
+npm run dev
 ```
+
+`npm run dev` serves the documentation site in `src/`, which imports the library from `packages/core/`, so it also works as the playground.
+
+| Script              | What it does                                     |
+| ------------------- | ------------------------------------------------ |
+| `npm run dev`       | Serves the documentation site.                   |
+| `npm run build`     | Type checks and builds the site into `dist/`.    |
+| `npm run build:pkg` | Type checks and builds the package into `dist/`. |
+| `npm run lint`      | Runs ESLint.                                     |
+| `npm run format`    | Runs Prettier on the repository.                 |
+| `npm test`          | Runs the Vitest tests.                           |
+| `npm run test:cli`  | Runs the CLI from the local clone.               |
+
+## Branches and releases
+
+Kami follows GitHub flow ([decision 003](docs/decisions/003-branching-workflow.md)):
+
+- `main` is the only long-lived branch. Each change goes in a branch named `<type>/<issue>-kebab-case-name` and is opened as a pull request into `main`.
+- The pull request title follows [Conventional Commits](https://www.conventionalcommits.org/). Pull requests are squash-merged, so the title becomes the commit on `main`.
+- On every merge, [semantic-release](https://semantic-release.gitbook.io/) publishes a version to npm when the commit calls for one: `fix` and `perf` publish a patch, `feat` a minor, and `!` or a `BREAKING CHANGE` footer a major. `chore`, `docs`, `test`, `ci` and `refactor` publish nothing.
+
+Design decisions are in [docs/decisions/](docs/decisions/).
+
+## Tools
+
+![Vue.js Badge](https://img.shields.io/badge/Vue.js-4FC08D?logo=vuedotjs&logoColor=fff&style=for-the-badge)
+![TypeScript Badge](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=fff&style=for-the-badge)
+![Pinia Badge](https://img.shields.io/badge/Pinia-FFD859?logo=pinia&logoColor=000&style=for-the-badge)
+![Sass Badge](https://img.shields.io/badge/Sass-C69?logo=sass&logoColor=fff&style=for-the-badge)
+![Vite Badge](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=fff&style=for-the-badge)
+![Vitest Badge](https://img.shields.io/badge/Vitest-6E9F18?logo=vitest&logoColor=fff&style=for-the-badge)
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](License)
