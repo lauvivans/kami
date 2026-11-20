@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Text, Heading, BulletList, BulletItem, Link, Code } from "@core/index.ts";
 
-const repo = "https://github.com/lauvivans/kami/blob/develop";
+const repo = "https://github.com/lauvivans/kami/blob/main";
 
 const start = `git clone https://github.com/lauvivans/kami.git
 cd kami
@@ -41,7 +41,7 @@ tests/                  Vitest tests`;
       commits.</BulletItem
     >
     <BulletItem
-      >PRs target <Code inline>develop</Code>. Branch names follow
+      >PRs target <Code inline>main</Code>. Branch names follow
       <Code inline>&lt;type&gt;/&lt;issue&gt;-kebab-case-name</Code>.</BulletItem
     >
     <BulletItem

@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { Text, Heading, BulletList, BulletItem, Callout, Code } from "@core/index.ts";
 
-const flow = `feature branch ──squash──▶ develop ──▶ release/<version> ──merge──▶ main
-                                                                  │
-                                       semantic-release ◀─────────┘
-                                       npm + GitHub release + CHANGELOG`;
+const flow = `feature branch ──squash──▶ main ──▶ semantic-release ──▶ npm + GitHub release`;
 </script>
 
 <template>
@@ -12,17 +9,21 @@ const flow = `feature branch ──squash──▶ develop ──▶ release/<ve
   <Code>{{ flow }}</Code>
   <BulletList>
     <BulletItem
-      >Feature branches are squashed into <Code inline>develop</Code>.</BulletItem
+      ><Code inline>main</Code> is the only long-lived branch. Each change goes in a
+      short-lived branch and a PR into <Code inline>main</Code>, which is
+      squash-merged.</BulletItem
     >
     <BulletItem
-      >A release goes from a <Code inline>release/&lt;version&gt;</Code> branch, cut
-      from <Code inline>develop</Code>, into <Code inline>main</Code> with a merge
-      commit.</BulletItem
+      >The squash commit takes the PR title, so the title follows Conventional
+      Commits and picks the version: <Code inline>fix</Code> and
+      <Code inline>perf</Code> release a patch, <Code inline>feat</Code> a minor, and
+      a breaking change a major. <Code inline>chore</Code>, <Code inline>docs</Code>,
+      <Code inline>test</Code>, <Code inline>ci</Code> and
+      <Code inline>refactor</Code> don't release.</BulletItem
     >
     <BulletItem
-      >After a release, <Code inline>main</Code> is merged back into
-      <Code inline>develop</Code>, since semantic-release pushes a commit with the
-      new version and the changelog.</BulletItem
+      >Release notes are on the GitHub releases page. Every PR gets a Cloudflare
+      Pages preview of this site.</BulletItem
     >
   </BulletList>
 
