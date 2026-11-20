@@ -1,3 +1,5 @@
+import "@core/assets/scss/main.scss";
+
 export { Aside, Header, Tabs } from "./components";
 export {
   Bookmark,

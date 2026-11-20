@@ -23,8 +23,8 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
+        // Only modules that emit no CSS: main.scss is imported once, from packages/core/index.ts.
         additionalData: `
-          @use "/packages/core/assets/scss/main";
           @use "/packages/core/assets/scss/_var.scss" as *;
           @use "/packages/core/assets/scss/_mixin.scss" as *;
         `,

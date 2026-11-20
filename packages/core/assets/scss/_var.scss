@@ -149,3 +149,10 @@ $DEFAULT_SPACING: 9px;
 $TABS_HEIGHT: 34px;
 $HEADER_HEIGHT: 50px;
 $NESTED_LINK_SIZE: calc($ASIDE_CLICK_SIZE - 20px);
+
+/* hover background per theme class, used by _theme and _mixin */
+$theme-bg-hover: (
+  "dark-theme": $gray-3,
+  "cat-latte": $latte-surface1,
+  "cat-mocha": $mocha-surface1,
+);

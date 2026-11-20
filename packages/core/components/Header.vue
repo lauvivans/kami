@@ -59,7 +59,7 @@ const { showModal, hideModal, addModalListener } = useModal({
   }
 
   &__btn {
-    @extend .button;
+    @extend %button;
   }
 }
 </style>
