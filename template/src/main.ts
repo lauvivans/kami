@@ -43,3 +43,6 @@ const router = createRouter({
 
 app.use(router).use(piniaInstance);
 app.mount("#app");
+
+// Temporary: proves CI fails on a template type error (#120).
+export const broken: number = "not a number";
