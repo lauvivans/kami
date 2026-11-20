@@ -19,6 +19,23 @@ updates:
           - minor
           - patch
 
+  # The project create-kami copies, with its own lockfile.
+  - package-ecosystem: npm
+    directory: /template
+    schedule:
+      interval: weekly
+      day: monday
+    labels:
+      - chore
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+
   - package-ecosystem: github-actions
     directory: /
     schedule:
