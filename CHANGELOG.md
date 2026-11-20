@@ -1,3 +1,5 @@
+> Versions up to 1.1.6 were published as `@lauravivan/notion-portfolio`.
+
 ## [1.1.6](https://github.com/lauvivans/kami/compare/v1.1.5...v1.1.6) (2025-12-31)
 
 
