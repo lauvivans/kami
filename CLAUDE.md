@@ -32,7 +32,7 @@ Vue 3, Vue Router, Pinia, Sass and TypeScript, built with Vite in library mode. 
 - `npm run dev`: the documentation site in `src/`. Node version is in `.nvmrc`.
 - `npm run build`: type check and build the documentation site into `dist/`.
 - `npm run build:pkg`: type check and build the package into `dist/`.
-- `npm run lint`, `npm run lint:css` (fails until #75), `npm run format`, `npm test`.
+- `npm run lint`, `npm run lint:css`, `npm run format`, `npm test`.
 - `npm run test:cli`: runs the CLI locally.
 
 ## Workflow

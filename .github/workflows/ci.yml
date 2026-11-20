@@ -44,6 +44,10 @@ jobs:
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: npm run lint
 
+      - name: Lint styles
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: npm run lint:css
+
       # Only the files the PR changes are checked.
       - name: Check formatting of changed files
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}

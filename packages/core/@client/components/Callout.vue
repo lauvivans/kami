@@ -16,13 +16,9 @@ const props = defineProps<{ emoji?: string }>();
   display: flex;
   column-gap: 5px;
   align-items: center;
-
   border-radius: 5px;
-
   line-height: 1.4;
-
   padding: 20px;
-
   background-color: #f1f1f6;
 }
 </style>

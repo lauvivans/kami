@@ -74,8 +74,8 @@ function updateTabs(page: PageInfo) {
     margin: 0;
 
     .details {
-      width: $NESTED_LINK_SIZE !important;
-      max-width: $NESTED_LINK_SIZE !important;
+      width: $nested-link-size !important;
+      max-width: $nested-link-size !important;
 
       &__summary {
         &--icon {
@@ -103,12 +103,14 @@ function updateTabs(page: PageInfo) {
 
     > div {
       @include flex-layout($flex-direction: row, $column-gap: 0.4rem);
+
       align-items: center;
     }
   }
 
   &__pagename {
     @extend %ellipsis;
+
     max-width: 160px;
   }
 }
