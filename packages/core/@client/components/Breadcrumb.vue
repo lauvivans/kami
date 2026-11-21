@@ -96,6 +96,11 @@ const handleCrumb = (page: PageInfo) => {
     all: unset;
     min-width: 0;
 
+    // Drawn inside the link, so an overflow-clipped breadcrumb keeps the ring.
+    &:focus-visible {
+      outline-offset: -$focus-ring-width !important;
+    }
+
     > div {
       display: flex;
       column-gap: 0.4rem;
