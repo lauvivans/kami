@@ -1,6 +1,6 @@
 {
   "name": "@lauvivans/kami",
-  "version": "2.0.8",
+  "version": "2.0.9",
   "description": "A Notion-based portfolio",
   "type": "module",
   "main": "./dist/index.es.js",
