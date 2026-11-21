@@ -64,7 +64,8 @@ Kami follows GitHub flow ([decision 003](docs/decisions/003-branching-workflow.m
 
 - `main` is the only long-lived branch. Each change goes in a branch named `<type>/<issue>-kebab-case-name` and is opened as a pull request into `main`.
 - The pull request title follows [Conventional Commits](https://www.conventionalcommits.org/). Pull requests are squash-merged, so the title becomes the commit on `main`.
-- On every merge, [semantic-release](https://semantic-release.gitbook.io/) publishes a version to npm when the commit calls for one: `fix` and `perf` publish a patch, `feat` a minor, and `!` or a `BREAKING CHANGE` footer a major. `chore`, `docs`, `test`, `ci` and `refactor` publish nothing.
+- [release-please](https://github.com/googleapis/release-please) keeps a Release PR open with the next version and its changelog ([decision 004](docs/decisions/004-release-flow.md)). Each merge updates it when the commit calls for a release: `fix` and `perf` add a patch, `feat` a minor, and `!` or a `BREAKING CHANGE` footer a major. `chore`, `docs`, `test`, `ci` and `refactor` add nothing.
+- Merging the Release PR tags the version, creates the GitHub release and publishes the package to npm.
 
 Design decisions are in [docs/decisions/](docs/decisions/).
 

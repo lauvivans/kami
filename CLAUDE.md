@@ -25,7 +25,7 @@ Everything in the repository and on GitHub is in English: code, docs, file names
 
 ## Stack
 
-Vue 3, Vue Router, Pinia, Sass and TypeScript, built with Vite in library mode. Releases are published to npm with semantic-release. See `docs/decisions/001-stack-and-hosting.md`.
+Vue 3, Vue Router, Pinia, Sass and TypeScript, built with Vite in library mode. Releases go through a release-please Release PR and are published to npm with trusted publishing. See `docs/decisions/001-stack-and-hosting.md` and `docs/decisions/004-release-flow.md`.
 
 ## Commands
 
@@ -39,10 +39,10 @@ Vue 3, Vue Router, Pinia, Sass and TypeScript, built with Vite in library mode. 
 
 - **GitHub flow** (decision 003): `main` is the only long-lived branch. Every change goes in a short-lived branch, opened as a PR into `main`.
 - **Branch name:** `<type>/<issue>-kebab-case-name`.
-- **PR title:** Conventional Commits. The squash commit takes the PR title, and semantic-release reads it on `main` to pick the version: `fix` and `perf` are a patch, `feat` a minor, `!` or a `BREAKING CHANGE` footer a major. `chore`, `docs`, `test`, `ci` and `refactor` don't release.
+- **PR title:** Conventional Commits. The squash commit takes the PR title, and release-please reads it on `main` to pick the version: `fix` and `perf` are a patch, `feat` a minor, `!` or a `BREAKING CHANGE` footer a major. `chore`, `docs`, `test`, `ci` and `refactor` don't release.
 - **PR body:** ends with `Closes #<issue>`, also on fixes made after QA.
-- **Merge:** squash into `main`. Every merge with a `fix`, `perf` or `feat` publishes a version on npm, so changes that must ship together go in the same PR. Head branches are deleted on merge.
-- **Releases:** semantic-release publishes to npm and creates the GitHub release with the notes. It pushes nothing to `main`, so `package.json` keeps `0.0.0-development`. `CHANGELOG.md` covers versions up to 1.1.6.
+- **Merge:** squash into `main`. Head branches are deleted on merge.
+- **Releases:** every merge with a `fix`, `perf` or `feat` adds to the open Release PR (`chore(main): release <version>`), which bumps `package.json` and `CHANGELOG.md`. Merging the Release PR tags the version, creates the GitHub release and publishes to npm. A GitHub App opens the Release PR, so the required checks run on it.
 - **Attribution:** no `Co-Authored-By` or "Generated with Claude Code" in commits and PRs.
 - **Draft before creating:** show the full text of any issue and only create it after approval. Pull requests are opened directly; say when one is open, with its link. They are reviewed on GitHub before merge.
 - **Dependencies:** every PR that adds or updates a dependency gets a supply chain check in its review (new packages in the lockfile, install scripts, `npm audit signatures`, publish dates, `npm audit`).
@@ -58,4 +58,4 @@ Vue 3, Vue Router, Pinia, Sass and TypeScript, built with Vite in library mode. 
 
 ## Security
 
-Never commit `.env` values, the npm token, GitHub tokens or Cloudflare account IDs. The `NPM_TOKEN` secret lives only in the repository settings. Vulnerabilities are reported privately, as described in `SECURITY.md`.
+Never commit `.env` values, npm or GitHub tokens or Cloudflare account IDs. npm publishing uses trusted publishing (OIDC from `release.yml`), so the repository has no npm token. Vulnerabilities are reported privately, as described in `SECURITY.md`.
