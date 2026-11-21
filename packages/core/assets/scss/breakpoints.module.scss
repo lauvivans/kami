@@ -1,0 +1,4 @@
+/* Exposes SCSS breakpoints to TypeScript, so _var.scss stays the single source. */
+:export {
+  mobile: $screen-small;
+}
