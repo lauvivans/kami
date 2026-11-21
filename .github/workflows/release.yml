@@ -6,9 +6,7 @@ on:
       - main
 
 permissions:
-  contents: write
-  issues: write
-  pull-requests: write
+  contents: read
 
 # Cloudflare Pages deploys production from main through its git integration,
 # so this workflow only checks and releases the package.
@@ -19,6 +17,11 @@ jobs:
   release:
     needs: ci
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # to create the GitHub release
+      issues: write # to comment on released issues
+      pull-requests: write # to comment on released pull requests
+      id-token: write # npm trusted publishing (OIDC), which also adds provenance
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -43,5 +46,4 @@ jobs:
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npx semantic-release

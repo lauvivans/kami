@@ -36,7 +36,9 @@ const flow = `feature branch ──squash──▶ main ──▶ semantic-relea
     <BulletItem
       ><Code inline>release.yml</Code> runs on every push to <Code inline>main</Code>: it
       builds the package, checks its contents and runs semantic-release,
-      which publishes to npm and creates the GitHub release.</BulletItem
+      which publishes to npm and creates the GitHub release. It publishes
+      with npm trusted publishing, so the repository keeps no npm token and
+      every version gets a provenance attestation.</BulletItem
     >
   </BulletList>
 

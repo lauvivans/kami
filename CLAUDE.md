@@ -58,4 +58,4 @@ Vue 3, Vue Router, Pinia, Sass and TypeScript, built with Vite in library mode. 
 
 ## Security
 
-Never commit `.env` values, the npm token, GitHub tokens or Cloudflare account IDs. The `NPM_TOKEN` secret lives only in the repository settings. Vulnerabilities are reported privately, as described in `SECURITY.md`.
+Never commit `.env` values, npm or GitHub tokens or Cloudflare account IDs. npm publishing uses trusted publishing (OIDC from `release.yml`), so the repository has no npm token. Vulnerabilities are reported privately, as described in `SECURITY.md`.
