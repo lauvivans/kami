@@ -18,7 +18,9 @@ The full list is in [docs/product/requirements.md](docs/product/requirements.md)
 
 ## Requirements
 
-Node.js `^20.19.0 || >=22.12.0`, for both the CLI and the project it creates.
+Node.js `^20.19.0 || >=22.12.0`, for both the CLI and the project it creates. CI creates and builds a project on Node 20.19.0, 22.12.0 and the version in `.nvmrc`.
+
+On Node versions below 22.22, `npm install` prints `EBADENGINE` warnings for `chokidar` and `ast-walker-scope`. They come from `vue-router` 5 and are only used by its file-based routing plugin (`vue-router/vite`), which Kami doesn't use, so the project still installs and builds.
 
 ## Create a portfolio
 

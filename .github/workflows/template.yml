@@ -1,7 +1,9 @@
 name: Template
 
-# Builds the project the CLI creates, with the package built from this PR, so a
-# change that breaks a new portfolio fails here instead of in `create-kami`.
+# Creates a portfolio with the CLI and builds it, using the package built from
+# this PR, so a change that breaks a new portfolio fails here instead of in
+# `create-kami`. It runs on the lowest Node versions in `engines.node` and on the
+# one in `.nvmrc`, so a dependency update that raises the real minimum fails too.
 # It runs on every pull request so it can be a required check, and skips the
 # build when the PR doesn't touch the paths below.
 on:
@@ -16,9 +18,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  template:
-    name: Install and build the template
+  pack:
+    name: Pack the package
     runs-on: ubuntu-latest
+    outputs:
+      build: ${{ steps.changes.outputs.build }}
 
     steps:
       # The PR merge commit and its first parent (the base branch).
@@ -47,27 +51,85 @@ jobs:
         with:
           node-version-file: .nvmrc
           cache: npm
-          cache-dependency-path: |
-            package-lock.json
-            template/package-lock.json
 
       - name: Build and pack the package
         if: steps.changes.outputs.build == 'true'
         run: |
           npm ci --no-audit --no-fund
           npm run build:pkg
-          npm pack --pack-destination "$RUNNER_TEMP"
+          npm pack --pack-destination "$RUNNER_TEMP/pack"
+
+      - name: Upload the package
+        if: steps.changes.outputs.build == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: package
+          path: ${{ runner.temp }}/pack/*.tgz
+          retention-days: 1
+
+  template:
+    name: Create and build a portfolio on Node ${{ matrix.node }}
+    needs: pack
+    if: needs.pack.outputs.build == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # The lowest versions in `engines.node`, and the one in `.nvmrc`.
+        node: ['20.19.0', '22.12.0', '.nvmrc']
+
+    steps:
+      # Only `.nvmrc` is needed, to resolve the last matrix entry.
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          sparse-checkout: .nvmrc
+          sparse-checkout-cone-mode: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node != '.nvmrc' && matrix.node || '' }}
+          node-version-file: ${{ matrix.node == '.nvmrc' && '.nvmrc' || '' }}
+
+      - name: Download the package
+        uses: actions/download-artifact@v8
+        with:
+          name: package
+          path: ${{ runner.temp }}/pack
+
+      # Runs the CLI from the packed files, the way `create-kami` runs from npm.
+      # It installs the published package, which the next step replaces.
+      - name: Create a portfolio with the CLI
+        working-directory: ${{ runner.temp }}
+        run: |
+          tar -xzf pack/*.tgz
+          node package/bin/cli.js my-portfolio
 
       # Installs the packed tarball the way a user gets it from npm, where the
       # package's own prepare script (husky) does not run.
-      - name: Install the template
-        if: steps.changes.outputs.build == 'true'
-        working-directory: template
-        run: |
-          npm ci --no-audit --no-fund
-          npm install --no-save --ignore-scripts --no-audit --no-fund "$RUNNER_TEMP"/lauvivans-kami-*.tgz
+      - name: Install the package from this PR
+        working-directory: ${{ runner.temp }}/my-portfolio
+        run: npm install --no-save --ignore-scripts --no-audit --no-fund "$RUNNER_TEMP"/pack/*.tgz
 
-      - name: Type check and build the template
-        if: steps.changes.outputs.build == 'true'
-        working-directory: template
+      - name: Type check and build the portfolio
+        working-directory: ${{ runner.temp }}/my-portfolio
         run: npm run build
+
+  # The required check. It passes when every Node version passes or when the
+  # PR doesn't touch the template or the package.
+  result:
+    name: Install and build the template
+    needs: [pack, template]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check the results
+        env:
+          PACK: ${{ needs.pack.result }}
+          TEMPLATE: ${{ needs.template.result }}
+        run: |
+          echo "pack: $PACK, template: $TEMPLATE"
+          if [ "$PACK" != "success" ]; then exit 1; fi
+          if [ "$TEMPLATE" != "success" ] && [ "$TEMPLATE" != "skipped" ]; then exit 1; fi
