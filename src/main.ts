@@ -1,15 +1,14 @@
 import "@core/assets/scss/main.scss";
 import { createApp } from "vue";
 import App from "./App.vue";
-import { createPinia } from "pinia";
+import { piniaInstance } from "@core/index.ts";
 import { createRouter, createWebHistory } from "vue-router";
 import metadata from "./metadata";
 import { createRoutes } from "./routes";
 
 const app = createApp(App);
-const pinia = createPinia();
 
-app.use(pinia);
+app.use(piniaInstance);
 
 const router = createRouter({
   history: createWebHistory(),
