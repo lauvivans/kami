@@ -10,7 +10,8 @@ Does Kami need Pinia for its shared state, or does a lighter approach cover it w
 
 ## Short answer
 
-- **Replace the Pinia store with a plain `reactive()` module** in `packages/core/store/store.ts`, in the next major release.
+- **Replace the Pinia store with a plain `reactive()` module** in `packages/core/store/store.ts`, but only together with another breaking change. It doesn't justify a major release of its own.
+- **The gain is small:** 2.70 kB less gzip JS, one package (`pinia`) less in each portfolio, and one line less in the store (158 to 157). What it removes is the install step and a peer dependency portfolios must keep in step with the package.
 - **`useStore` keeps its shape.** It stays an object with the same state fields, `get*` getters and `store*` actions, so the components, the router guards and the portfolios that read `store.getActivePage` or call `useStore.storeActivePage(page)` don't change.
 - **`piniaInstance` is removed,** together with `app.use(piniaInstance)` in the template and `pinia` in the template's dependencies and the package's peer dependencies. This is the breaking part of the change.
 - **The `localStorage` helpers stay** as they are. Moving them to another mechanism is a separate question from Pinia.
@@ -30,7 +31,7 @@ All numbers were measured on 2026-11-21. Bundle sizes come from `vite build` (Vi
 
 |                                           | Pinia 4 (today)                                             | `reactive()` module                                             | VueUse `createGlobalState` + `useStorage`                                                           | `provide` / `inject`                                         |
 | ----------------------------------------- | ----------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
-| Store code                                | 158 lines + 5 (`instance.ts`)                               | 155 lines                                                       | not built, see below                                                                                | not built, see below                                         |
+| Store code                                | 158 lines + 5 (`instance.ts`)                               | 157 lines                                                       | not built, see below                                                                                | not built, see below                                         |
 | Library code in the bundle, minimal store | 8.27 kB (3.43 kB gzip)                                      | 0.24 kB (0.19 kB gzip), all of it the store itself              | 6.17 kB (2.45 kB gzip)                                                                              | 0, part of Vue                                               |
 | Documentation site JS                     | 249.31 kB (84.46 kB gzip)                                   | 242.93 kB (81.76 kB gzip)                                       | not built                                                                                           | not built                                                    |
 | Packages a portfolio installs             | `pinia`                                                     | none                                                            | `@vueuse/core`, `@vueuse/shared`, `@vueuse/metadata`, `@types/web-bluetooth` (all new)              | none                                                         |
@@ -47,21 +48,21 @@ Dropping Pinia saves less than #71 suggested. `nostics` and `@vue/devtools-api` 
 
 ### A plain `reactive()` module
 
-A full version of the store was written, type-checked with `vue-tsc -b` and run against the existing tests (16 of 16 passing, unchanged) on a local branch. It keeps every field, getter and action and adds `$reset()`, so the tests didn't change. Apart from `store.ts` it needed:
+A full version of the store was written, type-checked with `vue-tsc -b` and run against the existing tests (16 of 16 passing, unchanged) on a local branch, plus a test that destructures `storeTheme` and `storeUpdateTabs` and calls them. It keeps every field, getter and action and adds `$reset()`, so the tests didn't change. Apart from `store.ts` it needed:
 
 - `Settings.vue`: `storeToRefs` from `pinia` becomes `toRefs` from `vue`.
 - `packages/core/store/index.ts` and `packages/core/index.ts`: drop `piniaInstance`.
 - `src/main.ts`: drop `createPinia()`.
 - `template/src/main.ts` and `template/package.json`: drop `piniaInstance` and `pinia` (not built here, since the template installs the published package).
 
-The documentation site lost 6.38 kB of JS (2.70 kB gzip). The package bundle stays the same size (134.70 kB to 134.66 kB), since Pinia was never in it.
+The documentation site lost 6.38 kB of JS (2.70 kB gzip). That build used an earlier draft whose actions used `this`; the final version differs only in the names inside the action bodies. The package bundle stays the same size (134.70 kB to 134.66 kB), since Pinia was never in it.
 
-The store code itself stays about the same size (158 to 155 lines), because the getters and actions remain. They could be cut down later by reading the fields directly, which is a public API change of its own and works with Pinia too.
+The store code itself stays about the same size (158 to 157 lines), because the getters and actions remain. They could be cut down later by reading the fields directly, which is a public API change of its own and works with Pinia too.
 
 Proof of concept, two fields of the store:
 
 ```ts
-import { reactive } from "vue";
+import { reactive, toRefs } from "vue";
 import { getAsideOpen, getTheme } from "@core/util/local-storage";
 import type { Theme } from "@core/enum";
 
@@ -70,30 +71,32 @@ const initialState = () => ({
   isAsideOpen: getAsideOpen(),
 });
 
+const state = reactive(initialState());
+
 const useStore = reactive({
-  ...initialState(),
+  // reactive() unwraps these refs: useStore.theme reads and writes state.theme
+  ...toRefs(state),
   $reset() {
-    Object.assign(this, initialState());
+    Object.assign(state, initialState());
   },
-  // getters need a return type, or TypeScript types `this` as {}
   get getTheme(): keyof typeof Theme {
-    return this.theme;
+    return state.theme;
   },
   get getIsAsideOpen(): boolean {
-    return this.isAsideOpen;
+    return state.isAsideOpen;
   },
   storeTheme(theme: keyof typeof Theme) {
-    this.theme = theme;
+    state.theme = theme;
   },
   storeIsAsideOpen(isAsideOpen: boolean) {
-    this.isAsideOpen = isAsideOpen;
+    state.isAsideOpen = isAsideOpen;
   },
 });
 
 export default useStore;
 ```
 
-`reactive()` follows `this` through getters and methods, so `store.getTheme` in a template or a `watch` updates when `storeTheme` runs. Getters are no longer cached like Pinia getters. The only one that computes something, `getDynamicCurrentPageInfo`, reads one tab and one map entry, so the cost is negligible.
+The getters and actions read and write `state` by name instead of `this`, so an action still works after it is destructured (`const { storeTheme } = useStore`). Pinia binds the actions of an options store to the store, so code that destructures them works today, and an action written with `this` would lose that. Actions that call another action or getter (`storeUpdateTabs`, `storeDynamicPageInfo`) call it as `useStore.storeTabs(...)`. The getters keep explicit return types, which the public types of `useStore` rely on. `reactive()` tracks the reads inside the getters, so `store.getTheme` in a template or a `watch` updates when `storeTheme` runs. Getters are no longer cached like Pinia getters. The only one that computes something, `getDynamicCurrentPageInfo`, reads one tab and one map entry, so the cost is negligible.
 
 ### VueUse `createGlobalState` and `useStorage`
 
@@ -107,7 +110,8 @@ What it would replace is the `localStorage` layer: `useStorage` reads and writes
 
 ## Consequences
 
-- **A major release.** Removing `piniaInstance` breaks every portfolio created from the template, so the change ships as `feat!` or with a `BREAKING CHANGE` footer. The release notes tell portfolios to remove `app.use(piniaInstance)` from `main.ts` and `pinia` from their dependencies. It can wait and go out with other breaking changes.
+- **A major release.** Removing `piniaInstance` breaks every portfolio created from the template, so the change ships as `feat!` or with a `BREAKING CHANGE` footer. The release notes tell portfolios to remove `app.use(piniaInstance)` from `main.ts` and `pinia` from their dependencies. It waits for another breaking change and goes out in the same major, since its gain is small (see the short answer).
+- **Actions are written against the module's `state`, never `this`,** so destructuring `useStore` keeps working as it does with Pinia. A new action that uses `this` would break for anyone who destructures it.
 - **No devtools panel for the store.** The state is still visible in the Vue devtools component inspector, and the store is small enough to read there.
 - **`$patch`, `$subscribe` and `storeToRefs` stop working on `useStore`.** A portfolio that used them would switch to assigning fields, `watch` and `toRefs`. `$reset()` stays.
 - **Docs to update with the change:** `CLAUDE.md` (structure and stack), decision 001 (it says Pinia is bundled), `docs/product/requirements.md` (the exports list), the Developer docs storage and contributing pages, and the Pinia badge in `README.md`.
