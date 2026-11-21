@@ -72,14 +72,28 @@ const handleCrumb = (page: PageInfo) => {
 .breadcrumb {
   display: flex;
   align-items: center;
+  min-width: 0;
 
+  // Earlier crumbs shrink first; the current page shrinks only once it alone fills the breadcrumb
   &__crumb {
     display: flex;
     align-items: center;
+    min-width: 0;
+    overflow: hidden;
+
+    &:last-child {
+      flex-shrink: 0;
+      max-width: 100%;
+    }
+
+    > div {
+      flex-shrink: 0;
+    }
   }
 
   &__page {
     all: unset;
+    min-width: 0;
 
     > div {
       display: flex;
@@ -89,9 +103,6 @@ const handleCrumb = (page: PageInfo) => {
       @extend %hover-default;
 
       span {
-        width: auto;
-        max-width: 7rem;
-
         @extend %ellipsis;
       }
     }

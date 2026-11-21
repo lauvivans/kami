@@ -59,6 +59,8 @@ const { showModal, hideModal, addModalListener } = useModal({
   }
 
   &__btn {
+    flex-shrink: 0;
+
     @extend %button;
   }
 }
