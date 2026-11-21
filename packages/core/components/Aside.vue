@@ -155,8 +155,12 @@ onBeforeUnmount(() => {
         <div
           class="nav-btn"
           role="button"
+          tabindex="0"
           id="nav-btn"
+          :aria-label="navClick ? 'Close sidebar' : 'Open sidebar'"
+          :aria-expanded="navClick"
           @click="toggleNavState"
+          @keydown.enter.space.prevent="toggleNavState"
           @mouseenter="toggleNavHover(true)"
           @touchstart="toggleNavState"
         >
@@ -169,11 +173,22 @@ onBeforeUnmount(() => {
               {{ props.metadata.user.socialMedia }}
             </li>
             <li class="nav-list__nav-item">
-              <div role="button" @click="showSearchModal">
+              <div
+                role="button"
+                tabindex="0"
+                @click="showSearchModal"
+                @keydown.enter.space.prevent="showSearchModal"
+              >
                 <Icon :icon="Icons.search" />
                 <span>Search</span>
               </div>
-              <div role="button" id="settings-btn" @click="showSettingsModal">
+              <div
+                role="button"
+                tabindex="0"
+                id="settings-btn"
+                @click="showSettingsModal"
+                @keydown.enter.space.prevent="showSettingsModal"
+              >
                 <Icon :icon="Icons.settings" />
                 <span>Settings</span>
               </div>
@@ -226,6 +241,7 @@ onBeforeUnmount(() => {
       :addModalListener="addSettingsModalListener"
       :hideModal="hideSettingsModal"
       :isStatic="true"
+      label="My settings"
     >
       <div class="modal__settings">
         <h2 class="modal__settings-title">My settings</h2>
@@ -249,6 +265,7 @@ onBeforeUnmount(() => {
       :provideName="SEARCH_MODAL_PROVIDE"
       :addModalListener="addSearchModalListener"
       :hideModal="hideSearchModal"
+      label="Search"
       :isStatic="true"
     >
       <div>Not build yet</div>
@@ -300,7 +317,8 @@ onBeforeUnmount(() => {
   .nav-click {
     @include flex-layout($flex-direction: row-reverse, $row-gap: 2rem);
 
-    &:hover {
+    &:hover,
+    &:focus-within {
       .nav-btn {
         visibility: visible;
       }

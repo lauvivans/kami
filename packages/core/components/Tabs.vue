@@ -71,9 +71,18 @@ onBeforeUnmount(() => {
       @click.stop="updateActiveTab(index)"
       @touchstart="updateActiveTab(index)"
     >
-      <span>{{ page.pageName }}</span>
+      <!-- Activates through the tab's click handler; it is here for keyboard focus. -->
       <button
+        type="button"
+        class="tabs__name"
+        :aria-current="store.activeTab == index ? 'page' : undefined"
+      >
+        {{ page.pageName }}
+      </button>
+      <button
+        type="button"
         class="tabs__tab--close"
+        :aria-label="`Close tab ${page.pageName}`"
         @click.stop="removeTab(index)"
         @touchstart="removeTab(index)"
       >
@@ -81,7 +90,9 @@ onBeforeUnmount(() => {
       </button>
     </div>
     <button
+      type="button"
       class="tabs__add"
+      aria-label="New tab"
       @click.stop="addTab()"
       @touchstart="addTab()"
       v-if="store.tabs.length < 10"
@@ -135,7 +146,11 @@ onBeforeUnmount(() => {
     border-right: 1px solid $black-1;
     color: $black-6;
 
-    span {
+    .tabs__name {
+      all: unset;
+      flex: 1;
+      min-width: 0;
+
       @extend %ellipsis;
     }
 
@@ -160,7 +175,8 @@ onBeforeUnmount(() => {
     }
   }
 
-  &__tab:hover {
+  &__tab:hover,
+  &__tab:focus-within {
     .tabs__tab--close {
       visibility: visible;
     }

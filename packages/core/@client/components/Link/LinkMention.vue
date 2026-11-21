@@ -13,7 +13,7 @@ const props = defineProps<{
 <template>
   <router-link class="link" :to="props.page.path" v-if="props.page">
     <div>
-      <img v-if="props.page.icon" :src="props.page.icon.path" />
+      <img v-if="props.page.icon" alt="" :src="props.page.icon.path" />
       <template v-else>{{ props.emoji }}</template>
       <Icon class="link__arrow" :icon="Icons.arrowLink" />
     </div>

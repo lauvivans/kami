@@ -57,6 +57,7 @@ const handleCrumb = (page: PageInfo) => {
         <div>
           <img
             v-if="page.icon"
+            alt=""
             style="max-width: 1.1rem; height: auto"
             :src="page.icon.path"
           />

@@ -44,6 +44,7 @@ function updateTabs(page: PageInfo) {
           <div>
             <div style="max-width: 1.1rem" v-if="props.page.icon">
               <img
+                alt=""
                 :src="props.page.icon.path"
                 style="width: 100%; height: auto"
               />
@@ -82,7 +83,7 @@ function updateTabs(page: PageInfo) {
           border-top-left-radius: 3px;
           border-bottom-left-radius: 3px;
 
-          > div {
+          > button > div {
             font-size: $fs-medium;
             color: $black-3;
           }

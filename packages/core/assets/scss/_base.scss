@@ -64,3 +64,17 @@ body {
 .ellipsis {
   @extend %ellipsis;
 }
+
+// Many controls reset their styles with `all: unset`, which also drops the
+// browser focus ring, so the ring is set here for every theme.
+:where(
+  a,
+  button,
+  input,
+  select,
+  textarea,
+  [tabindex]:not([tabindex="-1"])
+):focus-visible {
+  outline: 2px solid var.$active !important;
+  outline-offset: 2px !important;
+}

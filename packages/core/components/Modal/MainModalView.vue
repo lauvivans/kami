@@ -32,6 +32,7 @@ const handleNavigate = () => {
       class="page-modal"
       :provideName="props.provideName"
       :isStatic="true"
+      :label="props.page.title"
       :hideModal="props.hideMainModal"
       :addModalListener="props.addMainModalListener"
     >
