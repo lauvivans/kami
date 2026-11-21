@@ -97,7 +97,7 @@ export default useStore;
 
 ### VueUse `createGlobalState` and `useStorage`
 
-`@vueuse/core` is not a dependency of Kami today, neither in the package nor in the template. Using it adds four packages to every portfolio and 2.45 kB gzip of library code for a minimal store, which is more than the `reactive()` module and less than Pinia.
+Issue #72 assumed `@vueuse/core` was already a dependency. It isn't: neither the package's `package.json` nor the template's lists it, and it isn't in either lockfile. This option means adding it as a new runtime dependency of the package, which adds four packages to every portfolio and 2.45 kB gzip of library code for a minimal store. That is more than the `reactive()` module and less than Pinia.
 
 What it would replace is the `localStorage` layer: `useStorage` reads and writes a key on every change, which would remove the 10 getter and setter files in `util/local-storage/` (88 lines) and the `beforeunload` listeners in three components. Two details of the saved data need care: tabs and page settings are saved with `flatted`, so `useStorage` needs a custom serializer to keep reading what visitors already have, and saving on every change replaces saving on unload, which changes when data is written. That is a separate change from the choice of store, and the `reactive()` module doesn't block it later.
 
