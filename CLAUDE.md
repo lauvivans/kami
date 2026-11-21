@@ -25,7 +25,7 @@ Everything in the repository and on GitHub is in English: code, docs, file names
 
 ## Stack
 
-Vue 3, Vue Router, Pinia, Sass and TypeScript, built with Vite in library mode. Releases go through a release-please Release PR and are published to npm with trusted publishing. See `docs/decisions/001-stack-and-hosting.md` and `docs/decisions/004-release-flow.md`.
+Vue 3, Vue Router, Pinia, Sass and TypeScript, built with Vite in library mode. Releases go through a release-please Release PR and are staged on npm with trusted publishing. See `docs/decisions/001-stack-and-hosting.md` and `docs/decisions/004-release-flow.md`.
 
 ## Commands
 
@@ -42,7 +42,7 @@ Vue 3, Vue Router, Pinia, Sass and TypeScript, built with Vite in library mode. 
 - **PR title:** Conventional Commits. The squash commit takes the PR title, and release-please reads it on `main` to pick the version: `fix` and `perf` are a patch, `feat` a minor, `!` or a `BREAKING CHANGE` footer a major. `chore`, `docs`, `test`, `ci` and `refactor` don't release.
 - **PR body:** ends with `Closes #<issue>`, also on fixes made after QA.
 - **Merge:** squash into `main`. Head branches are deleted on merge.
-- **Releases:** every merge with a `fix`, `perf` or `feat` adds to the open Release PR (`chore(main): release <version>`), which bumps `package.json` and `CHANGELOG.md`. Merging the Release PR tags the version, creates the GitHub release and publishes to npm. A GitHub App opens the Release PR, so the required checks run on it.
+- **Releases:** every merge with a `fix`, `perf` or `feat` adds to the open Release PR (`chore(main): release <version>`), which bumps `package.json` and `CHANGELOG.md`. Merging the Release PR tags the version, creates the GitHub release and stages the version on npm. It goes live after a maintainer approves it with 2FA in the Staged Packages tab on npmjs.com (`npm stage approve <stage-id>` also works). A GitHub App opens the Release PR, so the required checks run on it.
 - **Attribution:** no `Co-Authored-By` or "Generated with Claude Code" in commits and PRs.
 - **Draft before creating:** show the full text of any issue and only create it after approval. Pull requests are opened directly; say when one is open, with its link. They are reviewed on GitHub before merge.
 - **Dependencies:** every PR that adds or updates a dependency gets a supply chain check in its review (new packages in the lockfile, install scripts, `npm audit signatures`, publish dates, `npm audit`).
@@ -58,4 +58,4 @@ Vue 3, Vue Router, Pinia, Sass and TypeScript, built with Vite in library mode. 
 
 ## Security
 
-Never commit `.env` values, npm or GitHub tokens or Cloudflare account IDs. npm publishing uses trusted publishing (OIDC from `release.yml`), so the repository has no npm token. Vulnerabilities are reported privately, as described in `SECURITY.md`.
+Never commit `.env` values, npm or GitHub tokens or Cloudflare account IDs. npm publishing uses trusted publishing (OIDC from `release.yml`) limited to staged publishes, so the repository has no npm token and nothing goes live without a 2FA approval. Vulnerabilities are reported privately, as described in `SECURITY.md`.

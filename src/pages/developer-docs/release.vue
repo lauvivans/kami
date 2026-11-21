@@ -42,9 +42,10 @@ const flow = `feature branch ──squash──▶ main ──▶ Release PR ─
       ><Code inline>release.yml</Code> runs on every push to <Code inline>main</Code>: it
       runs the CI and then release-please, which opens or updates the Release PR.
       When the merged commit is the Release PR, it tags the version, creates
-      the GitHub release, builds the package, checks its contents and publishes
-      it to npm with trusted publishing, so the repository keeps no npm
-      token.</BulletItem
+      the GitHub release, builds the package, checks its contents and stages
+      it on npm with trusted publishing, so the repository keeps no npm token.
+      The version goes live after a maintainer approves it with 2FA in the
+      Staged Packages tab on npmjs.com.</BulletItem
     >
   </BulletList>
 

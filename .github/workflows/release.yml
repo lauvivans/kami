@@ -61,7 +61,7 @@ jobs:
           node-version-file: .nvmrc
           registry-url: https://registry.npmjs.org
 
-      # Trusted publishing needs npm 11.5.1 or later, and Node 22 ships npm 10.
+      # Staged publishing needs npm 11.15.0 or later, and Node 22 ships npm 10.
       - name: Update npm
         run: npm install -g npm@11.21.2
 
@@ -74,5 +74,7 @@ jobs:
       - name: Check package contents
         run: npm pack --dry-run 2>&1 | grep -q "template/gitignore"
 
-      - name: Publish
-        run: npm publish
+      # The trusted publisher on npm only accepts staged publishes. The version
+      # goes live after a maintainer approves it with 2FA on npmjs.com.
+      - name: Stage the release on npm
+        run: npm stage publish
