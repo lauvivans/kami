@@ -30,7 +30,7 @@ What Kami offers and the rules it follows.
 
 ## Layout
 
-- **Sidebar (`Aside`):** the author, Search and Settings, then two groups of pages: Favorites and Private. Pages with sub-pages expand to show them. The sidebar can be pinned open or closed, and when closed it opens on hover.
+- **Sidebar (`Aside`):** the author, Search and Settings, then two groups of pages: Favorites and Private. Pages with sub-pages expand to show them. The sidebar can be pinned open or closed, and when closed it opens on hover. On screens up to `$screen-small` wide it closes after a page is picked.
 - **Tabs (`Tabs`):** like Notion Desktop. A visitor can open up to 10 tabs, switch between them and close them. The open tabs and the active one survive a reload.
 - **Header (`Header`):** the breadcrumb of the current page and a button that opens the page settings.
 - **Search:** the entry in the sidebar opens an empty modal. Search isn't built yet.
@@ -67,6 +67,6 @@ The components a page uses for its content, named after Notion's blocks:
 
 ## Public API
 
-- The package exports the layout components, the blocks, `MainLayout`, `NotFoundPage`, `useStore`, `piniaInstance`, `useAside`, `useDisplay`, `isTouchDevice`, the `Icons` enum (the icons `ToggleList` takes), and the types `IMetadata` and `PageInfo`. The full list is in `packages/core/index.ts`.
+- The package exports the layout components, the blocks, `MainLayout`, `NotFoundPage`, `useStore`, `piniaInstance`, `useAside`, `useDisplay`, `useIsMobile`, `isTouchDevice`, the `Icons` enum (the icons `ToggleList` takes), and the types `IMetadata` and `PageInfo`. The full list is in `packages/core/index.ts`.
 - The styles ship in one CSS file, `dist/kami.css`, which the portfolio imports once.
 - Changing any of these in a way that breaks an existing portfolio needs a major version. See [decision 001](../decisions/001-stack-and-hosting.md).

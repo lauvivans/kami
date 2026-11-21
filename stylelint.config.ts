@@ -13,6 +13,17 @@ export default {
         ],
       },
     },
+    {
+      // ICSS :export blocks expose SCSS values to TypeScript.
+      files: ["**/*.module.scss"],
+      rules: {
+        "selector-pseudo-class-no-unknown": [
+          true,
+          { ignorePseudoClasses: ["export"] },
+        ],
+        "property-no-unknown": null,
+      },
+    },
   ],
   rules: {
     // BEM: block__element--modifier, each part in kebab-case.

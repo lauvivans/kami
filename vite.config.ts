@@ -33,5 +33,7 @@ export default defineConfig({
   test: {
     environment: "happy-dom",
     include: ["tests/**/*.test.ts"],
+    // Compile the breakpoints module so tests read the real SCSS values.
+    css: { include: /breakpoints\.module\.scss$/ },
   },
 });

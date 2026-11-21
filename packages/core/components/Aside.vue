@@ -8,7 +8,7 @@ import {
   onMounted,
   onBeforeUnmount,
 } from "vue";
-import { useModal } from "../hooks";
+import { useIsMobile, useModal } from "../hooks";
 import NestedLink from "./NestedLink.vue";
 import { Divider } from "../@client/components";
 import Modal from "@core/components/Modal/Modal.vue";
@@ -122,6 +122,18 @@ watch(navClasses, (currentClass) => {
     navBtnIcon.value = Icons.doubleArrowLeft;
   }
 });
+
+const isMobile = useIsMobile();
+
+// On small screens the open or floating sidebar covers the page, so close it after navigation.
+watch(
+  () => store.activePage,
+  () => {
+    if (!isMobile.value) return;
+    if (navClick.value) toggleNavState();
+    navHover.value = false;
+  }
+);
 
 function saveAsideOpen() {
   setAsideOpen(store.isAsideOpen);
