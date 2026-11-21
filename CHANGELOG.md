@@ -2,6 +2,13 @@
 
 > Versions up to 1.1.6 were published as `@lauravivan/notion-portfolio`. The notes for 2.0.0 to 2.0.8 are only on the [GitHub releases page](https://github.com/lauvivans/kami/releases). From the next version on, release-please writes this file.
 
+## [2.0.9](https://github.com/lauvivans/kami/compare/v2.0.8...v2.0.9) (2026-11-21)
+
+
+### Bug Fixes
+
+* **deps-dev:** bump @types/node from 25.9.9 to 26.6.6 in /template ([#123](https://github.com/lauvivans/kami/issues/123)) ([022eaa7](https://github.com/lauvivans/kami/commit/022eaa719946937b5450afbe545e8ddf4c048fa0))
+
 ## [1.1.6](https://github.com/lauvivans/kami/compare/v1.1.5...v1.1.6) (2025-12-31)
 
 
