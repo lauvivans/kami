@@ -57,6 +57,7 @@ jobs:
         run: |
           npm ci --no-audit --no-fund
           npm run build:pkg
+          mkdir -p "$RUNNER_TEMP/pack"
           npm pack --pack-destination "$RUNNER_TEMP/pack"
 
       - name: Upload the package
