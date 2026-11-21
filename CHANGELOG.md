@@ -2,6 +2,18 @@
 
 > Versions up to 1.1.6 were published as `@lauravivan/notion-portfolio`. The notes for 2.0.0 to 2.0.8 are only on the [GitHub releases page](https://github.com/lauvivans/kami/releases). From the next version on, release-please writes this file.
 
+## [2.1.0](https://github.com/lauvivans/kami/compare/v2.0.9...v2.1.0) (2026-11-21)
+
+
+### Features
+
+* add useIsMobile and close the sidebar after picking a page on mobile ([#143](https://github.com/lauvivans/kami/issues/143)) ([a5915b2](https://github.com/lauvivans/kami/commit/a5915b2ca44b2649c860fb8324f94ba8e2f02e04)), closes [#48](https://github.com/lauvivans/kami/issues/48)
+
+
+### Bug Fixes
+
+* let breadcrumb titles use the free header space ([#142](https://github.com/lauvivans/kami/issues/142)) ([c190842](https://github.com/lauvivans/kami/commit/c190842957ed67bc800fac02b4b24ffcf3aecf8a)), closes [#116](https://github.com/lauvivans/kami/issues/116)
+
 ## [2.0.9](https://github.com/lauvivans/kami/compare/v2.0.8...v2.0.9) (2026-11-21)
 
 
