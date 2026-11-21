@@ -79,6 +79,7 @@ th {
 
       > div {
         @extend %button;
+
         font-size: $fs-medium + 0.1rem;
         color: $black;
       }

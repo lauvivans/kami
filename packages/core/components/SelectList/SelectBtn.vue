@@ -54,6 +54,7 @@ function optionClicked(option: string) {
 <style lang="scss">
 .select-btn {
   @include flex-layout($flex-direction: row);
+
   align-items: center;
   cursor: pointer;
   padding: 5px 10px;

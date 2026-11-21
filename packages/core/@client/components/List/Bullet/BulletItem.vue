@@ -16,7 +16,6 @@ import { Icons } from "@core/enum";
   display: flex;
   align-items: flex-start;
   column-gap: 10px;
-
   width: 100%;
 
   &__icon {
@@ -29,7 +28,6 @@ import { Icons } from "@core/enum";
   // the text instead of becoming separate flex columns.
   &__item {
     margin: 0;
-
     flex: 1;
     width: 100%;
   }

@@ -22,6 +22,6 @@ const props = defineProps<{ items?: { isChecked: boolean; name: string }[] }>();
 .todo-list {
   display: flex;
   flex-direction: column;
-  row-gap: $DEFAULT_SPACING;
+  row-gap: $default-spacing;
 }
 </style>

@@ -1,27 +1,30 @@
 @use "var";
 
-@keyframes slideIn {
+@keyframes slide-in {
   from {
     transform: translateX(-100%);
   }
+
   to {
     transform: translateX(0);
   }
 }
 
-@keyframes fadeIn {
+@keyframes fade-in {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
 }
 
-@keyframes fadeOut {
+@keyframes fade-out {
   from {
     opacity: 1;
   }
+
   to {
     opacity: 0;
   }
@@ -31,9 +34,11 @@
   0% {
     background-color: var.$gray-3;
   }
+
   50% {
-    background-color: rgba(237, 236, 233, 0.9);
+    background-color: rgb(237 236 233 / 90%);
   }
+
   100% {
     background-color: var.$gray-3;
   }

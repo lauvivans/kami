@@ -91,6 +91,7 @@ const handleCrumb = (page: PageInfo) => {
       span {
         width: auto;
         max-width: 7rem;
+
         @extend %ellipsis;
       }
     }

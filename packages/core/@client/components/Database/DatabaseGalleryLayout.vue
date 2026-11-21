@@ -108,17 +108,20 @@ function handleCard(page: PageInfo) {
 
   &__navbar {
     @include flex-layout($row-gap: 15px);
+
     margin-bottom: 30px;
   }
 
   &__menu {
     @include flex-layout($flex-direction: row);
+
     justify-content: space-between;
     border-bottom: 1px solid $black-2;
   }
 
   &__menu-item:nth-child(1) {
     @include flex-layout($flex-direction: row, $column-gap: 3px);
+
     align-items: center;
     font-weight: $fw-700;
     border-bottom: 2px solid $black;
@@ -127,6 +130,7 @@ function handleCard(page: PageInfo) {
 
   &__menu-item:nth-child(2) {
     @include flex-layout($flex-direction: row, $column-gap: 10px);
+
     visibility: hidden;
 
     button {
@@ -170,6 +174,7 @@ function handleCard(page: PageInfo) {
 
   &__card-content {
     @include flex-layout($row-gap: 15px);
+
     background-color: $gray-2;
     height: 160px;
     overflow: hidden;
@@ -187,7 +192,9 @@ function handleCard(page: PageInfo) {
 
   &__card-footer {
     padding: 10px;
+
     @include flex-layout($flex-direction: row, $column-gap: 8px);
+
     align-items: center;
     font-weight: $fw-900;
   }

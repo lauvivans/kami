@@ -5,15 +5,16 @@
 *::before,
 *::after {
   box-sizing: border-box;
-  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 body {
   font-family: var.$default;
   -webkit-font-smoothing: auto;
+
   @include mixin.sizing(100vw, 100vh);
-  overflow-x: hidden;
-  overflow-y: hidden;
+
+  overflow: hidden;
   background-color: var.$white;
   font-size: var.$fs-medium;
   color: var.$black-8;
@@ -42,7 +43,7 @@ body {
     background-color: var.$gray-4;
   }
 
-  :-webkit-any-link {
+  :any-link {
     color: var.$black-5;
     transition: color 0.3s;
 
