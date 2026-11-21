@@ -45,6 +45,7 @@ Vue 3, Vue Router, Pinia, Sass and TypeScript, built with Vite in library mode. 
 - **Releases:** every merge with a `fix`, `perf` or `feat` adds to the open Release PR (`chore(main): release <version>`), which bumps `package.json` and `CHANGELOG.md`. Merging the Release PR tags the version, creates a draft GitHub release and stages the version on npm. Then a maintainer approves the version with 2FA in the Staged Packages tab on npmjs.com (`npm stage approve <stage-id>` also works), and after that publishes the draft release on GitHub, so GitHub never shows a version that npm doesn't have. A GitHub App opens the Release PR, so the required checks run on it.
 - **Attribution:** no `Co-Authored-By` or "Generated with Claude Code" in commits and PRs.
 - **Draft before creating:** show the full text of any issue and only create it after approval. Pull requests are opened directly; say when one is open, with its link. They are reviewed on GitHub before merge.
+- **PR description:** follows `.github/PULL_REQUEST_TEMPLATE.md` (Summary, Changes, How it was tested, Dependencies when any changed, Checklist, `Closes #`). `gh pr create --body`/`--body-file` skips it, so fill in the template in the body file.
 - **Dependencies:** every PR that adds or updates a dependency gets a supply chain check in its review (new packages in the lockfile, install scripts, `npm audit signatures`, publish dates, `npm audit`).
 
 ## Issues and board

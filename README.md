@@ -66,6 +66,7 @@ Kami follows GitHub flow ([decision 003](docs/decisions/003-branching-workflow.m
 
 - `main` is the only long-lived branch. Each change goes in a branch named `<type>/<issue>-kebab-case-name` and is opened as a pull request into `main`.
 - The pull request title follows [Conventional Commits](https://www.conventionalcommits.org/). Pull requests are squash-merged, so the title becomes the commit on `main`.
+- The pull request description follows the [template](.github/PULL_REQUEST_TEMPLATE.md), which GitHub fills in when the pull request is opened: summary, changes, how it was tested, dependencies (when any changed), a checklist and the issue it closes.
 - [release-please](https://github.com/googleapis/release-please) keeps a Release PR open with the next version and its changelog ([decision 004](docs/decisions/004-release-flow.md)). Each merge updates it when the commit calls for a release: `fix` and `perf` add a patch, `feat` a minor, and `!` or a `BREAKING CHANGE` footer a major. `chore`, `docs`, `test`, `ci` and `refactor` add nothing.
 - Merging the Release PR tags the version, creates a draft GitHub release and stages the package on npm. A maintainer approves it with 2FA on npmjs.com, which puts the version live, and then publishes the draft release on GitHub.
 
