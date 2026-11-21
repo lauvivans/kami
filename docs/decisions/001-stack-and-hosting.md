@@ -30,4 +30,4 @@ What is Kami built with, how does it reach the people who use it, and where does
 - Anything the library exports is public API. Removing or renaming an export, a prop or a CSS class used by portfolios is a breaking change and needs a major version.
 - The template depends on the published package, so a change in the library reaches the template only after a release.
 - The template has its own `package.json` and lockfile, kept up to date separately from the root (#68).
-- The automated deploy of the site is in [#58](https://github.com/lauvivans/kami/issues/58): each pull request gets a Cloudflare Pages preview, and `main` releases the package and deploys production (decision 003).
+- The site deploys through the Cloudflare Pages git integration ([#58](https://github.com/lauvivans/kami/issues/58)): each pull request gets a preview, and a push to `main` deploys production. The release workflow runs the CI and then semantic-release, so the repository needs no Cloudflare secrets (decision 003).
