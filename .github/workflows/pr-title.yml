@@ -1,6 +1,6 @@
 name: PR title
 
-# The squash commit takes the PR title, and semantic-release reads it to pick
+# The squash commit takes the PR title, and release-please reads it to pick
 # the version, so the title must follow Conventional Commits.
 on:
   pull_request:

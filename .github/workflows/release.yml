@@ -6,30 +6,64 @@ on:
       - main
 
 permissions:
-  contents: write
-  issues: write
-  pull-requests: write
+  contents: read
 
 # Cloudflare Pages deploys production from main through its git integration,
-# so this workflow only checks and releases the package.
+# so this workflow only checks and releases the package (decision 004).
 jobs:
   ci:
     uses: ./.github/workflows/ci.yml
 
-  release:
+  # Opens or updates the Release PR with the next version and its changelog.
+  # When the merged commit is the Release PR itself, it tags the version and
+  # creates the GitHub release instead.
+  release-please:
     needs: ci
     runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+    steps:
+      # PRs opened with GITHUB_TOKEN don't start workflows, so the Release PR
+      # would never get the required checks. A GitHub App token avoids that.
+      - name: Create a GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: Run release-please
+        id: release
+        uses: googleapis/release-please-action@v5
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  publish:
+    needs: release-please
+    if: needs.release-please.outputs.release_created == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # npm trusted publishing (OIDC), which also adds provenance
     steps:
       - name: Checkout
         uses: actions/checkout@v7
         with:
-          fetch-depth: 0
           persist-credentials: false
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
+          registry-url: https://registry.npmjs.org
+
+      # Staged publishing needs npm 11.15.0 or later, and Node 22 ships npm 10.
+      - name: Update npm
+        run: npm install -g npm@11.21.2
 
       - name: Install dependencies
         run: npm ci
@@ -40,8 +74,7 @@ jobs:
       - name: Check package contents
         run: npm pack --dry-run 2>&1 | grep -q "template/gitignore"
 
-      - name: Release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: npx semantic-release
+      # The trusted publisher on npm only accepts staged publishes. The version
+      # goes live after a maintainer approves it with 2FA on npmjs.com.
+      - name: Stage the release on npm
+        run: npm stage publish

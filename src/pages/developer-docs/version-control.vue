@@ -18,7 +18,7 @@ feat!: remove the old API      # → 2.0.0`;
   <Text
     >Kami follows <Link href="https://semver.org/">Semantic Versioning</Link>.
     The version is picked by
-    <Link href="https://semantic-release.gitbook.io/">semantic-release</Link>
+    <Link href="https://github.com/googleapis/release-please">release-please</Link>
     from the
     <Link href="https://www.conventionalcommits.org/">Conventional Commits</Link>
     merged into <Code inline>main</Code>.</Text
@@ -61,7 +61,7 @@ feat!: remove the old API      # → 2.0.0`;
   <Heading :level="3">Example</Heading>
   <Code lang="bash">{{ example }}</Code>
   <Text
-    >semantic-release reads every commit since the last release and applies
+    >release-please reads every commit since the last release and applies
     the largest bump it finds.</Text
   >
 </template>

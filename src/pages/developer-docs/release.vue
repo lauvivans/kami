@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Text, Heading, BulletList, BulletItem, Callout, Code } from "@core/index.ts";
 
-const flow = `feature branch ──squash──▶ main ──▶ semantic-release ──▶ npm + GitHub release`;
+const flow = `feature branch ──squash──▶ main ──▶ Release PR ──merge──▶ npm + GitHub release`;
 </script>
 
 <template>
@@ -22,7 +22,12 @@ const flow = `feature branch ──squash──▶ main ──▶ semantic-relea
       <Code inline>refactor</Code> don't release.</BulletItem
     >
     <BulletItem
-      >Release notes are on the GitHub releases page. Every PR gets a Cloudflare
+      >Merges don't publish on their own. They add to the open Release PR, which
+      shows the next version and its changelog. Merging it is the release.</BulletItem
+    >
+    <BulletItem
+      >Release notes are in <Code inline>CHANGELOG.md</Code> and on the GitHub
+      releases page. Every PR gets a Cloudflare
       Pages preview of this site.</BulletItem
     >
   </BulletList>
@@ -35,8 +40,12 @@ const flow = `feature branch ──squash──▶ main ──▶ semantic-relea
     >
     <BulletItem
       ><Code inline>release.yml</Code> runs on every push to <Code inline>main</Code>: it
-      builds the package, checks its contents and runs semantic-release,
-      which publishes to npm and creates the GitHub release.</BulletItem
+      runs the CI and then release-please, which opens or updates the Release PR.
+      When the merged commit is the Release PR, it tags the version, creates
+      the GitHub release, builds the package, checks its contents and stages
+      it on npm with trusted publishing, so the repository keeps no npm token.
+      The version goes live after a maintainer approves it with 2FA in the
+      Staged Packages tab on npmjs.com.</BulletItem
     >
   </BulletList>
 
