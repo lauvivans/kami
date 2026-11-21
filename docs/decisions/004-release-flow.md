@@ -13,7 +13,7 @@ Should Kami stop publishing a version on every `fix`/`feat` merge and batch chan
 
 - **Batch releases in a Release PR, opened by release-please** ([`googleapis/release-please-action`](https://github.com/googleapis/release-please-action)). It keeps one open pull request with the next version and its changelog, and updates it on every merge into `main`. Merging that pull request tags the version and creates the GitHub release.
 - **The Conventional Commits rules stay.** release-please reads the same squash commits that semantic-release reads today. PR titles, the `pr-title.yml` check and the version rules (`fix`/`perf` patch, `feat` minor, `!` major) don't change.
-- **npm publishing stays in `release.yml`.** A publish step runs `npm stage publish` with trusted publishing (#104) only when release-please reports a release. The trusted publisher only accepts staged publishes, so a maintainer approves each version with 2FA on npmjs.com before it goes live. The workflow keeps its file name, so the trusted publisher configured on npm keeps matching.
+- **npm publishing stays in `release.yml`.** A publish step runs `npm stage publish` with trusted publishing (#104) only when release-please reports a release. The trusted publisher only accepts staged publishes, so a maintainer approves each version with 2FA on npmjs.com before it goes live. The GitHub release is created as a draft (with `force-tag-creation`, so the tag exists right away and release-please finds the previous version) and is published by hand after the npm approval (#140). The workflow keeps its file name, so the trusted publisher configured on npm keeps matching.
 - **The Release PR is opened with a GitHub App token**, so the required checks run on it.
 - **semantic-release is removed.**
 
