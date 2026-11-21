@@ -1,7 +1,12 @@
 import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
-const source = readFileSync("packages/core/assets/scss/_var.scss", "utf8");
+const source = readFileSync(
+  // import.meta.url is not a file: URL under happy-dom, so resolve from the directory.
+  resolve(import.meta.dirname, "../packages/core/assets/scss/_var.scss"),
+  "utf8"
+);
 
 // WCAG 2.2 AA contrast of the theme colors, read from the tokens in _var.scss.
 // The pairs follow _theme.scss (dark, latte, mocha) and the base styles (light).

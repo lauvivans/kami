@@ -172,6 +172,17 @@ describe("modal", () => {
     expect(document.activeElement).toBe(opener);
   });
 
+  it("cleans up a modal that unmounts while open", async () => {
+    await openSettings();
+    wrapper!.unmount();
+    wrapper = undefined;
+    expect(document.body.style.pointerEvents).toBe("auto");
+
+    const { overlay } = await openSettings();
+    press("Escape");
+    expect(overlay.style.display).toBe("none");
+  });
+
   it("closes only the innermost modal with Esc", async () => {
     const aside = mountAttached(Aside, { metadata });
     aside.get<HTMLElement>("#settings-btn").element.click();

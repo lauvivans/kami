@@ -146,12 +146,14 @@ onBeforeUnmount(() => {
     border-right: 1px solid $black-1;
     color: $black-6;
 
+    // Written out: an @extend %ellipsis would come before `all: unset` and be wiped.
     .tabs__name {
       all: unset;
       flex: 1;
       min-width: 0;
-
-      @extend %ellipsis;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
 
     @media (max-width: $screen-small) {

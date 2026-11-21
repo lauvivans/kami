@@ -1,5 +1,5 @@
 import { useStore } from "@core/store";
-import { provide, ref } from "vue";
+import { onBeforeUnmount, provide, ref } from "vue";
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])';
@@ -15,6 +15,11 @@ export default function useModal({ provideName }: { provideName: string }) {
   const store = useStore;
 
   provide(provideName, modalRef);
+
+  // A modal removed while open (e.g. browser Back) must not leave the page blocked.
+  onBeforeUnmount(() => {
+    if (openModals.includes(hideModal)) hideModal();
+  });
 
   function hideModal() {
     if (modalRef.value) {
