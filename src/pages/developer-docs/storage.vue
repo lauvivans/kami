@@ -82,7 +82,8 @@ const pageInfo = `{
     <Code inline>storeTabs</Code> and so on) and a getter to read it.</Text
   >
   <Text
-    >Pinia is bundled into the package. A portfolio reads the store through
+    >Pinia is a peer dependency of the package, so a portfolio installs it
+    next to Kami. A portfolio reads the store through
     <Code inline>useStore</Code> and installs <Code inline>piniaInstance</Code> in its
     app.</Text
   >

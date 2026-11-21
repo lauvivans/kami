@@ -11,7 +11,7 @@ What is Kami built with, how does it reach the people who use it, and where does
 ## Short answer
 
 - **Vue 3 + Vite in library mode.** The library is written in TypeScript with Vue single-file components and Sass, and built into ES modules, type declarations and one CSS file.
-- **Distributed as an npm package.** `vue` and `vue-router` stay out of the bundle, so the portfolio and the library share one copy of each. Pinia is bundled into the package, and a portfolio reads the store through `useStore`.
+- **Distributed as an npm package.** `vue`, `vue-router` and `pinia` stay out of the bundle, so the portfolio and the library share one copy of each. A portfolio reads the store through `useStore` (see decision 005).
 - **A CLI creates new portfolios.** `create-kami` copies `template/`, installs its dependencies and then installs the library.
 - **Releases with semantic-release.** A merge into `main` runs the release workflow, which reads the Conventional Commits, bumps the version, writes `CHANGELOG.md`, publishes to npm and creates the GitHub release.
 - **The documentation site and the demo run on Cloudflare Pages, at kami.arualvivan.com.** The site is the app in `src/`, built with Kami itself. The demo is a section of the same site (`/demo`), so both share one build, one sidebar and one set of tabs. It is a static build, so it needs no server.
