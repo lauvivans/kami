@@ -73,17 +73,17 @@ const handleCrumb = (page: PageInfo) => {
   display: flex;
   align-items: center;
   min-width: 0;
+  overflow: hidden;
 
-  // Earlier crumbs shrink first; the current page shrinks only once it alone fills the breadcrumb
+  // Earlier crumbs shrink first down to their minimum, then the current page shrinks
   &__crumb {
     display: flex;
     align-items: center;
     min-width: 0;
-    overflow: hidden;
 
-    &:last-child {
-      flex-shrink: 0;
-      max-width: 100%;
+    &:not(:last-child) {
+      flex-shrink: 1000;
+      min-width: $breadcrumb-crumb-min-width;
     }
 
     > div {
