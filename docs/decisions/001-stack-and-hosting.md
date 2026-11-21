@@ -2,7 +2,7 @@
 
 - **Date:** 2026-11-07
 - **Origin:** maintenance plan for the rename to Kami ([#53](https://github.com/lauvivans/kami/issues/53), [#58](https://github.com/lauvivans/kami/issues/58))
-- **Status:** accepted
+- **Status:** accepted, release parts superseded by [004](004-release-flow.md)
 
 ## Question
 
