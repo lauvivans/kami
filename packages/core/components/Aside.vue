@@ -125,14 +125,13 @@ watch(navClasses, (currentClass) => {
 
 const isMobile = useIsMobile();
 
-// On small screens the open sidebar covers the page, so close it after navigation.
+// On small screens the open or floating sidebar covers the page, so close it after navigation.
 watch(
   () => store.activePage,
   () => {
-    if (isMobile.value && navClick.value) {
-      toggleNavState();
-      navHover.value = false;
-    }
+    if (!isMobile.value) return;
+    if (navClick.value) toggleNavState();
+    navHover.value = false;
   }
 );
 

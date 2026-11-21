@@ -18,17 +18,19 @@ const page: PageInfo = {
   component: {},
 };
 
-function mountOpenAside(mobile: boolean) {
+function mountAside(mobile: boolean, open: boolean) {
   vi.spyOn(window, "matchMedia").mockReturnValue({
     matches: mobile,
     addEventListener: () => {},
     removeEventListener: () => {},
   } as unknown as MediaQueryList);
-  localStorage.setItem("kami-aside", "true");
+  localStorage.setItem("kami-aside", String(open));
   store.$reset();
-  store.storeIsAsideOpen(true);
+  store.storeIsAsideOpen(open);
   return shallowMount(Aside, { props: { metadata } });
 }
+
+const mountOpenAside = (mobile: boolean) => mountAside(mobile, true);
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -41,6 +43,16 @@ describe("Aside after navigation", () => {
     store.storeActivePage(page);
     await nextTick();
     expect(store.isAsideOpen).toBe(false);
+    wrapper.unmount();
+  });
+
+  it("closes the floating sidebar on mobile", async () => {
+    const wrapper = mountAside(true, false);
+    await wrapper.find(".nav-wrapper").trigger("mouseenter");
+    expect(wrapper.find("nav").classes()).toContain("nav-hover");
+    store.storeActivePage(page);
+    await nextTick();
+    expect(wrapper.find("nav").classes()).not.toContain("nav-hover");
     wrapper.unmount();
   });
 
