@@ -2,7 +2,7 @@
 
 - **Date:** 2026-11-20
 - **Origin:** spike [#87](https://github.com/lauvivans/kami/issues/87), after the Dependabot setup in [#57](https://github.com/lauvivans/kami/issues/57)
-- **Status:** accepted
+- **Status:** accepted, release parts superseded by [004](004-release-flow.md)
 
 ## Question
 
