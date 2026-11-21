@@ -1,10 +1,11 @@
 <script setup lang="ts">
-const props = defineProps<{ src: string }>();
+// Without `alt` the image is treated as decorative.
+const props = defineProps<{ src: string; alt?: string }>();
 </script>
 
 <template>
   <div class="img-wrapper">
-    <img :src="props.src" />
+    <img :src="props.src" :alt="props.alt ?? ''" />
   </div>
 </template>
 

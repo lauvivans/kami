@@ -57,7 +57,7 @@ const code = {
 <LinkMention :page="metadata.pages['coffee-shop']" emoji="☕" />
 <LinkMention href="https://github.com/lauvivans/kami" emoji="🐙" />
 <Bookmark title="Kami" subtitle="Source code" link="https://github.com/lauvivans/kami" />`,
-  image: `<Image src="/banners/page-example.webp" />`,
+  image: `<Image src="/banners/page-example.webp" alt="Example banner" />`,
   others: `<Divider />
 <Empty />
 <Loader />`,
@@ -133,7 +133,7 @@ console.log(greeting);`;
   <Code lang="vue">{{ code.links }}</Code>
 
   <Heading :level="3">Image</Heading>
-  <Image src="/banners/page-example.webp" />
+  <Image src="/banners/page-example.webp" alt="Example banner" />
   <Code lang="vue">{{ code.image }}</Code>
 
   <Heading :level="3">Divider, empty space and loader</Heading>

@@ -30,15 +30,23 @@ onMounted(() => {
 
 <template>
   <div class="toggle-list">
-    <table class="details">
+    <!-- The table only lays out the icon column, so it is not a data table. -->
+    <table class="details" role="presentation">
       <thead>
         <tr class="details__summary">
-          <th class="details__summary--icon">
-            <Icon :icon="icon" @click.prevent.stop="toToggle" />
-          </th>
-          <th class="details__summary--content">
+          <td class="details__summary--icon">
+            <button
+              type="button"
+              :aria-expanded="icon === props.iconToClose"
+              :aria-label="icon === props.iconToClose ? 'Collapse' : 'Expand'"
+              @click.prevent.stop="toToggle"
+            >
+              <Icon :icon="icon" />
+            </button>
+          </td>
+          <td class="details__summary--content">
             <slot name="summaryContent" ref="summaryContentRef" />
-          </th>
+          </td>
         </tr>
       </thead>
 
@@ -77,9 +85,11 @@ th {
       width: 10%;
       padding: 4px;
 
-      > div {
+      > button {
         @extend %button;
+      }
 
+      > button > div {
         font-size: $fs-medium + 0.1rem;
         color: $black;
       }

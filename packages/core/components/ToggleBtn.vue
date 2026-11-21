@@ -15,7 +15,14 @@ defineExpose({
 </script>
 
 <template>
-  <div class="toggle" @click="props.toToggle">
+  <div
+    class="toggle"
+    role="switch"
+    tabindex="0"
+    :aria-checked="props.active"
+    @click="props.toToggle"
+    @keydown.enter.space.prevent="props.toToggle"
+  >
     <slot></slot>
     <div
       class="toggle-btn"

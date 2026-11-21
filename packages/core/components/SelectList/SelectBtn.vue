@@ -29,7 +29,9 @@ function optionClicked(option: string) {
 <template>
   <div>
     <div class="select-btn" @click="showModal">
-      <button>{{ props.optionSelected }}</button>
+      <button type="button" aria-haspopup="listbox">
+        {{ props.optionSelected }}
+      </button>
       <Icon :icon="Icons.arrowDown" />
     </div>
 
@@ -39,6 +41,7 @@ function optionClicked(option: string) {
       :modalStyles="{ top: '10px', right: '110px' }"
       :hideModal="hideModal"
       :addModalListener="addModalListener"
+      label="Options"
     >
       <div class="theme-options">
         <OptionList

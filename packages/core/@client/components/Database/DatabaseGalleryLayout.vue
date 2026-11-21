@@ -58,11 +58,17 @@ function handleCard(page: PageInfo) {
         class="gallery__card-wrapper"
         v-for="page in pages"
         :key="page.id"
+        role="button"
+        tabindex="0"
+        :aria-label="page.title"
         @click.stop="handleCard(page)"
+        @keydown.enter.space.prevent="handleCard(page)"
         @touchstart.stop="handleCard(page)"
       >
+        <!-- The preview repeats the page; inert keeps its links out of the tab order. -->
         <div
           class="gallery__card-content"
+          inert
           :style="!props.cardPreviewIsCover ? { padding: '15px 13px 0px' } : ''"
         >
           <component
@@ -73,13 +79,14 @@ function handleCard(page: PageInfo) {
             :hideDatabase="true"
           />
           <div v-else class="gallery__card-content--banner">
-            <img v-if="page.banner" :src="page.banner.path" />
+            <img v-if="page.banner" alt="" :src="page.banner.path" />
           </div>
         </div>
         <div class="gallery__card-footer">
           <img
             class="gallery__page-icon"
             v-if="page.icon"
+            alt=""
             :src="page.icon.path"
           />
           <div>{{ page.title }}</div>

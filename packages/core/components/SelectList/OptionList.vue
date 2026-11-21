@@ -18,12 +18,16 @@ const toSelect = (option: string) => {
 
 <template>
   <div class="option">
-    <ul class="option__list">
+    <ul class="option__list" role="listbox" aria-label="Options">
       <li
         class="option__item"
         v-for="op of props.options"
         :key="op[0]"
+        role="option"
+        tabindex="0"
+        :aria-selected="op[0] == props.optionSelected"
         @click="toSelect(op[0])"
+        @keydown.enter.space.prevent="toSelect(op[0])"
       >
         <div>{{ op[1] }}</div>
         <div

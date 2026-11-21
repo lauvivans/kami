@@ -7,7 +7,7 @@ const { page } = defineProps<{ page: PageInfo }>();
 <template>
   <div class="page-title">
     <div class="page-title__img-wrapper">
-      <img v-if="page.icon" :src="page.icon.path" /><a
+      <img v-if="page.icon" alt="" :src="page.icon.path" /><a
         v-if="page.icon?.link && page.icon?.author"
         target="_blank"
         :href="page.icon.link"

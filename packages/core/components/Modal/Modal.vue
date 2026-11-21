@@ -7,6 +7,7 @@ const props = defineProps<{
   provideName: string;
   isStatic?: boolean;
   modalStyles?: {};
+  label?: string;
 }>();
 
 const modalRef = inject<Ref<HTMLDivElement>>(props.provideName);
@@ -27,6 +28,9 @@ onMounted(() => {
       class="modal"
       :class="props.isStatic ? 'modal-static' : 'modal-dynamic'"
       :style="props.modalStyles"
+      :aria-label="props.label"
+      :aria-modal="props.isStatic ? 'true' : undefined"
+      tabindex="-1"
     >
       <slot></slot>
     </dialog>

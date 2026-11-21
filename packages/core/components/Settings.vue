@@ -27,6 +27,12 @@ const fontFamilyEntries = Object.entries(FontFamily) as [
   string,
 ][];
 
+function isActiveFont(key: keyof typeof FontFamily) {
+  const fontFamily =
+    store.getDynamicPageInfo[props.pageId]?.settings.fontFamily;
+  return fontFamily ? fontFamily === key : key === "font-roboto";
+}
+
 const { active: activeFontSize, toToggle: toToggleFontSize } = useToggle({
   provideName: FONT_SIZE_PROVIDE_NAME,
   isActive:
@@ -61,6 +67,7 @@ watch(activeFontSize, (newFontSize) => {
     :hideModal="props.hideSettingsModal"
     :addModalListener="props.addSettingsModalListener"
     :modalStyles="props.modalStyles"
+    label="Page settings"
   >
     <div class="modal-settings__style">
       <span>Style</span>
@@ -69,14 +76,14 @@ watch(activeFontSize, (newFontSize) => {
           v-for="[key, value] in fontFamilyEntries"
           :key="key"
           class="modal-settings__font-wrapper"
+          role="button"
+          tabindex="0"
+          :aria-pressed="isActiveFont(key)"
           @click="store.storeDynamicPageInfo({ fontFamily: key })"
-          :class="{
-            'modal-settings__font-wrapper--active':
-              (!store.getDynamicPageInfo[props.pageId]?.settings.fontFamily &&
-                key === 'font-roboto') ||
-              store.getDynamicPageInfo[props.pageId]?.settings.fontFamily ===
-                key,
-          }"
+          @keydown.enter.space.prevent="
+            store.storeDynamicPageInfo({ fontFamily: key })
+          "
+          :class="{ 'modal-settings__font-wrapper--active': isActiveFont(key) }"
         >
           <span class="modal-settings__ag">Ag</span>
           <span class="modal-settings__font-name">{{ value }}</span>
