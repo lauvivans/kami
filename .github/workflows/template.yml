@@ -2,18 +2,11 @@ name: Template
 
 # Builds the project the CLI creates, with the package built from this PR, so a
 # change that breaks a new portfolio fails here instead of in `create-kami`.
+# It runs on every pull request so it can be a required check, and skips the
+# build when the PR doesn't touch the paths below.
 on:
   pull_request:
     branches: [main]
-    paths:
-      - "template/**"
-      - "bin/**"
-      - "packages/core/**"
-      # The packed package also depends on the root build setup.
-      - "package.json"
-      - "package-lock.json"
-      - "vite.config.package.ts"
-      - ".github/workflows/template.yml"
 
 permissions:
   contents: read
@@ -28,10 +21,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # The PR merge commit and its first parent (the base branch).
       - name: Checkout repository
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 2
+
+      # The packed package also depends on the root build setup.
+      - name: Check if the PR touches the template or the package
+        id: changes
+        run: |
+          if git diff --quiet HEAD^1 HEAD -- \
+            template bin packages/core \
+            package.json package-lock.json vite.config.package.ts \
+            .github/workflows/template.yml; then
+            echo "No template or package changes, skipping the build."
+            echo "build=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "build=true" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Set up Node.js
+        if: steps.changes.outputs.build == 'true'
         uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
@@ -41,6 +52,7 @@ jobs:
             template/package-lock.json
 
       - name: Build and pack the package
+        if: steps.changes.outputs.build == 'true'
         run: |
           npm ci --no-audit --no-fund
           npm run build:pkg
@@ -49,11 +61,13 @@ jobs:
       # Installs the packed tarball the way a user gets it from npm, where the
       # package's own prepare script (husky) does not run.
       - name: Install the template
+        if: steps.changes.outputs.build == 'true'
         working-directory: template
         run: |
           npm ci --no-audit --no-fund
           npm install --no-save --ignore-scripts --no-audit --no-fund "$RUNNER_TEMP"/lauvivans-kami-*.tgz
 
       - name: Type check and build the template
+        if: steps.changes.outputs.build == 'true'
         working-directory: template
         run: npm run build
