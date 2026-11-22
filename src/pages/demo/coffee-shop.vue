@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Text, Heading, ToDoList, Bookmark } from "@core/index.ts";
+import { Text, Heading, ToDoList, Bookmark, LinkMention } from "@core/index.ts";
+import metadata from "@/metadata";
 import type { PageInfo } from "@core/index.ts";
 
 // The database gallery renders this page in its cards and passes these.
@@ -19,6 +20,8 @@ defineProps<{ page?: PageInfo; hideDatabase?: boolean }>();
       { name: 'Events calendar', isChecked: false },
     ]"
   />
+  <Heading :level="3">Pages</Heading>
+  <LinkMention :page="metadata.pages['coffee-menu']" emoji="📋" />
   <Heading :level="3">Links</Heading>
   <Bookmark title="Vue.js" subtitle="The framework used to build it" link="https://vuejs.org/" />
 </template>

@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import type { IMetadata, PageInfo } from "@core/@types";
 import { useStore } from "@core/store";
-import { computed } from "vue";
+import Dropdown from "@core/components/Dropdown.vue";
+import { computed, ref, shallowRef, watch } from "vue";
+
+// Two root nodes (breadcrumb + dropdown), so attributes from the parent go to the breadcrumb
+defineOptions({ inheritAttrs: false });
 
 const props = defineProps<{ metadata: IMetadata }>();
 
@@ -36,20 +40,56 @@ const breadcrumbs = computed(() => {
   return [];
 });
 
+// Like Notion: past 3 levels, show the first and the last two pages and move the rest into a menu
+const hiddenCrumbs = computed(() =>
+  breadcrumbs.value.length > 3 ? breadcrumbs.value.slice(1, -2) : []
+);
+
+const shownCrumbs = computed(() =>
+  hiddenCrumbs.value.length
+    ? [breadcrumbs.value[0], null, ...breadcrumbs.value.slice(-2)]
+    : breadcrumbs.value
+);
+
+const menuOpen = ref(false);
+// The "…" button; a template ref inside v-for would be an array
+const moreButton = shallowRef<HTMLElement | null>(null);
+
+function toggleMenu(e: MouseEvent) {
+  moreButton.value = e.currentTarget as HTMLElement;
+  menuOpen.value = !menuOpen.value;
+}
+
+// Another page has other hidden crumbs
+watch(hiddenCrumbs, () => (menuOpen.value = false));
+
 const handleCrumb = (page: PageInfo) => {
   store.storeUpdateTabs(page);
+  menuOpen.value = false;
 };
 </script>
 
 <template>
-  <div class="breadcrumb">
+  <div class="breadcrumb" v-bind="$attrs">
     <div
       class="breadcrumb__crumb"
-      v-for="(page, index) in breadcrumbs"
-      :key="page.id"
+      :class="{ 'breadcrumb__crumb--more': !page }"
+      v-for="(page, index) in shownCrumbs"
+      :key="page?.id ?? 'more'"
     >
+      <button
+        v-if="!page"
+        class="breadcrumb__page"
+        type="button"
+        aria-label="Show hidden pages"
+        aria-haspopup="menu"
+        :aria-expanded="menuOpen"
+        @click="toggleMenu"
+      >
+        <div>…</div>
+      </button>
       <router-link
-        v-if="page.path"
+        v-else-if="page.path"
         class="breadcrumb__page"
         :to="page.path"
         @click="handleCrumb(page)"
@@ -63,15 +103,39 @@ const handleCrumb = (page: PageInfo) => {
           <span :title="page.title">{{ page.title }}</span>
         </div>
       </router-link>
-      <div v-if="index !== breadcrumbs.length - 1">/</div>
+      <div v-if="index !== shownCrumbs.length - 1">/</div>
     </div>
   </div>
+  <Dropdown v-model:open="menuOpen" :anchor="moreButton">
+    <nav class="breadcrumb__menu" aria-label="Hidden pages">
+      <router-link
+        v-for="page in hiddenCrumbs"
+        :key="page.id"
+        class="breadcrumb__page"
+        :to="page.path"
+        @click="handleCrumb(page)"
+      >
+        <div>
+          <img
+            v-if="page.icon"
+            style="max-width: 1.1rem; height: auto"
+            :src="page.icon.path"
+          />
+          <span :title="page.title">{{ page.title }}</span>
+        </div>
+      </router-link>
+    </nav>
+  </Dropdown>
 </template>
 
 <style lang="scss">
 .breadcrumb {
   display: flex;
   align-items: center;
+
+  // Takes the free header space instead of sizing by its crumbs, whose
+  // `width` below is only a shrink floor and would make it too narrow.
+  flex: 1 1 0;
   min-width: 0;
   overflow: hidden;
 
@@ -81,14 +145,27 @@ const handleCrumb = (page: PageInfo) => {
     align-items: center;
     min-width: 0;
 
+    // Sized by content; the automatic minimum is then the smaller of the
+    // content and `width`, so a short title like "Menu" leaves no gap.
     &:not(:last-child) {
-      flex-shrink: 1000;
-      min-width: $breadcrumb-crumb-min-width;
+      flex: 0 1000 content;
+      width: $breadcrumb-crumb-min-width;
+      min-width: auto;
+    }
+
+    // "…" is already short, so it keeps its own width
+    &--more:not(:last-child) {
+      flex-shrink: 0;
+      min-width: 0;
     }
 
     > div {
       flex-shrink: 0;
     }
+  }
+
+  &__menu {
+    @include flex-layout;
   }
 
   &__page {
