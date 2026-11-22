@@ -18,37 +18,39 @@ const { page } = defineProps<{ page: PageInfo }>();
 </template>
 
 <style lang="scss">
+// A centered reading column in normal flow, below the banner.
 .page-content {
   // minmax(0, 1fr) keeps a wide block from stretching the column past the page.
   @include grid-layout(minmax(0, 1fr));
 
-  position: absolute;
-  top: $space-10;
-  left: 50%;
-  transform: translate(-50%, 0%);
-  z-index: $z-raised;
-  width: 50%;
   row-gap: $space-4;
+  max-width: calc($page-width + 2 * $page-gutter);
+  margin: 0 auto;
+  padding: $space-9 $page-gutter 0;
+
+  // The icon overlaps the banner, so the column starts right below it.
+  &--banner {
+    padding-top: 0;
+  }
 
   // room below the last block
   &__end {
-    height: calc($space-10 * 2);
+    height: $space-10;
   }
+}
 
-  &--icon {
-    top: calc($space-10 + $icon-size-mobile);
-  }
+.page-content--banner:not(.page-content--icon) {
+  padding-top: $space-8;
 }
 
 .page-full-width .page-content {
-  padding: 0 $space-9 !important;
-  width: 100% !important;
+  max-width: none;
 }
 
-@media (max-width: $screen-xs) {
-  .page-wrapper .page-content {
-    width: 100% !important;
-    padding: 0 $page-gutter-mobile !important;
+@media (max-width: $screen-small) {
+  .page-content {
+    padding-left: $page-gutter-mobile;
+    padding-right: $page-gutter-mobile;
   }
 }
 </style>

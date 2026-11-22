@@ -20,8 +20,11 @@ const { page } = defineProps<{ page: PageInfo }>();
 .page-banner {
   width: 100%;
   height: $banner-height;
-  max-height: $banner-height;
   position: relative;
+
+  @media (max-width: $screen-small) {
+    height: $banner-height-mobile;
+  }
 
   a {
     all: unset;
