@@ -295,11 +295,29 @@ describe("Database load limit", () => {
     wrapper.unmount();
   });
 
-  it("shows every page and no button without loadLimit", () => {
-    const wrapper = mountDatabase({ loadLimit: undefined });
+  it.each([undefined, 0, -2])(
+    "shows every page and no button with loadLimit %s",
+    (loadLimit) => {
+      const wrapper = mountDatabase({ loadLimit });
 
-    expect(titles(wrapper)).toHaveLength(5);
-    expect(loadMore(wrapper).exists()).toBe(false);
+      expect(titles(wrapper)).toHaveLength(5);
+      expect(loadMore(wrapper).exists()).toBe(false);
+      wrapper.unmount();
+    }
+  );
+
+  it("moves focus to the first new card in the gallery", async () => {
+    const wrapper = mountDatabase({
+      layout: "gallery",
+      cardPreviewIsCover: true,
+    });
+    const cards = () => wrapper.findAll(".gallery__card-wrapper");
+
+    expect(cards()).toHaveLength(2);
+    await loadMore(wrapper).trigger("click");
+    await nextTick();
+    expect(cards()).toHaveLength(4);
+    expect(document.activeElement).toBe(cards()[2]!.element);
     wrapper.unmount();
   });
 

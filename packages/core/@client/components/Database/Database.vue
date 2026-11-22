@@ -45,16 +45,20 @@ const shownPages = computed(() =>
 );
 const properties = computed(() => propertyValues(props.pages));
 
-const shownCount = ref(props.loadLimit);
+// a zero or negative limit would hide pages, so it counts as no limit
+const limit = computed(() =>
+  props.loadLimit && props.loadLimit > 0 ? props.loadLimit : undefined
+);
+const shownCount = ref(limit.value);
 const limitedPages = computed(() =>
   shownPages.value.slice(0, shownCount.value)
 );
-watch([filter, sort, view], () => (shownCount.value = props.loadLimit));
+watch([filter, sort, view], () => (shownCount.value = limit.value));
 const viewRef = ref<HTMLElement | null>(null);
 
 async function loadMore() {
   const first = limitedPages.value.length;
-  shownCount.value = first + props.loadLimit!;
+  shownCount.value = first + limit.value!;
   await nextTick();
   viewRef.value
     ?.querySelectorAll<HTMLElement>(
