@@ -74,6 +74,12 @@ const handleNavigate = () => {
 
 <style lang="scss">
 .page-modal {
+  // The page wrapper shrinks to the modal's max height, so the end of a long page stays reachable.
+  .modal-static {
+    display: flex;
+    flex-direction: column;
+  }
+
   .page-wrapper {
     margin-top: 25px !important;
   }

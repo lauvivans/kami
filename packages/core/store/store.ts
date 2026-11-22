@@ -1,4 +1,4 @@
-import type { PageInfo } from "@core/@types";
+import type { PageInfo, PagesInfo } from "@core/@types";
 import { FontFamily, FontSize, PageSize, Theme } from "@core/enum";
 import {
   getActiveTab,
@@ -51,6 +51,13 @@ const useStore = defineStore("global", {
     },
     storeTabs(tabs: Tab[]) {
       this.tabs = tabs;
+    },
+    storeDropStaleTabs(pages: PagesInfo) {
+      const active = this.tabs[this.activeTab];
+      this.tabs = this.tabs.filter(
+        (tab) => pages[tab.pageId]?.path === tab.pagePath
+      );
+      this.activeTab = Math.max(0, active ? this.tabs.indexOf(active) : 0);
     },
     storeCurrentModalPageId(id: string) {
       this.currentModalPageId = id;

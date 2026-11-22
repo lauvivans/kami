@@ -31,7 +31,7 @@ What Kami offers and the rules it follows.
 ## Layout
 
 - **Sidebar (`Aside`):** the author, Search and Settings, then two groups of pages: Favorites and Private. Pages with sub-pages expand to show them. The sidebar can be pinned open or closed, and when closed it opens on hover. On screens up to `$screen-small` wide it closes after a page is picked.
-- **Tabs (`Tabs`):** like Notion Desktop. A visitor can open up to 10 tabs, switch between them and close them. The open tabs and the active one survive a reload.
+- **Tabs (`Tabs`):** like Notion Desktop. A visitor can open up to 10 tabs, switch between them and close them. The open tabs and the active one survive a reload. A restored tab whose page is no longer in the metadata is dropped.
 - **Header (`Header`):** the breadcrumb of the current page and a button that opens the page settings. On a page more than 3 levels deep, the breadcrumb shows the first page and the last two, with `…` in between; clicking `…` opens a menu with the hidden pages.
 - **Search:** the entry in the sidebar opens an empty modal. Search isn't built yet.
 

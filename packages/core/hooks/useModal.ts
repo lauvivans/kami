@@ -17,8 +17,7 @@ export default function useModal({ provideName }: { provideName: string }) {
 
       store.storeCurrentModalPageId("");
 
-      body.removeEventListener("click", handleGlobalClick);
-      body.removeEventListener("touchstart", handleGlobalClick);
+      modalRef.value.removeEventListener("click", handleGlobalClick);
     }
   }
 
@@ -35,7 +34,7 @@ export default function useModal({ provideName }: { provideName: string }) {
     }, 250);
   }
 
-  function handleGlobalClick(e: PointerEvent | TouchEvent) {
+  function handleGlobalClick(e: MouseEvent) {
     if (modalRef.value && modalRef.value) {
       const res = Array.from(modalRef.value.querySelectorAll("*")).some(
         (child) => child === e.target
@@ -50,8 +49,8 @@ export default function useModal({ provideName }: { provideName: string }) {
   }
 
   function addModalListener() {
-    body.addEventListener("click", handleGlobalClick);
-    body.addEventListener("touchstart", handleGlobalClick);
+    // On the overlay, not body: iOS Safari only sends click from a tap on an element with a listener.
+    modalRef.value?.addEventListener("click", handleGlobalClick);
   }
 
   return {
