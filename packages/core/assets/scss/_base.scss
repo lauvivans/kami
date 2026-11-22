@@ -34,12 +34,21 @@ body {
   }
 
   ::-webkit-scrollbar-track {
-    background-color: var.$bg-hover;
+    background-color: transparent;
   }
 
   ::-webkit-scrollbar-thumb {
-    border-radius: var.$radius-sm;
+    border-radius: var.$radius-pill;
     background-color: var.$bg-active;
+  }
+
+  // Firefox ignores ::-webkit-scrollbar. Only there, since Chromium drops the
+  // webkit rules above once the standard properties are set.
+  @supports not selector(::-webkit-scrollbar) {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var.$bg-active transparent;
+    }
   }
 
   ::selection {
