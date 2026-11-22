@@ -25,7 +25,7 @@ const to = computed(
       <Icon class="link__arrow" :icon="Icons.arrowLink" />
     </div>
     <span
-      ><slot>{{ props.page?.title }}</slot></span
+      ><slot>{{ props.page?.title ?? props.href }}</slot></span
     ></router-link
   >
   <a class="link" target="_blank" rel="noopener" :href="props.href" v-else>
@@ -33,7 +33,9 @@ const to = computed(
       {{ props.emoji }}
       <Icon class="link__arrow" :icon="Icons.arrowLink" />
     </div>
-    <span><slot></slot></span>
+    <span
+      ><slot>{{ props.href?.replace(/^https?:\/\//, "") }}</slot></span
+    >
   </a>
 </template>
 
