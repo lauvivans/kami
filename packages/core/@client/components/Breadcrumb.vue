@@ -104,7 +104,7 @@ const handleCrumb = (page: PageInfo) => {
         </div>
       </router-link>
       <div v-if="index !== shownCrumbs.length - 1" class="breadcrumb__sep">
-        /
+        &#47;
       </div>
     </div>
   </div>
