@@ -1,9 +1,18 @@
 <script setup lang="ts">
+import { computed } from "vue";
+
 const props = defineProps<{ href: string }>();
+// A path such as "/my-projects" is a portfolio page; "//host" is another site.
+const isPage = computed(() => /^\/(?!\/)/.test(props.href));
 </script>
 
 <template>
-  <a class="link" target="_blank" :href="props.href"><slot /></a>
+  <router-link v-if="isPage" class="link" :to="props.href"
+    ><slot
+  /></router-link>
+  <a v-else class="link" target="_blank" rel="noopener" :href="props.href"
+    ><slot
+  /></a>
 </template>
 
 <style lang="scss">
