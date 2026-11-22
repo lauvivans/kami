@@ -9,6 +9,7 @@ import { useStore } from "@core/store";
 import DatabaseGalleryLayout from "@core/components/Database/DatabaseGalleryLayout.vue";
 import DatabaseTableLayout from "@core/components/Database/DatabaseTableLayout.vue";
 import Dropdown from "@core/components/Dropdown.vue";
+import LoadMoreButton from "@core/components/LoadMoreButton.vue";
 import {
   propertyValues,
   viewPages,
@@ -201,14 +202,13 @@ function openPage(page: PageInfo) {
       />
       <DatabaseTableLayout v-else :pages="limitedPages" @open="openPage" />
     </div>
-    <button
+    <LoadMoreButton
       v-if="limitedPages.length < shownPages.length"
-      type="button"
       class="database-block__load-more"
       @click="loadMore"
     >
       {{ props.loadMoreLabel ?? "Load more" }}
-    </button>
+    </LoadMoreButton>
   </div>
   <Dropdown v-model:open="menuOpen" :anchor="anchorOf(menu)">
     <div ref="menuRef" class="database-menu">
@@ -386,28 +386,6 @@ function openPage(page: PageInfo) {
   &__title {
     font-weight: $fw-bold;
     font-size: $fs-h3;
-  }
-
-  // Notion's "Load more" row: the width of the view, muted until hovered
-  &__load-more {
-    all: unset;
-    box-sizing: border-box;
-    width: 100%;
-    height: $item-height;
-    margin-top: $space-4;
-    padding: 0 $space-4;
-    cursor: pointer;
-    font-size: $fs-sm;
-    color: $text-secondary;
-    border-radius: $radius-md;
-
-    &:hover {
-      background-color: $bg-hover;
-    }
-
-    &:focus-visible {
-      outline: $line-thick solid $accent;
-    }
   }
 }
 

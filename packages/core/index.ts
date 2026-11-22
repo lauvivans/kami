@@ -17,6 +17,7 @@ export {
   LinkMention,
   Loader,
   Quote,
+  ShowMore,
   Text,
   ToDoItem,
   ToDoList,
