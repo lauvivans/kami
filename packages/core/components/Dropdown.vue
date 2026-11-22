@@ -77,10 +77,22 @@ onBeforeUnmount(() => {
 </template>
 
 <style lang="scss">
-// Same look as the other menus (.modal-dynamic from Modal.vue), but fixed:
-// the anchor's position comes from the viewport.
-.dropdown.modal-dynamic {
+// .modal-dynamic: the class the themes in _theme.scss color.
+.modal-dynamic {
+  // Fixed: the anchor's position comes from the viewport.
   position: fixed;
+  z-index: 2500;
+  min-width: 200px;
+  padding: 6px;
+  box-shadow: $box-shadow-3;
+  background-color: $white;
+  border-radius: 6px;
+  outline: none;
+  animation: fade-in 0.4s ease-in-out;
+  animation-fill-mode: forwards;
+  width: auto;
+  height: auto;
+  max-height: fit-content;
 
   // A static modal sets pointer-events: none on body, and the menu is teleported there.
   pointer-events: auto;

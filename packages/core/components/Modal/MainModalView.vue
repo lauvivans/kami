@@ -28,7 +28,6 @@ const handleNavigate = () => {
     <Modal
       class="page-modal"
       :provideName="props.provideName"
-      :isStatic="true"
       :hideModal="props.hideMainModal"
       :addModalListener="props.addMainModalListener"
     >

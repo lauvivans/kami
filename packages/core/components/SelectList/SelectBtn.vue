@@ -7,8 +7,6 @@ import { Icons } from "@core/enum";
 
 const props = defineProps<{
   options: [string, string][];
-  // shortcut: unused since the list became a Dropdown; Aside still passes it, drop both once #162 (Aside.vue) is merged
-  menuProvideName?: string;
   optionSelected: string;
 }>();
 
