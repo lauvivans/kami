@@ -16,6 +16,7 @@ const props = defineProps<{ src: string }>();
 
   img {
     width: 100%;
+    border-radius: $radius-md;
   }
 }
 
@@ -52,6 +53,7 @@ const props = defineProps<{ src: string }>();
   img {
     width: auto;
     max-height: $icon-size-inline;
+    border-radius: 0;
   }
 }
 </style>

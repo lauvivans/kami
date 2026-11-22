@@ -32,10 +32,10 @@ function slotText(): string {
   font-size: $fs-code;
 
   &--inline {
-    padding: 0 $space-2;
+    padding: $space-1 $space-2;
     border-radius: $radius-sm;
     color: $code-inline;
-    background-color: $bg-block;
+    background-color: $bg-hover;
   }
 
   &--block {

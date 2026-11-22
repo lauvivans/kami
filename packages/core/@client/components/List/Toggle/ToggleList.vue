@@ -5,22 +5,15 @@ import Icon from "@core/@client/components/Icon.vue";
 import { Icons } from "@core/enum";
 
 const detailsContentRef = ref();
-const props = defineProps<{ iconToOpen: Icons; iconToClose: Icons }>();
+// The open icon rotates when the list opens; iconToClose is kept so
+// existing portfolios still type-check, and is no longer shown.
+const props = defineProps<{ iconToOpen: Icons; iconToClose?: Icons }>();
 const { toggleDisplay, setDisplayToNone } = useDisplay();
-const icon = ref(props.iconToOpen);
+const open = ref(false);
 
 const toToggle = () => {
   toggleDisplay(detailsContentRef);
-
-  const displayState = detailsContentRef.value
-    ? detailsContentRef.value.style.display
-    : null;
-
-  if (displayState === "block") {
-    icon.value = props.iconToClose;
-  } else {
-    icon.value = props.iconToOpen;
-  }
+  open.value = detailsContentRef.value?.style.display === "block";
 };
 
 onMounted(() => {
@@ -34,7 +27,11 @@ onMounted(() => {
       <thead>
         <tr class="details__summary">
           <th class="details__summary--icon">
-            <Icon :icon="icon" @click.prevent.stop="toToggle" />
+            <Icon
+              :class="{ 'details__chevron--open': open }"
+              :icon="props.iconToOpen"
+              @click.prevent.stop="toToggle"
+            />
           </th>
           <th class="details__summary--content">
             <slot name="summaryContent" ref="summaryContentRef" />
@@ -82,6 +79,7 @@ th {
 
         font-size: $fs-md;
         color: $text;
+        transition: transform $duration;
       }
     }
 
@@ -89,6 +87,10 @@ th {
       width: 90%;
       vertical-align: middle;
     }
+  }
+
+  & &__chevron--open {
+    transform: rotate(90deg);
   }
 
   &__content {

@@ -48,11 +48,11 @@ What Kami offers and the rules it follows.
 
 The components a page uses for its content, named after Notion's blocks:
 
-- **Text:** `Text`, `Heading` (levels 1 to 4) and `TextHighlight`.
+- **Text:** `Text`, `Heading` (levels 1 to 4) and `TextHighlight`, which takes an optional `color` (a `TagColor`) for a background from the tag palette.
 - **Code:** `Code`, as a block or, with `inline`, inside a line of text. A block keeps the line breaks of the code it receives. With `lang` (`ts`, `js`, `vue`, `html`, `scss`, `json` or `bash`), the block gets syntax highlighting from highlight.js, colored with the `$code-*` tokens (GitHub's code colors), with a light and a dark set.
 - **Callout:** a box with an emoji and text.
 - **Quote:** `Quote`, a quotation with a line on its left in the text color. It takes any content in its slot, such as text, links and highlights.
-- **Lists:** `BulletList` and `BulletItem`, `ToDoList` and `ToDoItem` (with a checked state), and `ToggleList`, which shows and hides its content with the icons given to it.
+- **Lists:** `BulletList` and `BulletItem`, `ToDoList` and `ToDoItem` (with a checked state), and `ToggleList`, which shows and hides its content and rotates the icon given in `iconToOpen` when open (`iconToClose` is still accepted and no longer shown).
 - **Layout:** `Columns` with 2 to 5 `Column`s and an optional size for each, `Divider` and `Empty` (blank space).
 - **Links:** `Link` (inline), `LinkMention` (an emoji and the name of a page or an external link) and `Bookmark` (a card with title, subtitle and URL).
 - **Media:** `Image`.

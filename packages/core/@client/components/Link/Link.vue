@@ -8,10 +8,15 @@ const props = defineProps<{ href: string }>();
 
 <style lang="scss">
 .link {
-  all: unset;
-  color: $text-secondary !important;
+  color: inherit;
   text-decoration: underline;
-  font-weight: $fw-bold;
+  text-decoration-color: $text-tertiary;
+  text-underline-offset: $space-1;
   cursor: pointer;
+  transition: text-decoration-color $duration;
+
+  &:hover {
+    text-decoration-color: $text;
+  }
 }
 </style>

@@ -3,42 +3,50 @@ const props = defineProps<{ title: string; subtitle?: string; link: string }>();
 </script>
 
 <template>
-  <div class="bookmark">
-    <a target="_blank" :href="props.link"
-      ><div class="bookmark__left">
-        <span class="bookmark__left__title">{{ props.title }}</span>
-        <span class="bookmark__left__subtitle">{{ props.subtitle }}</span>
-      </div>
-      <div></div
-    ></a>
-  </div>
+  <a class="bookmark" target="_blank" :href="props.link">
+    <div class="bookmark__text">
+      <span class="bookmark__title">{{ props.title }}</span>
+      <span v-if="props.subtitle" class="bookmark__subtitle">{{
+        props.subtitle
+      }}</span>
+      <span class="bookmark__url">{{
+        props.link.replace(/^https?:\/\//, "")
+      }}</span>
+    </div>
+  </a>
 </template>
 
 <style lang="scss">
 .bookmark {
-  padding: $space-6;
+  display: flex;
+  overflow: hidden;
   border: $line solid $border;
   border-radius: $radius-md;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+  transition: background-color $duration;
 
   &:hover {
     background-color: $bg-hover;
   }
 
-  a {
-    all: unset;
-  }
-
-  &__left {
+  &__text {
     display: flex;
     flex-direction: column;
-    row-gap: $space-4;
+    min-width: 0;
+    padding: $space-5 $space-6;
+  }
 
-    &__title {
-      font-weight: $fw-regular;
-    }
+  &__title {
+    font-size: $fs-sm;
+  }
+
+  &__subtitle,
+  &__url {
+    @extend %ellipsis;
+
+    font-size: $fs-xs;
+    color: $text-secondary;
   }
 }
 </style>
