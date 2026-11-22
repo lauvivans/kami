@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Icon from "@core/@client/components/Icon.vue";
+import Tooltip from "@core/components/Tooltip.vue";
 import { onBeforeUnmount, onMounted } from "vue";
 import { useStore } from "@core/store";
 import { Icons } from "@core/enum";
@@ -70,7 +71,7 @@ onBeforeUnmount(() => {
       :class="store.activeTab == index ? 'tabs__tab--active' : ''"
       @click.stop="updateActiveTab(index)"
     >
-      <span>{{ page.pageName }}</span>
+      <Tooltip :text="page.pageName" />
       <button class="tabs__tab--close" @click.stop="removeTab(index)">
         <Icon :icon="Icons.close" />
       </button>
