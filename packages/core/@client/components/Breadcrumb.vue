@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import type { IMetadata, PageInfo } from "@core/@types";
 import { useStore } from "@core/store";
-import { computed, onBeforeUnmount, ref, watch } from "vue";
+import Dropdown from "@core/components/Dropdown.vue";
+import { computed, ref, shallowRef, watch } from "vue";
 
-// Two root nodes (breadcrumb + menu), so attributes from the parent go to the breadcrumb
+// Two root nodes (breadcrumb + dropdown), so attributes from the parent go to the breadcrumb
 defineOptions({ inheritAttrs: false });
 
 const props = defineProps<{ metadata: IMetadata }>();
@@ -50,48 +51,21 @@ const shownCrumbs = computed(() =>
     : breadcrumbs.value
 );
 
-// A plain dropdown, like Notion: no overlay, and the rest of the page stays clickable.
 const menuOpen = ref(false);
-const menuStyles = ref({});
-const menuRef = ref<HTMLElement | null>(null);
 // The "…" button; a template ref inside v-for would be an array
-let moreButton: HTMLElement | null = null;
-
-// pointerdown, not click: iOS Safari sends no click from a tap on a plain element.
-function onPointerDown(e: PointerEvent) {
-  const target = e.target as Node;
-  if (!menuRef.value?.contains(target) && !moreButton?.contains(target)) {
-    closeMenu();
-  }
-}
-
-function onKeydown(e: KeyboardEvent) {
-  if (e.key === "Escape") closeMenu();
-}
-
-function closeMenu() {
-  menuOpen.value = false;
-  document.removeEventListener("pointerdown", onPointerDown);
-  document.removeEventListener("keydown", onKeydown);
-}
+const moreButton = shallowRef<HTMLElement | null>(null);
 
 function toggleMenu(e: MouseEvent) {
-  if (menuOpen.value) return closeMenu();
-  moreButton = e.currentTarget as HTMLElement;
-  const rect = moreButton.getBoundingClientRect();
-  menuStyles.value = { top: `${rect.bottom}px`, left: `${rect.left}px` };
-  menuOpen.value = true;
-  document.addEventListener("pointerdown", onPointerDown);
-  document.addEventListener("keydown", onKeydown);
+  moreButton.value = e.currentTarget as HTMLElement;
+  menuOpen.value = !menuOpen.value;
 }
 
 // Another page has other hidden crumbs
-watch(hiddenCrumbs, closeMenu);
-onBeforeUnmount(closeMenu);
+watch(hiddenCrumbs, () => (menuOpen.value = false));
 
 const handleCrumb = (page: PageInfo) => {
   store.storeUpdateTabs(page);
-  closeMenu();
+  menuOpen.value = false;
 };
 </script>
 
@@ -132,15 +106,8 @@ const handleCrumb = (page: PageInfo) => {
       <div v-if="index !== shownCrumbs.length - 1">/</div>
     </div>
   </div>
-  <!-- In body: the breadcrumb's overflow: hidden would clip it -->
-  <Teleport to="body">
-    <nav
-      v-if="menuOpen"
-      ref="menuRef"
-      class="modal-dynamic breadcrumb__menu"
-      aria-label="Hidden pages"
-      :style="menuStyles"
-    >
+  <Dropdown v-model:open="menuOpen" :anchor="moreButton">
+    <nav class="breadcrumb__menu" aria-label="Hidden pages">
       <router-link
         v-for="page in hiddenCrumbs"
         :key="page.id"
@@ -158,7 +125,7 @@ const handleCrumb = (page: PageInfo) => {
         </div>
       </router-link>
     </nav>
-  </Teleport>
+  </Dropdown>
 </template>
 
 <style lang="scss">
@@ -197,12 +164,8 @@ const handleCrumb = (page: PageInfo) => {
     }
   }
 
-  // Same look as the other menus (.modal-dynamic from Modal.vue), but fixed
-  // under "…", since the header it belongs to is fixed too.
-  &__menu.modal-dynamic {
+  &__menu {
     @include flex-layout;
-
-    position: fixed;
   }
 
   &__page {
