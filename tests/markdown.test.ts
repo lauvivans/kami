@@ -1,8 +1,10 @@
-// Spike #174: the kami-markdown plugin turns a .md file into Kami blocks.
+// The kami-markdown plugin turns a .md file into Kami blocks, and
+// markdownPages turns the files into pages.
 import { describe, expect, it } from "vitest";
 import { mount, RouterLinkStub } from "@vue/test-utils";
 import Post, { frontmatter } from "@/pages/demo/posts/first-espresso.md";
 import { toModule } from "@core/vite/markdown";
+import { markdownPages, type MarkdownModule } from "@core/index";
 
 const mountPost = () =>
   mount(Post, { global: { stubs: { RouterLink: RouterLinkStub } } });
@@ -49,5 +51,39 @@ describe("markdown pages", () => {
     expect(code).toContain(JSON.stringify(" & b "));
     expect(code).toContain(`() => ${JSON.stringify("&amp;")}`);
     expect(warnings).toContain('block "table" is not supported');
+    expect(warnings).toContain("raw HTML is dropped");
+    expect(toModule("<div>a</div>\n", "kami").warnings).toContain(
+      "raw HTML is dropped"
+    );
+  });
+
+  it("builds one page per file, newest first", () => {
+    const post = (frontmatter: MarkdownModule["frontmatter"]) => ({
+      default: Post,
+      frontmatter,
+    });
+    const pages = markdownPages(
+      {
+        "./posts/old.md": post({ title: "Old", date: "2025-03-01" }),
+        "./posts/untitled.md": post({}),
+        "./posts/new.md": post({
+          title: "New",
+          date: "2026-11-20",
+          icon: { path: "/icons/new.png" },
+        }),
+      },
+      { parentPage: "blog", path: "/blog/" }
+    );
+    expect(Object.keys(pages)).toEqual(["new", "old", "untitled"]);
+    expect(pages.new).toMatchObject({
+      id: "new",
+      path: "/blog/new",
+      title: "New",
+      date: "2026-11-20",
+      icon: { path: "/icons/new.png" },
+      parentPage: "blog",
+      component: Post,
+    });
+    expect(pages.untitled?.title).toBe("untitled");
   });
 });

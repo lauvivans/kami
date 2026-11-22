@@ -15,4 +15,7 @@ import metadata from "@/metadata";
   <LinkMention :page="metadata.pages['setup']" emoji="📦" />
   <LinkMention :page="metadata.pages['first-page']" emoji="🔨" />
   <LinkMention :page="metadata.pages['first-deploy']" emoji="✅" />
+
+  <Heading :level="3">Guides</Heading>
+  <LinkMention :page="metadata.pages['writing-posts']" emoji="📝" />
 </template>

@@ -14,7 +14,7 @@ What Kami offers and the rules it follows.
 
 - `npx @lauvivans/kami <name>` creates a folder with the template, installs its dependencies and installs the library. The name defaults to `my-portfolio`.
 - If the folder already exists, the CLI stops with an error and changes nothing.
-- The template comes with one example page, a banner and an icon, so `npm run dev` shows a working portfolio right away.
+- The template comes with one example page, a Posts page with an example Markdown post, a banner and an icon, so `npm run dev` shows a working portfolio right away.
 
 ## Pages and metadata
 
@@ -23,10 +23,19 @@ What Kami offers and the rules it follows.
   - a banner and an icon, each with the image path and optional author and link for the credit;
   - `pages`, the ids of its sub-pages, and `parentPage`, the id of its parent;
   - `isHomepage`, for the page shown at `/`;
+  - `date`, a post's date as `YYYY-MM-DD`;
   - `databaseInfo`, properties shown under the title (an icon and one or more values), like the properties of a Notion database item. An array value is a multi-select: each item is a tag, written as text or as `{ name, color }` with one of the tag colors (purple, blue, yellow, brown, green, orange, gray, pink, red). A tag without a color gets one from its text, so it has the same color everywhere; two tags can share a color, and setting one avoids that.
 - `metadata.favorites` lists the page ids shown under Favorites in the sidebar.
 - Every page shows its banner, icon, title and properties above its content, through `MainLayout`.
 - A path that matches no page shows the 404 page, with a button back to the previous page.
+
+## Markdown pages
+
+- A page can be a `.md` file with front matter. The Vite plugin `markdown()` from `@lauvivans/kami/vite`, placed before `vue()`, turns each file into a component built from Kami blocks at build time, so no Markdown parser reaches the browser. See [decision 006](../decisions/006-markdown-pages.md).
+- The front matter (`title`, `date`, `banner`, `icon`) is exported as `frontmatter`. `markdownPages(files, { parentPage, path })` builds one page per file from an eager `import.meta.glob`: the id is the file name, the path is `path` plus the id, the title falls back to the id, and the pages are ordered by date, newest first.
+- Headings (5 and 6 as 4), paragraphs, bold, italic, strikethrough, inline and fenced code, quotes, dividers, links, images, bullet lists and to-do lists map to their blocks. A fenced block in a language `Code` highlights gets highlighted. An image alone on its line is an `Image` block; a relative image path is bundled with the post.
+- Numbered lists render as bullets. Tables and raw HTML are dropped, and the build prints a warning for each without failing. Text is never compiled as a Vue template.
+- The portfolio loads the `*.md` module type with `"types": ["@lauvivans/kami/markdown"]` in its `tsconfig.app.json`.
 
 ## Layout
 
@@ -65,13 +74,14 @@ The components a page uses for its content, named after Notion's blocks:
 ## Documentation site
 
 - The site at kami.arualvivan.com is a Kami portfolio built from `src/`.
-- **Client docs:** for people building a portfolio. Start from here, Setup, Building your first page and Your first deploy.
+- **Client docs:** for people building a portfolio. Start from here, Setup, Building your first page, Your first deploy and Writing posts in Markdown.
 - **Developer docs:** for people working on the library. Contributing, Version control, Icons, Storage, Testing and Release and deploy.
-- **Demo:** an example portfolio with a gallery database of projects, and a Blocks page that shows every block next to the code that renders it.
+- **Demo:** an example portfolio with a gallery database of projects, a post written in Markdown, and a Blocks page that shows every block next to the code that renders it.
 - Routes use browser history, so the host answers every path with `index.html`. Cloudflare Pages does this when the build has no `404.html`.
 
 ## Public API
 
-- The package exports the layout components, the blocks, `MainLayout`, `NotFoundPage`, `useStore`, `piniaInstance`, `useAside`, `useDisplay`, `useIsMobile`, `isTouchDevice`, the `Icons` enum (the icons `ToggleList` takes), and the types `IMetadata`, `PageInfo`, `DatabaseTag` and `TagColor`. The full list is in `packages/core/index.ts`.
+- The package exports the layout components, the blocks, `MainLayout`, `NotFoundPage`, `useStore`, `piniaInstance`, `useAside`, `useDisplay`, `useIsMobile`, `isTouchDevice`, `markdownPages`, the `Icons` enum (the icons `ToggleList` takes), and the types `IMetadata`, `PageInfo`, `DatabaseTag`, `TagColor`, `MarkdownFrontmatter`, `MarkdownModule` and `MarkdownPagesOptions`. The full list is in `packages/core/index.ts`.
 - The styles ship in one CSS file, `dist/kami.css`, which the portfolio imports once.
+- `@lauvivans/kami/vite` exports the `markdown()` plugin, built for Node with `marked` and `yaml` as dependencies, and `@lauvivans/kami/markdown` holds the `*.md` module type.
 - Changing any of these in a way that breaks an existing portfolio needs a major version. See [decision 001](../decisions/001-stack-and-hosting.md).

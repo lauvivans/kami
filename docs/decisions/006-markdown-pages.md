@@ -2,7 +2,7 @@
 
 - **Date:** 2026-11-22
 - **Origin:** spike [#174](https://github.com/lauvivans/kami/issues/174)
-- **Status:** proposed
+- **Status:** accepted, implemented in [#225](https://github.com/lauvivans/kami/issues/225)
 
 ## Question
 
