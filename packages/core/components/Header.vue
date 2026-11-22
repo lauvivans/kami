@@ -27,6 +27,8 @@ const settingsBtn = ref<HTMLElement | null>(null);
         @click="settingsOpen = !settingsOpen"
         type="button"
         aria-label="Open settings"
+        aria-haspopup="menu"
+        :aria-expanded="settingsOpen"
       >
         <Icon :icon="Icons.moreHorizontal" />
       </button>
