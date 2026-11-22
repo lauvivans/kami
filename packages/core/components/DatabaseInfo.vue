@@ -2,7 +2,7 @@
 import { Icons } from "@core/enum";
 import Icon from "@core/@client/components/Icon.vue";
 import type { PageInfo } from "@core/@types";
-import { tagColorClass } from "@core/util/tagColorClass";
+import { tagColorClass, tagName } from "@core/util/tagColorClass";
 
 const props = defineProps<{ page: PageInfo }>();
 </script>
@@ -36,10 +36,10 @@ const props = defineProps<{ page: PageInfo }>();
           >
             <div
               v-for="item in value.value"
-              :key="item"
+              :key="tagName(item)"
               :class="tagColorClass(item)"
             >
-              {{ item }}
+              {{ tagName(item) }}
             </div>
           </div>
           <span v-else>Empty</span>
@@ -50,8 +50,6 @@ const props = defineProps<{ page: PageInfo }>();
 </template>
 
 <style lang="scss">
-@use "sass:list";
-
 .database {
   margin-bottom: 20px;
 
@@ -91,9 +89,9 @@ const props = defineProps<{ page: PageInfo }>();
   }
 
   // one class per color in $tag-colors, picked by tagColorClass()
-  @for $i from 1 through list.length($tag-colors) {
-    &__tag--#{$i - 1} {
-      background-color: list.nth($tag-colors, $i);
+  @each $name, $color in $tag-colors {
+    &__tag--#{$name} {
+      background-color: $color;
     }
   }
 }

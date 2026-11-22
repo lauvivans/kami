@@ -29,6 +29,6 @@ export { MainLayout } from "./layouts";
 export { NotFoundPage } from "./pages";
 export { useStore, piniaInstance } from "./store";
 export { useAside, useDisplay, useIsMobile } from "./hooks";
-export type { PageInfo, IMetadata } from "./@types";
+export type { PageInfo, IMetadata, DatabaseTag, TagColor } from "./@types";
 export type { CodeLanguage } from "./util/highlight";
 export { Icons } from "./enum";

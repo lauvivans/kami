@@ -43,7 +43,10 @@ import { aboutPage as page, aboutMetadata as meta } from "@/code-samples";
     >
     <BulletItem
       ><Code inline>databaseInfo</Code> shows properties under the title, like the
-      properties of a Notion database item. A <Code inline>Database</Code> block
+      properties of a Notion database item. An array value shows as tags. A tag
+      is a text, or <Code inline>{ name, color }</Code> to pick its color
+      (purple, blue, yellow, brown, green, orange or gray); without one, it gets
+      a color from its text. A <Code inline>Database</Code> block
       in the table view lists its pages as rows, with one column per
       property.</BulletItem
     >

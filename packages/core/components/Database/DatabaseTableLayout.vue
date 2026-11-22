@@ -3,7 +3,7 @@ import { computed } from "vue";
 import Icon from "@core/@client/components/Icon.vue";
 import { Icons } from "@core/enum";
 import type { PageInfo } from "@core/@types";
-import { tagColorClass } from "@core/util/tagColorClass";
+import { tagColorClass, tagName } from "@core/util/tagColorClass";
 
 const props = defineProps<{
   pages: PageInfo[];
@@ -65,10 +65,10 @@ const valueOf = (page: PageInfo, key: string) =>
               >
                 <div
                   v-for="item in valueOf(page, key)"
-                  :key="item"
+                  :key="tagName(item)"
                   :class="tagColorClass(item)"
                 >
-                  {{ item }}
+                  {{ tagName(item) }}
                 </div>
               </div>
               <span v-else>{{ valueOf(page, key) }}</span>

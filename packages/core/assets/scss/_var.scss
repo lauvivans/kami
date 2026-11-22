@@ -30,11 +30,17 @@ $baby-green: #d0f0c0;
 $baby-orange: #fec89a;
 $baby-gray: #ccc5b9;
 
-// multi-select tag backgrounds; tagColorClass() in util/ picks one per tag,
-// so keep its TAG_COLORS in sync with this list's length
-$tag-colors:
-  $baby-purple, $baby-blue, $baby-yellow, $baby-brown, $baby-green,
-  $baby-orange, $baby-gray;
+// multi-select tag backgrounds, by the color name a tag can set
+// (TagColor in @types); keep TAG_COLORS in util/tagColorClass.ts in sync
+$tag-colors: (
+  "purple": $baby-purple,
+  "blue": $baby-blue,
+  "yellow": $baby-yellow,
+  "brown": $baby-brown,
+  "green": $baby-green,
+  "orange": $baby-orange,
+  "gray": $baby-gray,
+);
 
 /* dark theme default */
 $dark: #171a1b;

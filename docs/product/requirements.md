@@ -23,7 +23,7 @@ What Kami offers and the rules it follows.
   - a banner and an icon, each with the image path and optional author and link for the credit;
   - `pages`, the ids of its sub-pages, and `parentPage`, the id of its parent;
   - `isHomepage`, for the page shown at `/`;
-  - `databaseInfo`, properties shown under the title (an icon and one or more values), like the properties of a Notion database item.
+  - `databaseInfo`, properties shown under the title (an icon and one or more values), like the properties of a Notion database item. An array value is a multi-select: each item is a tag, written as text or as `{ name, color }` with one of the tag colors (purple, blue, yellow, brown, green, orange, gray). A tag without a color gets one from its text, so it has the same color everywhere; two tags can share a color, and setting one avoids that.
 - `metadata.favorites` lists the page ids shown under Favorites in the sidebar.
 - Every page shows its banner, icon, title and properties above its content, through `MainLayout`.
 - A path that matches no page shows the 404 page, with a button back to the previous page.
@@ -67,6 +67,6 @@ The components a page uses for its content, named after Notion's blocks:
 
 ## Public API
 
-- The package exports the layout components, the blocks, `MainLayout`, `NotFoundPage`, `useStore`, `piniaInstance`, `useAside`, `useDisplay`, `useIsMobile`, `isTouchDevice`, the `Icons` enum (the icons `ToggleList` takes), and the types `IMetadata` and `PageInfo`. The full list is in `packages/core/index.ts`.
+- The package exports the layout components, the blocks, `MainLayout`, `NotFoundPage`, `useStore`, `piniaInstance`, `useAside`, `useDisplay`, `useIsMobile`, `isTouchDevice`, the `Icons` enum (the icons `ToggleList` takes), and the types `IMetadata`, `PageInfo`, `DatabaseTag` and `TagColor`. The full list is in `packages/core/index.ts`.
 - The styles ship in one CSS file, `dist/kami.css`, which the portfolio imports once.
 - Changing any of these in a way that breaks an existing portfolio needs a major version. See [decision 001](../decisions/001-stack-and-hosting.md).

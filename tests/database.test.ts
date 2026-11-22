@@ -14,7 +14,10 @@ const pages: PageInfo[] = [
     component: {},
     databaseInfo: {
       Created: { icon: "clock", value: "March 2026" },
-      Languages: { icon: "code", value: ["Vue", "TypeScript"] },
+      Languages: {
+        icon: "code",
+        value: ["Vue", { name: "TypeScript", color: "green" }],
+      },
     },
   },
   {
@@ -55,7 +58,9 @@ describe("Database table layout", () => {
       "",
     ]);
     expect(cells(rows[1]!)).toEqual(["Bookshelf", "", "", "Done"]);
-    expect(rows[0]!.findAll(".database-table__tags > div")).toHaveLength(2);
+    const tags = rows[0]!.findAll(".database-table__tags > div");
+    expect(tags).toHaveLength(2);
+    expect(tags[1]!.classes()).toContain("multi-select__tag--green");
   });
 
   it("emits open with the page when its title is clicked", async () => {
