@@ -44,7 +44,7 @@ async function toggle(total: number) {
 
 <template>
   <div class="show-more">
-    <div ref="listRef">
+    <div ref="listRef" class="show-more__list">
       <div
         v-for="(item, index) in items().slice(0, shownCount)"
         :key="index"
@@ -68,8 +68,15 @@ async function toggle(total: number) {
 </template>
 
 <style lang="scss">
-.show-more__item:focus-visible {
-  outline: $line-thick solid $accent;
-  border-radius: $radius-md;
+.show-more {
+  // the same spacing as blocks directly on the page (.page-content)
+  &__list {
+    @include grid-layout(minmax(0, 1fr), $space-4);
+  }
+
+  &__item:focus-visible {
+    outline: $line-thick solid $accent;
+    border-radius: $radius-md;
+  }
 }
 </style>

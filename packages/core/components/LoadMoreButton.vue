@@ -3,11 +3,12 @@
 </template>
 
 <style lang="scss">
-// Notion's "Load more" row: the width of the list, muted until hovered
+// as wide as its text, muted until hovered
 .load-more-button {
   all: unset;
+  display: block;
   box-sizing: border-box;
-  width: 100%;
+  width: max-content;
   height: $item-height;
   margin-top: $space-4;
   padding: 0 $space-4;
