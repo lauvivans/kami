@@ -13,7 +13,8 @@ function handleCard(page: PageInfo) {
   emit("open", page);
 }
 
-// the tags of every multi-select property, shown under the card title
+// the tags of every multi-select property, shown under the card title; two
+// properties can share a tag name, so the template keys them by index
 const tagsOf = (page: PageInfo): DatabaseTag[] =>
   Object.values(page.databaseInfo ?? {}).flatMap(({ value }) =>
     Array.isArray(value) ? value : []
@@ -57,8 +58,8 @@ const tagsOf = (page: PageInfo): DatabaseTag[] =>
           </div>
           <div v-if="tagsOf(page).length" class="multi-select">
             <div
-              v-for="item in tagsOf(page)"
-              :key="tagName(item)"
+              v-for="(item, index) in tagsOf(page)"
+              :key="index"
               :class="tagColorClass(item)"
             >
               {{ tagName(item) }}
