@@ -28,6 +28,7 @@ const tagsOf = (page: PageInfo): DatabaseTag[] =>
         class="gallery__card-wrapper"
         v-for="page in pages"
         :key="page.id"
+        tabindex="-1"
         @click.stop="handleCard(page)"
       >
         <div
@@ -93,6 +94,11 @@ const tagsOf = (page: PageInfo): DatabaseTag[] =>
 
     &:hover {
       background-color: $bg-hover;
+    }
+
+    // "Load more" moves focus to the first new card
+    &:focus-visible {
+      outline: $line-thick solid $accent;
     }
   }
 

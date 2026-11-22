@@ -73,7 +73,11 @@ const links = `<Link href="/my-projects">Go to my projects</Link>
       picked for one property, and Sort orders them by the title or a property,
       ascending or descending. Values compare as text, so "2" comes before
       "10", and a list of tags sorts by its first tag. Both apply to every view
-      and reset on reload.</BulletItem
+      and reset on reload. <Code inline>loadLimit</Code> shows that many pages
+      at first, with a "Load more" button for the next ones;
+      <Code inline>loadMoreLabel</Code> changes its text, for example
+      "Ver mais". Changing the filter, sort or view goes back to the first
+      pages.</BulletItem
     >
   </BulletList>
   <Text

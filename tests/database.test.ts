@@ -251,3 +251,94 @@ describe("Database filter and sort", () => {
     expect(wrapper.find(".database-menu button").exists()).toBe(false);
   });
 });
+
+describe("Database load limit", () => {
+  const many: PageInfo[] = ["a", "b", "c", "d", "e"].map((id) => ({
+    id,
+    path: `/${id}`,
+    title: id,
+    component: {},
+    databaseInfo: {
+      Status: { icon: "check", value: id === "e" ? "Done" : "To do" },
+    },
+  }));
+  const mountDatabase = (props: Record<string, unknown> = {}) =>
+    mount(Database, {
+      props: { layout: "table", pages: many, loadLimit: 2, ...props },
+      attachTo: document.body,
+      global: { stubs: { Icon: true, teleport: true } },
+    });
+  type Wrapper = ReturnType<typeof mountDatabase>;
+  const titles = (wrapper: Wrapper) =>
+    wrapper.findAll(".database-table__page").map((item) => item.text());
+  const loadMore = (wrapper: Wrapper) =>
+    wrapper.find(".database-block__load-more");
+  const menuItem = (wrapper: Wrapper, text: string) =>
+    wrapper
+      .findAll(".database-menu button")
+      .find((button) => button.text() === text)!;
+
+  it("shows loadLimit pages and loads the next ones, moving focus", async () => {
+    const wrapper = mountDatabase();
+
+    expect(titles(wrapper)).toEqual(["a", "b"]);
+    expect(loadMore(wrapper).text()).toBe("Load more");
+
+    await loadMore(wrapper).trigger("click");
+    await nextTick();
+    expect(titles(wrapper)).toEqual(["a", "b", "c", "d"]);
+    expect(document.activeElement?.textContent?.trim()).toBe("c");
+
+    await loadMore(wrapper).trigger("click");
+    expect(titles(wrapper)).toEqual(["a", "b", "c", "d", "e"]);
+    expect(loadMore(wrapper).exists()).toBe(false);
+    wrapper.unmount();
+  });
+
+  it("shows every page and no button without loadLimit", () => {
+    const wrapper = mountDatabase({ loadLimit: undefined });
+
+    expect(titles(wrapper)).toHaveLength(5);
+    expect(loadMore(wrapper).exists()).toBe(false);
+    wrapper.unmount();
+  });
+
+  it("goes back to the first pages when the sort or view changes", async () => {
+    const wrapper = mountDatabase();
+    await loadMore(wrapper).trigger("click");
+
+    await wrapper
+      .findAll(".database-block__actions button")[1]!
+      .trigger("click");
+    await menuItem(wrapper, "Descending ↓").trigger("click");
+    expect(titles(wrapper)).toEqual(["e", "d"]);
+
+    await loadMore(wrapper).trigger("click");
+    await wrapper.findAll(".database-block__view")[0]!.trigger("click");
+    await wrapper.findAll(".database-block__view")[1]!.trigger("click");
+    expect(titles(wrapper)).toEqual(["e", "d"]);
+    wrapper.unmount();
+  });
+
+  it("counts the pages left after the filter", async () => {
+    const wrapper = mountDatabase();
+    await loadMore(wrapper).trigger("click");
+
+    await wrapper
+      .findAll(".database-block__actions button")[0]!
+      .trigger("click");
+    await menuItem(wrapper, "Status").trigger("click");
+    await wrapper.findAll(".database-menu input")[0]!.setValue(true);
+
+    expect(titles(wrapper)).toEqual(["a", "b"]);
+    expect(loadMore(wrapper).exists()).toBe(true);
+    wrapper.unmount();
+  });
+
+  it("uses loadMoreLabel as the button text", () => {
+    const wrapper = mountDatabase({ loadMoreLabel: "Ver mais" });
+
+    expect(loadMore(wrapper).text()).toBe("Ver mais");
+    wrapper.unmount();
+  });
+});

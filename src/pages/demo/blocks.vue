@@ -78,7 +78,8 @@ const code = {
 <Empty />
 <Loader />`,
   database: `<!-- layout is the view it opens with: "table" or "gallery" -->
-<Database layout="table" title="Projects" :pages="projects" />`,
+<!-- loadLimit shows that many pages, then a "Load more" button -->
+<Database layout="table" title="Projects" :pages="projects" :load-limit="1" />`,
 };
 
 const sample = `const greeting = "Hello";
@@ -183,9 +184,11 @@ console.log(greeting);`;
     >A list of pages, shown as a table or as a gallery of cards. The tabs on
     top switch between the two views. Each page's
     <Code inline>databaseInfo</Code> fills the table's columns. Clicking a
-    title or a card opens the page in a modal.</Text
+    title or a card opens the page in a modal. With
+    <Code inline>loadLimit</Code>, it shows that many pages and a Load more
+    button for the rest.</Text
   >
-  <Database layout="table" title="Projects" :pages="projects" />
+  <Database layout="table" title="Projects" :pages="projects" :load-limit="1" />
   <Code lang="vue">{{ code.database }}</Code>
   <LinkMention :page="metadata.pages['demo']" emoji="✨" />
 </template>

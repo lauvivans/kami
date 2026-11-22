@@ -25,6 +25,9 @@ const props = defineProps<{
   title?: string;
   cardPreviewIsCover?: boolean;
   pages: PageInfo[];
+  // how many pages show at first and per "Load more" click; all when unset
+  loadLimit?: number;
+  loadMoreLabel?: string;
 }>();
 
 const views: { id: View; label: string; icon: Icons }[] = [
@@ -41,6 +44,24 @@ const shownPages = computed(() =>
   viewPages(props.pages, filter.value, sort.value)
 );
 const properties = computed(() => propertyValues(props.pages));
+
+const shownCount = ref(props.loadLimit);
+const limitedPages = computed(() =>
+  shownPages.value.slice(0, shownCount.value)
+);
+watch([filter, sort, view], () => (shownCount.value = props.loadLimit));
+const viewRef = ref<HTMLElement | null>(null);
+
+async function loadMore() {
+  const first = limitedPages.value.length;
+  shownCount.value = first + props.loadLimit!;
+  await nextTick();
+  viewRef.value
+    ?.querySelectorAll<HTMLElement>(
+      ".gallery__card-wrapper, .database-table__page"
+    )
+    [first]?.focus();
+}
 
 const menu = ref<Menu | null>(null);
 const menuOpen = computed({
@@ -167,13 +188,23 @@ function openPage(page: PageInfo) {
       </h3>
     </div>
 
-    <DatabaseGalleryLayout
-      v-if="view === 'gallery'"
-      :card-preview-is-cover="props.cardPreviewIsCover"
-      :pages="shownPages"
-      @open="openPage"
-    />
-    <DatabaseTableLayout v-else :pages="shownPages" @open="openPage" />
+    <div ref="viewRef">
+      <DatabaseGalleryLayout
+        v-if="view === 'gallery'"
+        :card-preview-is-cover="props.cardPreviewIsCover"
+        :pages="limitedPages"
+        @open="openPage"
+      />
+      <DatabaseTableLayout v-else :pages="limitedPages" @open="openPage" />
+    </div>
+    <button
+      v-if="limitedPages.length < shownPages.length"
+      type="button"
+      class="database-block__load-more"
+      @click="loadMore"
+    >
+      {{ props.loadMoreLabel ?? "Load more" }}
+    </button>
   </div>
   <Dropdown v-model:open="menuOpen" :anchor="anchorOf(menu)">
     <div ref="menuRef" class="database-menu">
@@ -351,6 +382,28 @@ function openPage(page: PageInfo) {
   &__title {
     font-weight: $fw-bold;
     font-size: $fs-h3;
+  }
+
+  // Notion's "Load more" row: the width of the view, muted until hovered
+  &__load-more {
+    all: unset;
+    box-sizing: border-box;
+    width: 100%;
+    height: $item-height;
+    margin-top: $space-4;
+    padding: 0 $space-4;
+    cursor: pointer;
+    font-size: $fs-sm;
+    color: $text-secondary;
+    border-radius: $radius-md;
+
+    &:hover {
+      background-color: $bg-hover;
+    }
+
+    &:focus-visible {
+      outline: $line-thick solid $accent;
+    }
   }
 }
 
