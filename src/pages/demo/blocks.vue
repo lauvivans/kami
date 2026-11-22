@@ -19,6 +19,7 @@ import {
   Image,
   Loader,
   Database,
+  ShowMore,
   Icons,
 } from "@core/index.ts";
 import metadata from "@/metadata";
@@ -73,6 +74,12 @@ const code = {
 <LinkMention :page="metadata.pages['coffee-shop']" emoji="☕" />
 <LinkMention href="https://github.com/lauvivans/kami" emoji="🐙">Kami on GitHub</LinkMention>
 <Bookmark title="Kami" subtitle="Source code" link="https://github.com/lauvivans/kami" icon="/icons/page-example.png" />`,
+  showMore: `<!-- limit blocks show at first; the button shows the next ones -->
+<ShowMore :limit="1">
+  <Callout emoji="1️⃣">First block</Callout>
+  <Callout emoji="2️⃣">Second block</Callout>
+  <Callout emoji="3️⃣">Third block</Callout>
+</ShowMore>`,
   image: `<Image src="/banners/page-example.webp" />`,
   others: `<Divider />
 <Empty />
@@ -169,6 +176,14 @@ console.log(greeting);`;
     icon="/icons/page-example.png"
   />
   <Code lang="vue">{{ code.links }}</Code>
+
+  <Heading :level="3">Show more</Heading>
+  <ShowMore :limit="1">
+    <Callout emoji="1️⃣">First block</Callout>
+    <Callout emoji="2️⃣">Second block</Callout>
+    <Callout emoji="3️⃣">Third block</Callout>
+  </ShowMore>
+  <Code lang="vue">{{ code.showMore }}</Code>
 
   <Heading :level="3">Image</Heading>
   <Image src="/banners/page-example.webp" />

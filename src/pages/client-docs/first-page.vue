@@ -17,6 +17,9 @@ const links = `<Link href="/my-projects">Go to my projects</Link>
 <LinkMention :page="metadata.pages['my-projects']" emoji="🚀">Go to my projects</LinkMention>
 <LinkMention href="https://github.com/" emoji="🐙">GitHub</LinkMention>
 <Bookmark title="My project" subtitle="What it does" link="https://github.com/" icon="/icons/my-project.png" />`;
+const showMore = `<ShowMore :limit="3" label="Ver mais" less-label="Ver menos">
+  <Bookmark v-for="post in posts" :key="post.link" v-bind="post" />
+</ShowMore>`;
 </script>
 
 <template>
@@ -98,6 +101,16 @@ const links = `<Link href="/my-projects">Go to my projects</Link>
     URL:</Text
   >
   <Code lang="vue">{{ links }}</Code>
+
+  <Heading :level="3">Show a long list a few at a time</Heading>
+  <Text
+    ><Code inline>ShowMore</Code> shows the first <Code inline>limit</Code>
+    blocks inside it, with a "Show more" button for the next ones. When every
+    block shows, the button turns into "Show less" and goes back to the first
+    ones. <Code inline>label</Code> and <Code inline>lessLabel</Code> change
+    the button text:</Text
+  >
+  <Code lang="vue">{{ showMore }}</Code>
 
   <Callout emoji="👀"
     >The Blocks page in the demo shows every block with the code that renders
