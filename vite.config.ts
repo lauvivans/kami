@@ -2,9 +2,10 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import path from "path";
+import { markdown } from "./packages/core/vite/markdown.ts";
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [markdown({ from: "@core/index" }), vue()],
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "src"),
