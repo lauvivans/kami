@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import type { IMetadata, PageInfo } from "@core/@types";
 import { useStore } from "@core/store";
-import { useModal } from "@core/hooks";
-import Modal from "@core/components/Modal/Modal.vue";
-import { computed, ref } from "vue";
+import { computed, onBeforeUnmount, ref, watch } from "vue";
 
 // Two root nodes (breadcrumb + menu), so attributes from the parent go to the breadcrumb
 defineOptions({ inheritAttrs: false });
@@ -52,23 +50,48 @@ const shownCrumbs = computed(() =>
     : breadcrumbs.value
 );
 
-const MENU_PROVIDE_NAME = "breadcrumbMenu";
-
-const { showModal, hideModal, addModalListener } = useModal({
-  provideName: MENU_PROVIDE_NAME,
-});
-
+// A plain dropdown, like Notion: no overlay, and the rest of the page stays clickable.
+const menuOpen = ref(false);
 const menuStyles = ref({});
+const menuRef = ref<HTMLElement | null>(null);
+// The "…" button; a template ref inside v-for would be an array
+let moreButton: HTMLElement | null = null;
 
-const openMenu = (e: MouseEvent) => {
-  const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+// pointerdown, not click: iOS Safari sends no click from a tap on a plain element.
+function onPointerDown(e: PointerEvent) {
+  const target = e.target as Node;
+  if (!menuRef.value?.contains(target) && !moreButton?.contains(target)) {
+    closeMenu();
+  }
+}
+
+function onKeydown(e: KeyboardEvent) {
+  if (e.key === "Escape") closeMenu();
+}
+
+function closeMenu() {
+  menuOpen.value = false;
+  document.removeEventListener("pointerdown", onPointerDown);
+  document.removeEventListener("keydown", onKeydown);
+}
+
+function toggleMenu(e: MouseEvent) {
+  if (menuOpen.value) return closeMenu();
+  moreButton = e.currentTarget as HTMLElement;
+  const rect = moreButton.getBoundingClientRect();
   menuStyles.value = { top: `${rect.bottom}px`, left: `${rect.left}px` };
-  showModal();
-};
+  menuOpen.value = true;
+  document.addEventListener("pointerdown", onPointerDown);
+  document.addEventListener("keydown", onKeydown);
+}
+
+// Another page has other hidden crumbs
+watch(hiddenCrumbs, closeMenu);
+onBeforeUnmount(closeMenu);
 
 const handleCrumb = (page: PageInfo) => {
   store.storeUpdateTabs(page);
-  hideModal();
+  closeMenu();
 };
 </script>
 
@@ -86,7 +109,8 @@ const handleCrumb = (page: PageInfo) => {
         type="button"
         aria-label="Show hidden pages"
         aria-haspopup="menu"
-        @click="openMenu"
+        :aria-expanded="menuOpen"
+        @click="toggleMenu"
       >
         <div>…</div>
       </button>
@@ -108,33 +132,32 @@ const handleCrumb = (page: PageInfo) => {
       <div v-if="index !== shownCrumbs.length - 1">/</div>
     </div>
   </div>
-  <!-- In body, out of the fixed header, so the overlay covers the tabs too -->
+  <!-- In body: the breadcrumb's overflow: hidden would clip it -->
   <Teleport to="body">
-    <Modal
-      :provideName="MENU_PROVIDE_NAME"
-      :hideModal="hideModal"
-      :addModalListener="addModalListener"
-      :modalStyles="menuStyles"
+    <nav
+      v-if="menuOpen"
+      ref="menuRef"
+      class="modal-dynamic breadcrumb__menu"
+      aria-label="Hidden pages"
+      :style="menuStyles"
     >
-      <nav class="breadcrumb__menu" aria-label="Hidden pages">
-        <router-link
-          v-for="page in hiddenCrumbs"
-          :key="page.id"
-          class="breadcrumb__page"
-          :to="page.path"
-          @click="handleCrumb(page)"
-        >
-          <div>
-            <img
-              v-if="page.icon"
-              style="max-width: 1.1rem; height: auto"
-              :src="page.icon.path"
-            />
-            <span :title="page.title">{{ page.title }}</span>
-          </div>
-        </router-link>
-      </nav>
-    </Modal>
+      <router-link
+        v-for="page in hiddenCrumbs"
+        :key="page.id"
+        class="breadcrumb__page"
+        :to="page.path"
+        @click="handleCrumb(page)"
+      >
+        <div>
+          <img
+            v-if="page.icon"
+            style="max-width: 1.1rem; height: auto"
+            :src="page.icon.path"
+          />
+          <span :title="page.title">{{ page.title }}</span>
+        </div>
+      </router-link>
+    </nav>
   </Teleport>
 </template>
 
@@ -174,8 +197,12 @@ const handleCrumb = (page: PageInfo) => {
     }
   }
 
-  &__menu {
+  // Same look as the other menus (.modal-dynamic from Modal.vue), but fixed
+  // under "…", since the header it belongs to is fixed too.
+  &__menu.modal-dynamic {
     @include flex-layout;
+
+    position: fixed;
   }
 
   &__page {

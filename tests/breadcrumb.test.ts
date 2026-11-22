@@ -50,16 +50,37 @@ describe("Breadcrumb", () => {
     expect(wrapper.find(".breadcrumb__menu a").exists()).toBe(false);
   });
 
-  it("collapses the middle pages of a deeper path into …", () => {
+  it("collapses the middle pages of a deeper path into …", async () => {
     const wrapper = mountAt("e");
     expect(crumbText(wrapper)).toEqual(["A", "…", "D", "E"]);
+    expect(wrapper.find(".breadcrumb__menu").exists()).toBe(false);
+
+    await wrapper.find("button").trigger("click");
     const hidden = wrapper.findAll(".breadcrumb__menu a");
     expect(hidden.map((a) => a.text())).toEqual(["B", "C"]);
+  });
+
+  it("closes the menu on a press outside it or on Escape, without blocking the page", async () => {
+    const wrapper = mountAt("e");
+    const more = wrapper.find("button");
+
+    await more.trigger("click");
+    expect(document.body.style.pointerEvents).not.toBe("none");
+    document.body.dispatchEvent(new Event("pointerdown", { bubbles: true }));
+    await wrapper.vm.$nextTick();
+    expect(wrapper.find(".breadcrumb__menu").exists()).toBe(false);
+
+    await more.trigger("click");
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    await wrapper.vm.$nextTick();
+    expect(wrapper.find(".breadcrumb__menu").exists()).toBe(false);
+    wrapper.unmount();
   });
 
   it("navigates to a hidden page from the menu", async () => {
     const updateTabs = vi.spyOn(store, "storeUpdateTabs");
     const wrapper = mountAt("e");
+    await wrapper.find("button").trigger("click");
     const links = wrapper.findAllComponents(RouterLinkStub);
     const b = links.find((l) => l.text() === "B")!;
     expect(b.props("to")).toBe("/b");
