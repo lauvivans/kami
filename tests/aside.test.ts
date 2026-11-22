@@ -68,6 +68,27 @@ describe("Aside after navigation", () => {
   });
 });
 
+describe("Aside owner row", () => {
+  it("shows up to two initials of the author", () => {
+    metadata.user.author = "my portfolio site";
+    const wrapper = mountAside(false, true);
+    expect(wrapper.find(".nav-list__avatar").text()).toBe("MP");
+    metadata.user.author = "Ada";
+    wrapper.unmount();
+  });
+});
+
+describe("Open sidebar on mobile", () => {
+  it("closes on a tap outside it", async () => {
+    const wrapper = mountOpenAside(true);
+    await wrapper.find(".nav-list").trigger("pointerdown");
+    expect(store.isAsideOpen).toBe(true);
+    document.body.dispatchEvent(new Event("pointerdown", { bubbles: true }));
+    expect(store.isAsideOpen).toBe(false);
+    wrapper.unmount();
+  });
+});
+
 describe("Aside button", () => {
   it("toggles the sidebar once on a tap", async () => {
     const wrapper = mountAside(true, false);

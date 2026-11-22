@@ -75,9 +75,15 @@ function updateTabs(page: PageInfo) {
       max-width: $nested-link-size !important;
 
       &__summary {
+        height: $item-height;
+        font-weight: $fw-regular;
+        transition: background-color $duration;
+
         &--icon {
-          border-top-left-radius: $radius-sm;
-          border-bottom-left-radius: $radius-sm;
+          padding: 0 $space-2;
+          vertical-align: middle;
+          border-top-left-radius: $radius-md;
+          border-bottom-left-radius: $radius-md;
 
           > div {
             font-size: $fs-md;
@@ -86,8 +92,8 @@ function updateTabs(page: PageInfo) {
         }
 
         &--content {
-          border-top-right-radius: $radius-sm;
-          border-bottom-right-radius: $radius-sm;
+          border-top-right-radius: $radius-md;
+          border-bottom-right-radius: $radius-md;
         }
       }
     }
@@ -96,7 +102,6 @@ function updateTabs(page: PageInfo) {
   &__link {
     all: unset;
     display: block;
-    padding: $space-2 0;
 
     > div {
       @include flex-layout($flex-direction: row, $column-gap: $space-3);
@@ -134,6 +139,7 @@ function updateTabs(page: PageInfo) {
 
     .nav-link__pagename {
       color: $text;
+      font-weight: $fw-medium;
     }
   }
 }

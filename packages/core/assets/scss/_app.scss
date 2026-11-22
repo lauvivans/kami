@@ -28,11 +28,13 @@
     .aside-default {
       display: flex;
       position: fixed;
-      top: calc(var.$tabs-height + var.$space-5);
+
+      // centers the 28px open button on the header items
+      top: calc(var.$tabs-height + (var.$header-height - var.$item-height) / 2);
       z-index: var.$z-sidebar;
 
       @media (max-width: var.$screen-small) {
-        top: var.$space-5;
+        top: calc((var.$header-height - var.$item-height) / 2);
       }
     }
 
@@ -45,10 +47,8 @@
       &__content {
         // the left padding leaves room for the sidebar button
         @include mixin.spacing(
-          $pt: var.$space-5,
           $pl: calc(var.$space-8 + var.$space-4),
-          $pr: var.$space-5,
-          $pb: var.$space-4
+          $pr: var.$space-5
         );
       }
     }
@@ -75,31 +75,44 @@
 
     .header {
       &__content {
-        @include mixin.spacing(
-          $pt: var.$space-5,
-          $pl: var.$space-5,
-          $pr: var.$space-5,
-          $pb: var.$space-4
-        );
+        @include mixin.spacing($pl: var.$space-5, $pr: var.$space-5);
+      }
+    }
+
+    // on phones the open sidebar floats over the page instead of pushing it
+    @media (max-width: var.$screen-small) {
+      margin-left: 0;
+
+      .aside-click {
+        width: min(var.$sidebar-width, var.$sidebar-max-mobile);
+        box-shadow: var.$shadow-floating;
+      }
+
+      .header,
+      .tabs {
+        margin-left: 0;
+        width: 100%;
       }
     }
   }
 
   .footer {
-    font-size: var.$fs-xs;
     position: absolute;
     right: var.$space-6;
-    bottom: var.$space-5;
+    bottom: var.$space-6;
     z-index: var.$z-header;
-    color: var.$text-secondary;
-    background-color: var.$bg-floating;
-    border: var.$line solid var.$border;
-    box-shadow: var.$shadow-floating;
+    padding: var.$space-1 var.$space-4;
     border-radius: var.$radius-pill;
-    padding: var.$space-5;
+    font-size: var.$fs-xs;
+
+    // the prototype pill takes its height from the body line height
+    line-height: var.$lh-body;
+    color: var.$text-tertiary;
+    background-color: var.$bg;
+    box-shadow: var.$shadow-floating;
 
     @media (max-width: var.$screen-small) {
-      bottom: calc(var.$tabs-height + var.$space-5);
+      display: none;
     }
   }
 }

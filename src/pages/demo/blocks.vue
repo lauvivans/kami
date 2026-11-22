@@ -5,6 +5,7 @@ import {
   Heading,
   TextHighlight,
   Callout,
+  Quote,
   BulletList,
   BulletItem,
   ToDoList,
@@ -36,6 +37,7 @@ const code = {
 <Text>A highlight with a <TextHighlight color="yellow">tag color</TextHighlight>.</Text>`,
   heading: `<Heading :level="4">Heading level 4</Heading>`,
   callout: `<Callout emoji="💡">A callout with an emoji.</Callout>`,
+  quote: `<Quote>A quote can hold <TextHighlight>highlights</TextHighlight> and <Link href="https://vuejs.org/">links</Link>.</Quote>`,
   code: `<Text>Run <Code inline>npm run dev</Code> to start.</Text>
 
 <!-- Pass multi-line code through {{ }} to keep its line breaks -->
@@ -102,6 +104,13 @@ console.log(greeting);`;
   <Heading :level="3">Callout</Heading>
   <Callout emoji="💡">A callout with an emoji.</Callout>
   <Code lang="vue">{{ code.callout }}</Code>
+
+  <Heading :level="3">Quote</Heading>
+  <Quote
+    >A quote can hold <TextHighlight>highlights</TextHighlight> and
+    <Link :href="vueUrl">links</Link>.</Quote
+  >
+  <Code lang="vue">{{ code.quote }}</Code>
 
   <Heading :level="3">Code</Heading>
   <Text>Run <Code inline>npm run dev</Code> to start.</Text>

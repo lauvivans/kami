@@ -1,7 +1,18 @@
 <script setup lang="ts">
-import { Text, Heading, Callout, BulletList, BulletItem, LinkMention, Code } from "@core/index.ts";
+import {
+  Text,
+  Heading,
+  Callout,
+  BulletList,
+  BulletItem,
+  LinkMention,
+  Code,
+  Quote,
+} from "@core/index.ts";
 import metadata from "@/metadata";
 import { aboutPage as page, aboutMetadata as meta } from "@/code-samples";
+
+const quote = `<Quote>A quote from a person or a source.</Quote>`;
 </script>
 
 <template>
@@ -11,6 +22,12 @@ import { aboutPage as page, aboutMetadata as meta } from "@/code-samples";
     with Kami's blocks.</Text
   >
   <Code lang="vue">{{ page }}</Code>
+  <Text
+    >For long-form pages, <Code inline>Quote</Code> sets a quotation apart with a
+    line on its left. It takes text, links and highlights:</Text
+  >
+  <Quote>A quote from a person or a source.</Quote>
+  <Code lang="vue">{{ quote }}</Code>
 
   <Heading :level="3">2. Add it to the metadata</Heading>
   <Text

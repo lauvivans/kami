@@ -10,9 +10,7 @@ import {
 } from "vue";
 import { useIsMobile, useModal } from "@core/hooks";
 import NestedLink from "@core/components/NestedLink.vue";
-import { Divider } from "@core/@client/components";
 import Modal from "@core/components/Modal/Modal.vue";
-import SelectBtn from "@core/components/SelectList/SelectBtn.vue";
 import Icon from "@core/@client/components/Icon.vue";
 import { useStore } from "@core/store";
 import { Icons, Theme } from "@core/enum";
@@ -41,6 +39,15 @@ const props = defineProps<{ metadata: IMetadata }>();
 
 store.storeDropStaleTabs(props.metadata.pages);
 
+const initials = computed(() =>
+  props.metadata.user.author
+    .split(/\s+/)
+    .map((word) => word.charAt(0))
+    .join("")
+    .slice(0, 2)
+    .toUpperCase()
+);
+
 const asideClasses = computed(() => {
   return {
     "aside-default": asideDefault.value,
@@ -67,10 +74,6 @@ const {
   hideModal: hideSearchModal,
   addModalListener: addSearchModalListener,
 } = useModal({ provideName: SEARCH_MODAL_PROVIDE });
-
-function toggleTheme(theme: keyof typeof Theme) {
-  store.storeTheme(theme);
-}
 
 function togglePageState(isDefault = true) {
   asideDefault.value = isDefault;
@@ -111,10 +114,13 @@ function toggleNavHover(toShow = false) {
   }
 }
 
-function closeNavHoverOutside(event: Event) {
-  if (!navWrapper.value?.contains(event.target as Node)) {
-    navHover.value = false;
-  }
+const isMobile = useIsMobile();
+
+// A press outside closes the floating sidebar, and on small screens the open one too.
+function closeNavOutside(event: Event) {
+  if (navWrapper.value?.contains(event.target as Node)) return;
+  navHover.value = false;
+  if (isMobile.value && navClick.value) toggleNavState();
 }
 
 watch(navClasses, (currentClass) => {
@@ -126,8 +132,6 @@ watch(navClasses, (currentClass) => {
     navBtnIcon.value = Icons.doubleArrowLeft;
   }
 });
-
-const isMobile = useIsMobile();
 
 // On small screens the open or floating sidebar covers the page, so close it after navigation.
 watch(
@@ -145,12 +149,12 @@ function saveAsideOpen() {
 
 onMounted(() => {
   window.addEventListener("beforeunload", saveAsideOpen);
-  document.addEventListener("pointerdown", closeNavHoverOutside);
+  document.addEventListener("pointerdown", closeNavOutside);
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener("beforeunload", saveAsideOpen);
-  document.removeEventListener("pointerdown", closeNavHoverOutside);
+  document.removeEventListener("pointerdown", closeNavOutside);
 });
 </script>
 
@@ -162,6 +166,7 @@ onBeforeUnmount(() => {
       @mouseenter="toggleNavHover(true)"
       @mouseleave="toggleNavHover()"
     >
+      <div v-if="asideDefault" class="nav-edge" aria-hidden="true"></div>
       <nav :class="navClasses">
         <div class="nav-btn" role="button" id="nav-btn" @click="toggleNavState">
           <Icon :icon="navBtnIcon" />
@@ -169,8 +174,13 @@ onBeforeUnmount(() => {
         <div class="nav-list-wrapper">
           <ul class="nav-list">
             <li class="nav-list__nav-item">
-              <span>{{ props.metadata.user.author }}</span>
-              {{ props.metadata.user.socialMedia }}
+              <span class="nav-list__avatar">{{ initials }}</span>
+              <span>
+                {{ props.metadata.user.author }}
+                <span class="nav-list__handle">
+                  {{ props.metadata.user.socialMedia }}
+                </span>
+              </span>
             </li>
             <li class="nav-list__nav-item">
               <div role="button" @click="showSearchModal">
@@ -215,25 +225,51 @@ onBeforeUnmount(() => {
   </aside>
   <Teleport to="body">
     <Modal
+      class="settings-modal"
       :provideName="SETTINGS_MODAL_PROVIDE"
       :addModalListener="addSettingsModalListener"
       :hideModal="hideSettingsModal"
     >
-      <div class="modal__settings">
-        <h2 class="modal__settings-title">My settings</h2>
-        <Divider />
-        <div class="modal__appearance">
-          <div>
-            <h3>Appearance</h3>
-            <h4>Customize how Kami looks on your device</h4>
-          </div>
-          <SelectBtn
-            :options="Object.entries(Theme)"
-            :optionSelected="Theme[`${store.getTheme}`]"
-            @toSelect="toggleTheme"
-          />
-        </div>
+      <div class="settings-modal__head">
+        <h2>Settings</h2>
+        <button type="button" aria-label="Close" @click="hideSettingsModal">
+          <Icon :icon="Icons.close" />
+        </button>
       </div>
+      <fieldset class="settings-modal__themes">
+        <legend>Theme</legend>
+        <label
+          v-for="[key, name] in Object.entries(Theme)"
+          :key="key"
+          class="settings-modal__theme"
+        >
+          <input
+            type="radio"
+            name="theme"
+            :value="key"
+            :checked="store.getTheme === key"
+            @change="store.storeTheme(key as keyof typeof Theme)"
+          />
+          <!-- The theme class sets that theme's colors on the preview only. -->
+          <span class="theme-preview" :class="key" aria-hidden="true">
+            <span class="theme-preview__sidebar">
+              <span class="theme-preview__line"></span>
+              <span class="theme-preview__line"></span>
+            </span>
+            <span class="theme-preview__page">
+              <span
+                class="theme-preview__line theme-preview__line--title"
+              ></span>
+              <span class="theme-preview__line"></span>
+              <span
+                class="theme-preview__line theme-preview__line--accent"
+              ></span>
+              <span class="theme-preview__block"></span>
+            </span>
+          </span>
+          {{ name }}
+        </label>
+      </fieldset>
     </Modal>
 
     <Modal
@@ -247,43 +283,85 @@ onBeforeUnmount(() => {
 </template>
 
 <style lang="scss">
+@use "sass:map";
+
+// The hidden floating panel keeps its place in the layout so it can slide out,
+// so only the button, the edge strip and the open panel take the pointer.
+.aside-default {
+  pointer-events: none;
+
+  .nav-edge,
+  .nav-btn {
+    pointer-events: auto;
+  }
+}
+
 .nav-wrapper {
   color: $text-secondary;
   user-select: none;
 
+  // the strip at the left edge that brings in the floating sidebar
+  .nav-edge {
+    display: none;
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: $space-6;
+    z-index: $z-content;
+
+    @media (hover: hover) {
+      display: block;
+    }
+  }
+
+  // the same 28px square as the header buttons, so they line up
   .nav-btn {
     @extend %button;
 
+    position: relative;
+    z-index: $z-raised;
+    justify-content: center;
+    padding: 0;
+    width: $item-height;
+    height: $item-height;
     margin-left: $space-5;
+    color: $text-secondary;
+
+    &,
+    &:hover {
+      border-radius: $radius-md;
+    }
+
+    .icon {
+      color: inherit;
+      font-size: $fs-md;
+    }
   }
 
-  .nav-default .nav-list {
-    display: none;
-  }
-
-  .nav-hover {
+  // closed sidebar: the floating panel, shown while nav-hover is set
+  .nav-default {
     @include flex-layout($row-gap: $space-8);
 
-    border-radius: $radius-sm;
     width: $sidebar-width;
 
     .nav-list {
-      box-shadow: $shadow-floating;
-
-      @include spacing($mt: $space-1, $pb: $space-4);
-
-      transform: translateX(-100%);
-      animation: slide-in 0.4s ease-in-out;
-      animation-fill-mode: forwards;
-      padding-right: $space-6;
-      background-color: $bg-floating;
-      border-radius: $radius-md;
-      height: min-content;
+      position: relative; // paints above the edge strip
+      margin-top: $space-1;
       max-height: 75vh;
+      background-color: $bg-floating;
+      border-radius: $radius-lg;
+      box-shadow: $shadow-floating;
+      transition:
+        transform $duration,
+        visibility $duration;
+    }
 
-      &__nav-item {
-        width: 100%;
-      }
+    &.nav-hover {
+      pointer-events: auto;
+    }
+
+    &:not(.nav-hover) .nav-list {
+      visibility: hidden;
+      transform: translateX(calc(-100% - $space-6));
     }
   }
 
@@ -300,7 +378,6 @@ onBeforeUnmount(() => {
       visibility: hidden;
       position: absolute;
       left: 78%;
-      z-index: $z-raised;
       margin: $space-5 $space-6 0;
     }
 
@@ -311,111 +388,185 @@ onBeforeUnmount(() => {
     }
   }
 
-  .nav-hover,
-  .nav-click {
-    .nav-list {
-      @include flex-layout($row-gap: $space-7);
+  .nav-list {
+    @include flex-layout($row-gap: $space-2);
 
-      font-size: $fs-sm;
+    padding: $space-4 $space-4 $space-7;
+    font-size: $fs-sm;
+    overflow: hidden auto;
 
-      &__nav-item:nth-child(1) {
-        @include flex-layout($row-gap: $space-2);
+    // owner row
+    &__nav-item:nth-child(1) {
+      @include flex-layout($flex-direction: row, $column-gap: $space-4);
 
-        font-size: $fs-xs;
+      align-items: center;
+      padding: $space-3 $space-4;
+      color: $text;
+      font-weight: $fw-medium;
+    }
 
-        @include spacing($ml: $space-5, $pt: $space-5);
+    &__avatar {
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      width: $space-7;
+      height: $space-7;
+      border-radius: $radius-sm;
+      background-color: map.get($tag-colors, "orange");
+      font-size: $fs-xs;
+      font-weight: $fw-semibold;
+    }
 
-        span {
-          color: $text;
-          font-size: $fs-md;
-        }
+    &__handle {
+      display: block;
+      font-size: $fs-xs;
+      font-weight: $fw-regular;
+      color: $text-tertiary;
+      line-height: $lh-heading;
+    }
+
+    // Search and Settings
+    &__nav-item:nth-child(2) > div {
+      @include flex-layout($flex-direction: row, $column-gap: $space-3);
+
+      align-items: center;
+      height: $item-height;
+      padding: 0 $space-4;
+      border-radius: $radius-md;
+      cursor: pointer;
+      transition: background-color $duration;
+
+      &:hover {
+        background-color: $bg-hover;
       }
+    }
 
-      &__nav-item:nth-child(2) {
-        @include flex-layout($row-gap: $space-1);
+    // Favorites and Private
+    &__nav-item:nth-child(3) {
+      @include flex-layout($row-gap: $space-6);
 
-        margin: $space-4;
+      margin-top: $space-6;
 
-        & > div {
-          @include flex-layout($flex-direction: row, $column-gap: $space-3);
-
-          align-items: center;
-
-          @extend %hover-default;
-        }
-      }
-
-      &__nav-item:nth-child(3) {
-        display: flex;
-        flex-direction: column;
-        row-gap: $space-8;
-        height: max-content;
+      .nested-link {
         width: $nested-link-size;
-        margin: 0 $space-1 $space-5 $space-5;
-        overflow: hidden auto;
-
-        .nested-link {
-          width: $nested-link-size;
-        }
       }
+    }
 
-      &__nav-item--category {
-        margin-bottom: $space-4;
-        font-weight: $fw-semibold;
-        font-size: $fs-xs;
-      }
+    &__nav-item--category {
+      padding: 0 $space-4;
+      margin-bottom: $space-1;
+      font-size: $fs-xs;
+      font-weight: $fw-medium;
+      color: $text-tertiary;
+      line-height: $item-height;
     }
   }
 }
 
-.modal {
-  &__settings {
-    display: flex;
-    flex-direction: column;
-    row-gap: $space-6;
-    padding: $space-4;
+.settings-modal {
+  .modal-static {
+    width: min($settings-width, calc(100% - 2 * $space-4));
   }
 
-  &__settings-title {
-    font-weight: $fw-semibold;
-  }
-
-  &__appearance {
+  &__head {
     display: flex;
+    align-items: center;
     justify-content: space-between;
+    margin-bottom: $space-5;
 
-    div:first-of-type {
-      h3,
-      h4 {
-        word-break: break-all;
-      }
+    h2 {
+      font-size: $fs-md;
+      font-weight: $fw-semibold;
     }
 
-    h3 {
-      margin-bottom: $space-3;
+    button {
+      @extend %button;
     }
+  }
 
-    h4 {
-      font-size: $fs-sm;
+  &__themes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $space-5;
+    border: 0;
+    margin: 0;
+    padding: 0;
+
+    legend {
+      margin-bottom: $space-4;
+      font-size: $fs-xs;
+      font-weight: $fw-medium;
       color: $text-secondary;
     }
   }
+
+  &__theme {
+    position: relative;
+    display: grid;
+    gap: $space-3;
+    cursor: pointer;
+    font-size: $fs-sm;
+
+    // Hidden but focusable, so the arrow keys move between the themes.
+    input {
+      position: absolute;
+      opacity: 0;
+    }
+
+    input:checked + .theme-preview {
+      box-shadow: 0 0 0 $line-quote $accent;
+    }
+
+    input:focus-visible + .theme-preview {
+      outline: $line-thick solid $accent;
+      outline-offset: $space-2;
+    }
+  }
 }
 
-@media (max-width: $screen-small) {
-  .modal {
-    &__appearance {
-      > div {
-        width: 50%;
-      }
+.theme-preview {
+  display: grid;
+  grid-template-columns: $theme-preview-sidebar minmax(0, 1fr);
+  height: $theme-preview-height;
+  border-radius: $radius-md;
+  overflow: hidden;
+  box-shadow: 0 0 0 $line $border;
+  transition: box-shadow $duration;
 
-      > div:nth-child(2) {
-        > div:first-of-type {
-          width: max-content;
-          justify-self: flex-end;
-        }
-      }
+  &__sidebar,
+  &__page {
+    display: grid;
+    align-content: start;
+    gap: $space-2;
+    padding: $space-4;
+    background: $bg;
+  }
+
+  &__sidebar {
+    padding: $space-4 $space-3;
+    background: $bg-sidebar;
+  }
+
+  &__line {
+    height: $space-2;
+    border-radius: $radius-pill;
+    background: $text-tertiary;
+
+    &--title {
+      width: $theme-preview-title;
+      background: $text;
     }
+
+    &--accent {
+      width: $theme-preview-accent;
+      background: $accent;
+    }
+  }
+
+  &__block {
+    height: $space-5;
+    border-radius: $radius-sm;
+    background: $bg-block;
   }
 }
 </style>

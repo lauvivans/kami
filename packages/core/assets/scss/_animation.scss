@@ -1,15 +1,5 @@
 @use "var";
 
-@keyframes slide-in {
-  from {
-    transform: translateX(-100%);
-  }
-
-  to {
-    transform: translateX(0);
-  }
-}
-
 @keyframes fade-in {
   from {
     opacity: 0;
