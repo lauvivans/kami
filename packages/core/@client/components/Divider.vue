@@ -6,6 +6,6 @@
 
 <style lang="scss">
 .divider {
-  border-bottom: 1px solid $gray;
+  border-bottom: $line solid $border;
 }
 </style>

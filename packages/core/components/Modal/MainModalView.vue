@@ -78,7 +78,7 @@ const handleNavigate = () => {
   }
 
   .page-wrapper {
-    margin-top: 25px !important;
+    margin-top: $space-7 !important;
   }
 
   &__header {
@@ -110,24 +110,24 @@ const handleNavigate = () => {
     }
 
     .page-content {
-      top: 10px;
+      top: $space-4;
     }
 
     :has(.page-content--banner):has(.page-content--icon) {
       .page-content {
-        top: 160px;
+        top: calc($space-10 + $icon-size-mobile);
       }
     }
 
     :not(:has(.page-content--icon)):has(.page-content--banner) {
       .page-content {
-        top: 190px;
+        top: calc($banner-height-mobile + $space-8);
       }
     }
 
     :not(:has(.page-content--banner)) {
       .page-content {
-        top: 10px;
+        top: $space-4;
       }
     }
   }

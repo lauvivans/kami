@@ -47,11 +47,11 @@ const props = defineProps<{ src: string }>();
   vertical-align: middle;
 
   // Vue drops the whitespace between tags on separate lines, so keep a gap.
-  margin-inline-end: calc($default-spacing / 2);
+  margin-inline-end: $space-2;
 
   img {
     width: auto;
-    max-height: $fs-large;
+    max-height: $icon-size-inline;
   }
 }
 </style>

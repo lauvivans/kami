@@ -38,15 +38,15 @@ dialog {
 
   @include sizing(100%, 100%);
 
-  background-color: $black-5;
-  z-index: 999;
+  background-color: $overlay;
+  z-index: $z-overlay;
 }
 
 .modal-static {
-  z-index: 2000;
-  box-shadow: $box-shadow-1;
-  border-radius: 5px;
-  background-color: $white;
+  z-index: $z-modal;
+  box-shadow: $shadow-floating;
+  border-radius: $radius-md;
+  background-color: $bg-floating;
   animation: fade-in 1s;
   transition: width 0.3s;
   user-select: none;
@@ -58,13 +58,13 @@ dialog {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 2rem 1.9rem;
+  padding: $space-8;
   overflow-y: hidden;
   height: auto;
   max-height: 80vh;
 
   @media (max-width: $screen-medium) {
-    padding: 2rem 0.5rem;
+    padding: $space-8 $space-4;
     max-width: 90%;
     min-width: 90%;
   }

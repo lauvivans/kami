@@ -32,37 +32,37 @@ const props = defineProps<{
 .link {
   all: unset;
   display: flex;
-  padding: 10px 2px;
+  padding: $space-4 $space-1;
   cursor: pointer;
-  color: $dark !important;
-  column-gap: 5px;
+  color: $text !important;
+  column-gap: $space-2;
 
   &:hover {
-    background-color: $gray-4;
-    border-radius: 5px;
+    background-color: $bg-hover;
+    border-radius: $radius-md;
   }
 
   span {
-    font-weight: $fw-600;
-    border-bottom: 1px solid $black-2;
-    padding-bottom: 2px;
+    font-weight: $fw-semibold;
+    border-bottom: $line solid $border;
+    padding-bottom: $space-1;
   }
 
   > div:first-of-type {
     position: relative;
-    z-index: 10;
+    z-index: $z-content;
   }
 
   &__arrow {
     position: absolute;
-    top: 5px;
-    left: 5px;
-    z-index: 100;
-    color: $dark;
+    top: $space-2;
+    left: $space-2;
+    z-index: $z-raised;
+    color: $text;
   }
 
   img {
-    width: 20px;
+    width: $icon-size-inline;
     height: auto;
     object-fit: contain;
   }

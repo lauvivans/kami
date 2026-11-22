@@ -48,21 +48,21 @@ function optionClicked(option: string) {
 
   align-items: center;
   cursor: pointer;
-  padding: 5px 10px;
+  padding: $space-2 $space-4;
 
   &:hover {
-    background-color: $gray-4;
-    border-radius: 5px;
+    background-color: $bg-hover;
+    border-radius: $radius-md;
   }
 
   > button {
     border: none;
     background-color: transparent;
-    font-family: $default;
-    font-size: $fs-small;
+    font-family: inherit;
+    font-size: $fs-sm;
     padding: 0;
     cursor: pointer;
-    color: $black-6;
+    color: $text-secondary;
   }
 }
 </style>

@@ -75,13 +75,13 @@ th {
 
     &--icon {
       width: 10%;
-      padding: 4px;
+      padding: $space-2;
 
       > div {
         @extend %button;
 
-        font-size: $fs-medium + 0.1rem;
-        color: $black;
+        font-size: $fs-md;
+        color: $text;
       }
     }
 
@@ -92,7 +92,7 @@ th {
   }
 
   &__content {
-    margin: 5px 0;
+    margin: $space-2 0;
   }
 }
 </style>

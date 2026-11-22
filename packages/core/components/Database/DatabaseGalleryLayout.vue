@@ -24,7 +24,9 @@ function handleCard(page: PageInfo) {
       >
         <div
           class="gallery__card-content"
-          :style="!props.cardPreviewIsCover ? { padding: '15px 13px 0px' } : ''"
+          :class="{
+            'gallery__card-content--padded': !props.cardPreviewIsCover,
+          }"
         >
           <component
             class="gallery__card-content--content"
@@ -56,29 +58,32 @@ function handleCard(page: PageInfo) {
 
   &__cards-wrapper {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax($card-min-width, 1fr));
+    gap: $space-4;
   }
 
   &__card-wrapper {
-    border: 1px solid $black-1;
-    border-radius: 5px;
-    box-shadow: $box-shadow-2;
+    border: $line solid $border;
+    border-radius: $radius-md;
     cursor: pointer;
-    font-size: $fs-small;
-    color: $black-6;
+    font-size: $fs-sm;
+    color: $text-secondary;
 
     &:hover {
-      background-color: $gray-2;
+      background-color: $bg-hover;
     }
   }
 
   &__card-content {
-    @include flex-layout($row-gap: 15px);
+    @include flex-layout($row-gap: $space-6);
 
-    background-color: $gray-2;
-    height: 160px;
+    background-color: $bg-block;
+    height: $card-cover-height;
     overflow: hidden;
+
+    &--padded {
+      padding: $space-6 $space-5 0;
+    }
 
     &--banner {
       height: 100%;
@@ -92,16 +97,16 @@ function handleCard(page: PageInfo) {
   }
 
   &__card-footer {
-    padding: 10px;
+    padding: $space-4;
 
-    @include flex-layout($flex-direction: row, $column-gap: 8px);
+    @include flex-layout($flex-direction: row, $column-gap: $space-4);
 
     align-items: center;
-    font-weight: $fw-900;
+    font-weight: $fw-bold;
   }
 
   &__page-icon {
-    width: 20px;
+    width: $icon-size-inline;
   }
 }
 </style>

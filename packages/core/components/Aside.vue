@@ -248,13 +248,13 @@ onBeforeUnmount(() => {
 
 <style lang="scss">
 .nav-wrapper {
-  color: $black-6;
+  color: $text-secondary;
   user-select: none;
 
   .nav-btn {
     @extend %button;
 
-    margin-left: 13px;
+    margin-left: $space-5;
   }
 
   .nav-default .nav-list {
@@ -262,22 +262,22 @@ onBeforeUnmount(() => {
   }
 
   .nav-hover {
-    @include flex-layout($row-gap: 2rem);
+    @include flex-layout($row-gap: $space-8);
 
-    border-radius: 3px;
-    width: 250px;
+    border-radius: $radius-sm;
+    width: $sidebar-width;
 
     .nav-list {
-      box-shadow: $box-shadow-1;
+      box-shadow: $shadow-floating;
 
-      @include spacing($mt: 0.1rem, $pb: 0.6rem);
+      @include spacing($mt: $space-1, $pb: $space-4);
 
       transform: translateX(-100%);
       animation: slide-in 0.4s ease-in-out;
       animation-fill-mode: forwards;
-      padding-right: 1rem;
-      background-color: $white;
-      border-radius: 5px;
+      padding-right: $space-6;
+      background-color: $bg-floating;
+      border-radius: $radius-md;
       height: min-content;
       max-height: 75vh;
 
@@ -288,7 +288,7 @@ onBeforeUnmount(() => {
   }
 
   .nav-click {
-    @include flex-layout($flex-direction: row-reverse, $row-gap: 2rem);
+    @include flex-layout($flex-direction: row-reverse, $row-gap: $space-8);
 
     &:hover {
       .nav-btn {
@@ -300,44 +300,44 @@ onBeforeUnmount(() => {
       visibility: hidden;
       position: absolute;
       left: 78%;
-      z-index: 2;
-      margin: 0.7rem 0.9rem 0;
+      z-index: $z-raised;
+      margin: $space-5 $space-6 0;
     }
 
     .nav-list {
       position: absolute;
       inset: 0;
-      z-index: 1;
+      z-index: $z-content;
     }
   }
 
   .nav-hover,
   .nav-click {
     .nav-list {
-      @include flex-layout($row-gap: 1.5rem);
+      @include flex-layout($row-gap: $space-7);
 
-      font-size: $fs-small;
+      font-size: $fs-sm;
 
       &__nav-item:nth-child(1) {
-        @include flex-layout($row-gap: 0.3rem);
+        @include flex-layout($row-gap: $space-2);
 
         font-size: $fs-xs;
 
-        @include spacing($ml: 0.8rem, $pt: 0.9rem);
+        @include spacing($ml: $space-5, $pt: $space-5);
 
         span {
-          color: $black;
-          font-size: $fs-medium;
+          color: $text;
+          font-size: $fs-md;
         }
       }
 
       &__nav-item:nth-child(2) {
-        @include flex-layout($row-gap: 0.2rem);
+        @include flex-layout($row-gap: $space-1);
 
-        margin: 10px 0.6rem;
+        margin: $space-4;
 
         & > div {
-          @include flex-layout($flex-direction: row, $column-gap: 0.4rem);
+          @include flex-layout($flex-direction: row, $column-gap: $space-3);
 
           align-items: center;
 
@@ -348,10 +348,10 @@ onBeforeUnmount(() => {
       &__nav-item:nth-child(3) {
         display: flex;
         flex-direction: column;
-        row-gap: 30px;
+        row-gap: $space-8;
         height: max-content;
         width: $nested-link-size;
-        margin: 0 0.2rem 0.7rem 0.7rem;
+        margin: 0 $space-1 $space-5 $space-5;
         overflow: hidden auto;
 
         .nested-link {
@@ -360,9 +360,9 @@ onBeforeUnmount(() => {
       }
 
       &__nav-item--category {
-        margin-bottom: 0.6rem;
-        font-weight: $fw-600;
-        font-size: $fs-xs + 0.1rem;
+        margin-bottom: $space-4;
+        font-weight: $fw-semibold;
+        font-size: $fs-xs;
       }
     }
   }
@@ -372,12 +372,12 @@ onBeforeUnmount(() => {
   &__settings {
     display: flex;
     flex-direction: column;
-    row-gap: 20px;
-    padding: 10px;
+    row-gap: $space-6;
+    padding: $space-4;
   }
 
   &__settings-title {
-    font-weight: $fw-600;
+    font-weight: $fw-semibold;
   }
 
   &__appearance {
@@ -392,12 +392,12 @@ onBeforeUnmount(() => {
     }
 
     h3 {
-      margin-bottom: 6px;
+      margin-bottom: $space-3;
     }
 
     h4 {
-      font-size: $fs-small;
-      color: $black-6;
+      font-size: $fs-sm;
+      color: $text-secondary;
     }
   }
 }

@@ -14,22 +14,23 @@ const props = defineProps<{ level: 1 | 2 | 3 | 4 }>();
 
 <style scoped lang="scss">
 .heading {
-  font-weight: $fw-800;
+  font-weight: $fw-semibold;
+  line-height: $lh-heading;
 }
 
 h1 {
-  font-size: $fs-xl + 0.4rem;
+  font-size: $fs-h1;
 }
 
 h2 {
-  font-size: $fs-xl + 0.2rem;
+  font-size: $fs-h2;
 }
 
 h3 {
-  font-size: $fs-xl;
+  font-size: $fs-h3;
 }
 
 h4 {
-  font-size: $fs-xl - 0.3rem;
+  font-size: $fs-md;
 }
 </style>

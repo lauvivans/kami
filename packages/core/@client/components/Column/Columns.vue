@@ -72,7 +72,7 @@ onMounted(() => {
 <style lang="scss">
 .columns {
   display: grid;
-  gap: $default-spacing 20px;
+  gap: $space-4 $space-6;
 
   @media (width <= $screen-xs) {
     grid-template-columns: 1fr !important;

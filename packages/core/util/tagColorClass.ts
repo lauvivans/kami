@@ -9,6 +9,8 @@ const TAG_COLORS: TagColor[] = [
   "green",
   "orange",
   "gray",
+  "pink",
+  "red",
 ];
 
 export const tagName = (tag: DatabaseTag) =>

@@ -29,51 +29,51 @@ defineExpose({
 </template>
 
 <style lang="scss">
-$toggle-btn-width: 30px;
-$toggle-btn-height: 18px;
+$toggle-btn-width: $item-height + $space-1;
+$toggle-btn-height: $space-6 + $space-1;
 
 .toggle {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: $black-7;
-  padding: 0.35rem;
-  font-size: 0.73rem;
+  color: $text;
+  padding: $space-3;
+  font-size: $fs-xs;
 
   &:hover {
     @extend %hover-default;
 
-    font-size: 0.73rem;
+    font-size: $fs-xs;
   }
 }
 
 .toggle-btn {
   @include sizing($toggle-btn-width, $toggle-btn-height);
 
-  border-radius: 34px;
-  padding: 2px;
+  border-radius: $radius-pill;
+  padding: $space-1;
   cursor: pointer;
-  background-color: $gray-stroke;
+  background-color: $text-tertiary;
   position: relative;
 
   &__circle {
     border-radius: 50%;
-    background-color: $white;
+    background-color: $bg-floating;
     position: absolute;
-    left: 2px;
+    left: $space-1;
     transition: left 0.3s ease-in-out;
 
     @include sizing(
       calc($toggle-btn-width / 2),
-      calc($toggle-btn-height - 4px)
+      calc($toggle-btn-height - $space-2)
     );
   }
 
   &--active {
-    background-color: $active;
+    background-color: $accent;
 
     .toggle-btn__circle {
-      left: calc(($toggle-btn-width / 2) - 2px);
+      left: calc(($toggle-btn-width / 2) - $space-1);
     }
   }
 }

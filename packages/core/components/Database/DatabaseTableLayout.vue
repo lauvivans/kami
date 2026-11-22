@@ -82,7 +82,7 @@ const valueOf = (page: PageInfo, key: string) =>
 
 <style lang="scss">
 .database-table {
-  margin-bottom: 20px;
+  margin-bottom: $space-6;
 
   // the table scrolls inside this box, so a wide table never widens the page
   &__scroll {
@@ -102,20 +102,20 @@ const valueOf = (page: PageInfo, key: string) =>
   table {
     border-collapse: collapse;
     min-width: 100%;
-    font-size: $fs-small;
+    font-size: $fs-sm;
   }
 
   th,
   td {
-    border: 1px solid $black-1;
-    padding: $default-spacing;
+    border: $line solid $border;
+    padding: $space-4;
     text-align: left;
     white-space: nowrap;
   }
 
   th {
-    font-weight: $fw-500;
-    color: $black-6;
+    font-weight: $fw-medium;
+    color: $text-secondary;
   }
 
   tr > :first-child {
@@ -129,10 +129,10 @@ const valueOf = (page: PageInfo, key: string) =>
   &__heading {
     display: flex;
     align-items: center;
-    column-gap: 5px;
+    column-gap: $space-2;
 
     .icon {
-      font-size: $fs-medium;
+      font-size: $fs-md;
     }
   }
 
@@ -140,21 +140,21 @@ const valueOf = (page: PageInfo, key: string) =>
     all: unset;
     display: flex;
     align-items: center;
-    column-gap: 8px;
+    column-gap: $space-4;
     cursor: pointer;
-    font-weight: $fw-600;
-    border-radius: $radius-small;
+    font-weight: $fw-semibold;
+    border-radius: $radius-sm;
 
     &:hover {
       text-decoration: underline;
     }
 
     &:focus-visible {
-      outline: 2px solid $active;
+      outline: $line-thick solid $accent;
     }
 
     img {
-      width: 20px;
+      width: $icon-size-inline;
     }
   }
 

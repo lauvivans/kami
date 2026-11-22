@@ -16,15 +16,15 @@ const props = defineProps<{ title: string; subtitle?: string; link: string }>();
 
 <style lang="scss">
 .bookmark {
-  padding: 20px;
-  border: 1px solid $black-2;
-  border-radius: 10px;
+  padding: $space-6;
+  border: $line solid $border;
+  border-radius: $radius-md;
   display: flex;
   align-items: center;
   cursor: pointer;
 
   &:hover {
-    background-color: $gray-4;
+    background-color: $bg-hover;
   }
 
   a {
@@ -34,10 +34,10 @@ const props = defineProps<{ title: string; subtitle?: string; link: string }>();
   &__left {
     display: flex;
     flex-direction: column;
-    row-gap: 10px;
+    row-gap: $space-4;
 
     &__title {
-      font-weight: $fw-300;
+      font-weight: $fw-regular;
     }
   }
 }

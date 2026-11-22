@@ -9,7 +9,7 @@
 }
 
 body {
-  font-family: var.$default;
+  font-family: var.$font-sans;
   -webkit-font-smoothing: auto;
 
   @include mixin.sizing(100vw, 100vh);
@@ -18,42 +18,46 @@ body {
   // than the screen. dvh follows the visible viewport; vh stays as a fallback.
   height: 100dvh;
   overflow: hidden;
-  background-color: var.$white;
-  font-size: var.$fs-medium;
-  color: var.$black-8;
-  font-weight: var.$fw-400;
+  background-color: var.$bg;
+  font-size: var.$fs-md;
+  color: var.$text;
+  font-weight: var.$fw-regular;
 
   @media (max-width: var.$screen-xs) {
-    font-size: var.$fs-small;
+    font-size: var.$fs-sm;
   }
 
   ::-webkit-scrollbar {
-    height: 8px;
-    width: 4px;
-    padding: 50px;
+    height: var.$space-4;
+    width: var.$space-2;
   }
 
   ::-webkit-scrollbar-track {
-    background-color: var.$gray-6;
+    background-color: var.$bg-hover;
   }
 
   ::-webkit-scrollbar-thumb {
-    border-radius: 4px;
-    background-color: var.$gray-1;
+    border-radius: var.$radius-sm;
+    background-color: var.$bg-active;
   }
 
   ::selection {
-    background-color: var.$gray-4;
+    background-color: var.$bg-active;
   }
 
   :any-link {
-    color: var.$black-5;
+    color: var.$text-secondary;
     transition: color 0.3s;
 
     &:hover {
-      color: var.$black-9 !important;
+      color: var.$text !important;
     }
   }
+}
+
+// Native buttons keep the browser's text color, which doesn't follow the theme.
+button {
+  color: inherit;
 }
 
 .hover-default {

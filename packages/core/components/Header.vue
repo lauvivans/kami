@@ -47,9 +47,9 @@ const settingsBtn = ref<HTMLElement | null>(null);
 
 <style lang="scss">
 .header {
-  background-color: $white;
+  background-color: $bg;
   height: $header-height;
-  z-index: 1;
+  z-index: $z-header;
 
   &__content {
     display: flex;

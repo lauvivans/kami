@@ -262,45 +262,45 @@ function openPage(page: PageInfo) {
   }
 
   &__navbar {
-    @include flex-layout($row-gap: 15px);
+    @include flex-layout($row-gap: $space-6);
 
-    margin-bottom: 30px;
+    margin-bottom: $space-8;
   }
 
   &__menu {
     @include flex-layout($flex-direction: row);
 
     justify-content: space-between;
-    border-bottom: 1px solid $black-2;
+    border-bottom: $line solid $border;
   }
 
   &__views {
-    @include flex-layout($flex-direction: row, $column-gap: 10px);
+    @include flex-layout($flex-direction: row, $column-gap: $space-4);
   }
 
   &__view {
     all: unset;
     display: flex;
     align-items: center;
-    column-gap: 3px;
+    column-gap: $space-1;
     cursor: pointer;
-    color: $black-6;
-    padding-bottom: $default-spacing;
-    border-bottom: 2px solid transparent;
+    color: $text-secondary;
+    padding-bottom: $space-4;
+    border-bottom: $line-thick solid transparent;
 
     &--active {
-      font-weight: $fw-700;
+      font-weight: $fw-bold;
       color: inherit;
-      border-bottom-color: $black;
+      border-bottom-color: $text;
     }
 
     &:focus-visible {
-      outline: 2px solid $active;
+      outline: $line-thick solid $accent;
     }
   }
 
   &__actions {
-    @include flex-layout($flex-direction: row, $column-gap: 10px);
+    @include flex-layout($flex-direction: row, $column-gap: $space-4);
 
     visibility: hidden;
 
@@ -311,30 +311,30 @@ function openPage(page: PageInfo) {
 
     button {
       all: unset;
-      color: $black-8;
+      color: $text;
       cursor: pointer;
       box-sizing: border-box;
-      padding: 7px 5px;
-      margin-bottom: 5px;
+      padding: $space-3 $space-2;
+      margin-bottom: $space-2;
 
       &:hover {
-        border-radius: 10%;
-        background-color: $gray-4;
+        border-radius: $radius-sm;
+        background-color: $bg-hover;
       }
 
       &:focus-visible {
-        outline: 2px solid $active;
+        outline: $line-thick solid $accent;
       }
     }
 
     .database-block__action--active {
-      color: $active;
+      color: $accent;
     }
   }
 
   &__title {
-    font-weight: $fw-700;
-    font-size: $fs-large;
+    font-weight: $fw-bold;
+    font-size: $fs-h3;
   }
 }
 
@@ -348,7 +348,7 @@ function openPage(page: PageInfo) {
     // no `all: unset` here: it would also undo %hover-default
     display: flex;
     align-items: center;
-    column-gap: $default-spacing;
+    column-gap: $space-4;
     box-sizing: border-box;
     border: none;
     background-color: transparent;
@@ -357,23 +357,23 @@ function openPage(page: PageInfo) {
 
     &:focus-visible,
     &:has(:focus-visible) {
-      outline: 2px solid $active;
+      outline: $line-thick solid $accent;
     }
   }
 
   [aria-pressed="true"] {
-    color: $active;
+    color: $accent;
   }
 
   hr {
     width: 100%;
     border: none;
-    border-top: 1px solid $black-2;
+    border-top: $line solid $border;
   }
 
   &__empty {
-    padding: $default-spacing;
-    color: $black-6;
+    padding: $space-4;
+    color: $text-secondary;
   }
 }
 </style>

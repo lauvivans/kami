@@ -1,7 +1,17 @@
 import { describe, expect, it } from "vitest";
 import { tagColorClass, tagName } from "@core/util/tagColorClass";
 
-const colors = ["purple", "blue", "yellow", "brown", "green", "orange", "gray"];
+const colors = [
+  "purple",
+  "blue",
+  "yellow",
+  "brown",
+  "green",
+  "orange",
+  "gray",
+  "pink",
+  "red",
+];
 
 describe("tagColorClass", () => {
   it("gives a tag the same class every time", () => {

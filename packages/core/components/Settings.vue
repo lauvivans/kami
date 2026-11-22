@@ -96,28 +96,28 @@ watch(activeFontSize, (newFontSize) => {
 <style lang="scss">
 .modal-settings {
   &__style {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid $black-1;
+    padding: $space-4 0;
+    border-bottom: $line solid $border;
     display: flex;
     flex-direction: column;
-    row-gap: 1rem;
+    row-gap: $space-6;
 
     > span {
       font-size: $fs-xs;
-      color: $black-6;
-      font-weight: $fw-600;
+      color: $text-secondary;
+      font-weight: $fw-semibold;
     }
   }
 
   &__ag {
-    color: $black-6;
+    color: $text-secondary;
     font-stretch: condensed;
-    font-size: $fs-large;
+    font-size: $fs-h3;
   }
 
   &__font-name {
-    color: $black-4;
-    font-weight: $fw-600;
+    color: $text-tertiary;
+    font-weight: $fw-semibold;
     font-size: $fs-xs;
   }
 
@@ -129,34 +129,34 @@ watch(activeFontSize, (newFontSize) => {
   &__font-wrapper {
     display: flex;
     flex-direction: column;
-    row-gap: 0.5rem;
+    row-gap: $space-4;
     align-items: center;
-    border-radius: 5%;
+    border-radius: $radius-md;
     cursor: pointer;
     transition: background-color 0.2s;
-    padding: 5px 3px;
+    padding: $space-2 $space-1;
 
     &:nth-child(1) {
-      font-family: $default;
+      font-family: $font-sans;
     }
 
     &:nth-child(2) {
-      font-family: $serif;
+      font-family: $font-serif;
     }
 
     &:nth-child(3) {
-      font-family: $mono;
+      font-family: $font-mono;
     }
 
     &:hover {
-      background-color: $gray-4;
+      background-color: $bg-hover;
     }
 
     &--active {
       animation: blink 1s;
 
       .modal-settings__ag {
-        color: $active;
+        color: $accent;
       }
     }
   }
@@ -164,8 +164,8 @@ watch(activeFontSize, (newFontSize) => {
   &__size-and-width {
     display: flex;
     flex-direction: column;
-    row-gap: 0.5rem;
-    padding: 1rem 0.2rem 0.5rem;
+    row-gap: $space-4;
+    padding: $space-6 $space-1 $space-4;
 
     @media (max-width: $screen-xs) {
       display: none;

@@ -22,14 +22,14 @@ const value = defineModel<boolean>("isChecked");
 .todo-item {
   display: flex;
   align-items: flex-start;
-  column-gap: $default-spacing;
+  column-gap: $space-4;
 
-  // As tall as one line of text (Text.vue uses line-height 1.5), so the
+  // As tall as one line of text (Text.vue uses $lh-body), so the
   // checkbox is centered on the first line, also when the text wraps.
   &__box {
     display: flex;
     align-items: center;
-    height: 1.5em;
+    height: calc($lh-body * 1em);
   }
 
   &__checkbox {
