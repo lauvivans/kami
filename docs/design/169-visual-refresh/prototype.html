@@ -1,0 +1,1402 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kami refresh prototype</title>
+    <!--
+      Prototype for issue #169. Every size, color, radius and shadow below comes
+      from the tokens in :root, which mirror the proposal in README.md.
+      Open the file in a browser; use the toggle in the header for the dark
+      theme and a narrow window (or device mode) for mobile.
+    -->
+    <style>
+      :root {
+        /* color: surfaces */
+        --bg: rgb(255 255 255);
+        --bg-sidebar: rgb(248 248 247);
+        --bg-hover: rgb(0 0 0 / 4%);
+        --bg-active: rgb(0 0 0 / 6%);
+        --bg-floating: rgb(255 255 255);
+        --bg-block: rgb(247 246 243);
+        --bg-tabs: rgb(240 240 238);
+        --overlay: rgb(15 15 15 / 60%);
+
+        /* color: text */
+        --text: rgb(50 48 44);
+        --text-secondary: rgb(115 114 110);
+        --text-tertiary: rgb(165 164 160);
+        --text-inverse: rgb(255 255 255);
+        --border: rgb(0 0 0 / 9%);
+        --accent: rgb(35 131 226);
+        --code-inline: rgb(205 60 58);
+
+        /* color: tags and callouts (bg / text) */
+        --tag-gray-bg: rgb(241 241 239);
+        --tag-brown-bg: rgb(244 238 238);
+        --tag-orange-bg: rgb(251 236 221);
+        --tag-yellow-bg: rgb(251 243 219);
+        --tag-green-bg: rgb(237 243 236);
+        --tag-blue-bg: rgb(231 243 248);
+        --tag-purple-bg: rgb(244 240 247);
+        --tag-pink-bg: rgb(249 238 243);
+        --tag-red-bg: rgb(253 235 236);
+        --tag-text: rgb(50 48 44);
+
+        /* typography */
+        --font-sans:
+          ui-sans-serif, -apple-system, BlinkMacSystemFont,
+          "Segoe UI Variable Display", "Segoe UI", Helvetica, Arial, sans-serif,
+          "Apple Color Emoji", "Segoe UI Emoji";
+        --font-mono:
+          "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
+        --fs-xs: 12px;
+        --fs-sm: 14px;
+        --fs-md: 16px;
+        --fs-h3: 20px;
+        --fs-h2: 24px;
+        --fs-h1: 30px;
+        --fs-title: 40px;
+        --fs-title-mobile: 32px;
+        --fw-regular: 400;
+        --fw-medium: 500;
+        --fw-semibold: 600;
+        --fw-bold: 700;
+        --lh-body: 1.5;
+        --lh-heading: 1.3;
+
+        /* spacing (4px scale) */
+        --space-1: 2px;
+        --space-2: 4px;
+        --space-3: 6px;
+        --space-4: 8px;
+        --space-5: 12px;
+        --space-6: 16px;
+        --space-7: 24px;
+        --space-8: 32px;
+        --space-9: 48px;
+        --space-10: 96px;
+
+        /* radius */
+        --radius-sm: 4px;
+        --radius-md: 6px;
+        --radius-lg: 10px;
+        --radius-pill: 999px;
+
+        /* shadow */
+        --shadow-floating:
+          0 0 0 1px rgb(15 15 15 / 5%), 0 3px 6px rgb(15 15 15 / 10%),
+          0 9px 24px rgb(15 15 15 / 20%);
+        --shadow-sidebar: inset -1px 0 0 rgb(0 0 0 / 2.4%);
+
+        /* layout */
+        --sidebar-width: 240px;
+        --header-height: 44px;
+        --tabs-height: 36px;
+        --item-height: 28px;
+        --page-width: 708px;
+        --page-gutter: 96px;
+        --page-gutter-mobile: 20px;
+        --banner-height: 220px;
+        --banner-height-mobile: 160px;
+        --icon-size: 78px;
+        --icon-size-mobile: 64px;
+        --line: 1px;
+        --line-thick: 1.5px;
+        --line-quote: 3px;
+        --tab-width: 200px;
+        --tab-width-mobile: 150px;
+        --prop-name-width: 160px;
+        --prop-name-width-mobile: 120px;
+        --card-min-width: 200px;
+        --card-cover-height: 120px;
+        --tag-height: 20px;
+        --modal-width: 960px;
+        --sidebar-max-mobile: 85vw;
+        --fs-code: 0.85em;
+
+        /* z-index */
+        --z-content: 0;
+        --z-header: 1;
+        --z-sidebar: 3;
+        --z-tabs: 888;
+        --z-overlay: 999;
+        --z-modal: 2000;
+
+        /* motion */
+        --duration: 0.15s;
+      }
+
+      :root[data-theme="dark"] {
+        --bg: rgb(25 25 25);
+        --bg-sidebar: rgb(32 32 32);
+        --bg-hover: rgb(255 255 255 / 6%);
+        --bg-active: rgb(255 255 255 / 9%);
+        --bg-floating: rgb(37 37 37);
+        --bg-block: rgb(37 37 37);
+        --bg-tabs: rgb(20 20 20);
+        --overlay: rgb(0 0 0 / 70%);
+        --text: rgb(255 255 255 / 81%);
+        --text-secondary: rgb(255 255 255 / 52%);
+        --text-tertiary: rgb(255 255 255 / 34%);
+        --text-inverse: rgb(25 25 25);
+        --border: rgb(255 255 255 / 9%);
+        --accent: rgb(82 156 202);
+        --code-inline: rgb(235 87 87);
+        --tag-gray-bg: rgb(55 55 55);
+        --tag-brown-bg: rgb(74 50 40);
+        --tag-orange-bg: rgb(92 59 35);
+        --tag-yellow-bg: rgb(86 67 40);
+        --tag-green-bg: rgb(36 61 48);
+        --tag-blue-bg: rgb(20 58 78);
+        --tag-purple-bg: rgb(60 45 73);
+        --tag-pink-bg: rgb(78 44 60);
+        --tag-red-bg: rgb(82 46 42);
+        --tag-text: rgb(255 255 255 / 81%);
+        --shadow-floating:
+          0 0 0 1px rgb(255 255 255 / 9%), 0 3px 6px rgb(0 0 0 / 40%),
+          0 9px 24px rgb(0 0 0 / 50%);
+        --shadow-sidebar: inset -1px 0 0 rgb(255 255 255 / 5%);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        height: 100dvh;
+        overflow: hidden;
+      }
+
+      body {
+        font-family: var(--font-sans);
+        font-size: var(--fs-md);
+        line-height: var(--lh-body);
+        color: var(--text);
+        background: var(--bg);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      button {
+        font: inherit;
+        color: inherit;
+        background: none;
+        border: 0;
+        padding: 0;
+        cursor: pointer;
+      }
+
+      svg {
+        width: var(--space-6);
+        height: var(--space-6);
+        flex-shrink: 0;
+        stroke: currentcolor;
+        fill: none;
+        stroke-width: 1.6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .app {
+        display: grid;
+        grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+        height: 100dvh;
+      }
+
+      .app--collapsed {
+        grid-template-columns: 0 minmax(0, 1fr);
+      }
+
+      /* sidebar */
+      .sidebar {
+        background: var(--bg-sidebar);
+        box-shadow: var(--shadow-sidebar);
+        overflow: hidden auto;
+        padding: var(--space-4) var(--space-4) var(--space-7);
+        z-index: var(--z-sidebar);
+        font-size: var(--fs-sm);
+        color: var(--text-secondary);
+      }
+
+      .app--collapsed .sidebar {
+        display: none;
+      }
+
+      .sidebar__owner {
+        display: flex;
+        align-items: center;
+        gap: var(--space-4);
+        padding: var(--space-3) var(--space-4);
+        margin-bottom: var(--space-2);
+        border-radius: var(--radius-md);
+        color: var(--text);
+        font-weight: var(--fw-medium);
+      }
+
+      .sidebar__avatar {
+        display: grid;
+        place-items: center;
+        width: var(--space-7);
+        height: var(--space-7);
+        border-radius: var(--radius-sm);
+        background: var(--tag-orange-bg);
+        font-size: var(--fs-xs);
+        font-weight: var(--fw-semibold);
+      }
+
+      .sidebar__handle {
+        display: block;
+        font-size: var(--fs-xs);
+        font-weight: var(--fw-regular);
+        color: var(--text-tertiary);
+        line-height: var(--lh-heading);
+      }
+
+      .sidebar__section {
+        margin-top: var(--space-6);
+      }
+
+      .sidebar__label {
+        padding: 0 var(--space-4);
+        margin-bottom: var(--space-1);
+        font-size: var(--fs-xs);
+        font-weight: var(--fw-medium);
+        color: var(--text-tertiary);
+        line-height: var(--item-height);
+      }
+
+      .item {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        width: 100%;
+        height: var(--item-height);
+        padding: 0 var(--space-4);
+        border-radius: var(--radius-md);
+        text-align: left;
+        transition: background-color var(--duration);
+      }
+
+      .item:hover {
+        background: var(--bg-hover);
+      }
+
+      .item--active {
+        background: var(--bg-active);
+        color: var(--text);
+        font-weight: var(--fw-medium);
+      }
+
+      .item--child {
+        padding-left: var(--space-8);
+      }
+
+      .item__chevron {
+        width: var(--space-5);
+        height: var(--space-5);
+        color: var(--text-tertiary);
+      }
+
+      .item__name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      /* main column */
+      .main {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        height: 100dvh;
+      }
+
+      .tabs {
+        display: flex;
+        align-items: flex-end;
+        gap: var(--space-1);
+        height: var(--tabs-height);
+        padding: 0 var(--space-4);
+        background: var(--bg-tabs);
+        z-index: var(--z-tabs);
+        overflow-x: auto;
+        flex-shrink: 0;
+      }
+
+      .tab {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        min-width: 0;
+        width: var(--tab-width);
+        height: calc(var(--tabs-height) - var(--space-2));
+        padding: 0 var(--space-5);
+        border-radius: var(--radius-md) var(--radius-md) 0 0;
+        font-size: var(--fs-sm);
+        color: var(--text-secondary);
+        flex-shrink: 0;
+      }
+
+      .tab:hover {
+        background: var(--bg-hover);
+      }
+
+      .tab--active {
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      .tab--active:hover {
+        background: var(--bg);
+      }
+
+      .tab__close {
+        margin-left: auto;
+        display: grid;
+        place-items: center;
+        border-radius: var(--radius-sm);
+        visibility: hidden;
+      }
+
+      .tab:hover .tab__close,
+      .tab--active .tab__close {
+        visibility: visible;
+      }
+
+      .tab__close svg,
+      .tabs__add svg {
+        width: var(--fs-sm);
+        height: var(--fs-sm);
+      }
+
+      .tabs__add {
+        display: grid;
+        place-items: center;
+        width: var(--item-height);
+        height: var(--item-height);
+        margin-bottom: var(--space-1);
+        border-radius: var(--radius-md);
+        color: var(--text-secondary);
+        flex-shrink: 0;
+      }
+
+      .tabs__add:hover {
+        background: var(--bg-hover);
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        height: var(--header-height);
+        padding: 0 var(--space-5);
+        background: var(--bg);
+        z-index: var(--z-header);
+        flex-shrink: 0;
+        font-size: var(--fs-sm);
+      }
+
+      .icon-btn {
+        display: grid;
+        place-items: center;
+        width: var(--item-height);
+        height: var(--item-height);
+        border-radius: var(--radius-md);
+        color: var(--text-secondary);
+        flex-shrink: 0;
+        transition: background-color var(--duration);
+      }
+
+      .icon-btn:hover {
+        background: var(--bg-hover);
+      }
+
+      .crumbs {
+        display: flex;
+        align-items: center;
+        min-width: 0;
+        flex: 1;
+        color: var(--text-secondary);
+      }
+
+      .crumb {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        min-width: 0;
+        height: var(--item-height);
+        padding: 0 var(--space-3);
+        border-radius: var(--radius-sm);
+      }
+
+      .crumb:hover {
+        background: var(--bg-hover);
+      }
+
+      .crumb:last-child {
+        color: var(--text);
+      }
+
+      .crumb span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .crumbs__sep {
+        color: var(--text-tertiary);
+        padding: 0 var(--space-1);
+      }
+
+      .page {
+        flex: 1;
+        overflow: hidden auto;
+        isolation: isolate;
+        z-index: var(--z-content);
+      }
+
+      .banner {
+        height: var(--banner-height);
+        background:
+          radial-gradient(
+            circle at 20% 30%,
+            var(--tag-yellow-bg),
+            transparent 60%
+          ),
+          radial-gradient(
+            circle at 80% 70%,
+            var(--tag-blue-bg),
+            transparent 55%
+          ),
+          var(--tag-orange-bg);
+      }
+
+      .page__body {
+        max-width: calc(var(--page-width) + 2 * var(--page-gutter));
+        margin: 0 auto;
+        padding: 0 var(--page-gutter) var(--space-10);
+      }
+
+      .page__icon {
+        display: grid;
+        place-items: center;
+        width: var(--icon-size);
+        height: var(--icon-size);
+        margin-top: calc(var(--icon-size) / -2);
+        position: relative;
+        border-radius: var(--radius-lg);
+        background: var(--bg);
+        font-size: var(--fs-title);
+      }
+
+      .page__title {
+        margin: var(--space-6) 0 var(--space-2);
+        font-size: var(--fs-title);
+        font-weight: var(--fw-bold);
+        line-height: var(--lh-heading);
+      }
+
+      .props {
+        display: grid;
+        grid-template-columns: var(--prop-name-width) minmax(0, 1fr);
+        row-gap: var(--space-1);
+        margin: var(--space-4) 0 var(--space-6);
+        font-size: var(--fs-sm);
+      }
+
+      .props__name,
+      .props__value {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: var(--space-3);
+        min-height: var(--item-height);
+        padding: 0 var(--space-3);
+        border-radius: var(--radius-sm);
+      }
+
+      .props__name {
+        color: var(--text-secondary);
+      }
+
+      .divider {
+        border: 0;
+        border-top: var(--line) solid var(--border);
+        margin: var(--space-4) 0;
+      }
+
+      .blocks > * {
+        margin: 0 0 var(--space-2);
+      }
+
+      .blocks h1,
+      .blocks h2,
+      .blocks h3 {
+        font-weight: var(--fw-semibold);
+        line-height: var(--lh-heading);
+      }
+
+      .blocks h1 {
+        font-size: var(--fs-h1);
+        margin-top: var(--space-8);
+      }
+
+      .blocks h2 {
+        font-size: var(--fs-h2);
+        margin-top: var(--space-7);
+      }
+
+      .blocks h3 {
+        font-size: var(--fs-h3);
+        margin-top: var(--space-6);
+      }
+
+      .blocks p {
+        padding: var(--space-1) 0;
+      }
+
+      .blocks a {
+        color: inherit;
+        text-decoration: underline;
+        text-decoration-color: var(--text-tertiary);
+        text-underline-offset: var(--space-1);
+      }
+
+      .blocks a:hover {
+        text-decoration-color: var(--text);
+      }
+
+      code {
+        font-family: var(--font-mono);
+        font-size: var(--fs-code);
+        padding: var(--space-1) var(--space-2);
+        border-radius: var(--radius-sm);
+        background: var(--bg-hover);
+        color: var(--code-inline);
+      }
+
+      .callout {
+        display: flex;
+        gap: var(--space-4);
+        padding: var(--space-6) var(--space-6) var(--space-6) var(--space-5);
+        border-radius: var(--radius-md);
+        background: var(--bg-block);
+      }
+
+      .quote {
+        padding: var(--space-1) 0 var(--space-1) var(--space-6);
+        border-left: var(--line-quote) solid var(--text);
+        font-size: var(--fs-md);
+      }
+
+      .list {
+        padding-left: var(--space-7);
+      }
+
+      .list li {
+        padding: var(--space-1) 0;
+      }
+
+      .todo {
+        list-style: none;
+        padding: 0;
+      }
+
+      .todo li {
+        display: flex;
+        align-items: center;
+        gap: var(--space-4);
+        padding: var(--space-1) 0;
+      }
+
+      .check {
+        display: grid;
+        place-items: center;
+        width: var(--space-6);
+        height: var(--space-6);
+        border: var(--line-thick) solid var(--text-secondary);
+        border-radius: var(--radius-sm);
+        flex-shrink: 0;
+      }
+
+      .check--done {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: var(--text-inverse);
+      }
+
+      .check svg {
+        width: var(--space-5);
+        height: var(--space-5);
+        stroke-width: 2.4;
+      }
+
+      .todo li.done span {
+        color: var(--text-tertiary);
+        text-decoration: line-through;
+      }
+
+      details.toggle summary {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        cursor: pointer;
+        list-style: none;
+        padding: var(--space-1) 0;
+      }
+
+      details.toggle summary::-webkit-details-marker {
+        display: none;
+      }
+
+      details.toggle summary svg {
+        transition: transform var(--duration);
+        color: var(--text-secondary);
+      }
+
+      details.toggle[open] summary svg {
+        transform: rotate(90deg);
+      }
+
+      details.toggle > div {
+        padding-left: var(--space-7);
+      }
+
+      pre.code {
+        margin: var(--space-4) 0;
+        padding: var(--space-8) var(--space-6);
+        border-radius: var(--radius-md);
+        background: var(--bg-block);
+        overflow-x: auto;
+        font-family: var(--font-mono);
+        font-size: var(--fs-sm);
+        line-height: var(--lh-body);
+      }
+
+      pre.code code {
+        padding: 0;
+        background: none;
+        color: var(--text);
+      }
+
+      .columns {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--space-9);
+      }
+
+      .bookmark {
+        display: flex;
+        border: var(--line) solid var(--border);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        color: inherit;
+        text-decoration: none;
+        transition: background-color var(--duration);
+      }
+
+      .bookmark:hover {
+        background: var(--bg-hover);
+      }
+
+      .bookmark__text {
+        padding: var(--space-5) var(--space-6);
+        min-width: 0;
+      }
+
+      .bookmark__title {
+        font-size: var(--fs-sm);
+      }
+
+      .bookmark__desc,
+      .bookmark__url {
+        font-size: var(--fs-xs);
+        color: var(--text-secondary);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .mention {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--space-2);
+        font-weight: var(--fw-medium);
+      }
+
+      .db__tabs {
+        display: flex;
+        gap: var(--space-2);
+        border-bottom: var(--line) solid var(--border);
+        margin-bottom: var(--space-5);
+        font-size: var(--fs-sm);
+      }
+
+      .db__tab {
+        display: flex;
+        align-items: center;
+        gap: var(--space-3);
+        height: var(--item-height);
+        padding: 0 var(--space-4);
+        margin-bottom: var(--space-2);
+        border-radius: var(--radius-md);
+        color: var(--text-secondary);
+      }
+
+      .db__tab:hover {
+        background: var(--bg-hover);
+      }
+
+      .db__tab--active {
+        color: var(--text);
+        background: var(--bg-active);
+      }
+
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(
+          auto-fill,
+          minmax(var(--card-min-width), 1fr)
+        );
+        gap: var(--space-5);
+      }
+
+      .card {
+        border: var(--line) solid var(--border);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        background: var(--bg);
+        transition: background-color var(--duration);
+      }
+
+      .card:hover {
+        background: var(--bg-hover);
+      }
+
+      .card__cover {
+        height: var(--card-cover-height);
+        background: var(--tag-blue-bg);
+      }
+
+      .card__cover--alt {
+        background: var(--tag-green-bg);
+      }
+
+      .card__cover--alt2 {
+        background: var(--tag-purple-bg);
+      }
+
+      .card__body {
+        padding: var(--space-4) var(--space-5) var(--space-5);
+        font-size: var(--fs-sm);
+      }
+
+      .card__title {
+        font-weight: var(--fw-medium);
+        margin-bottom: var(--space-3);
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+      }
+
+      .tag {
+        padding: 0 var(--space-3);
+        border-radius: var(--radius-sm);
+        font-size: var(--fs-xs);
+        line-height: var(--tag-height);
+        color: var(--tag-text);
+        white-space: nowrap;
+      }
+
+      .tag--orange {
+        background: var(--tag-orange-bg);
+      }
+
+      .tag--blue {
+        background: var(--tag-blue-bg);
+      }
+
+      .tag--purple {
+        background: var(--tag-purple-bg);
+      }
+
+      .tag--green {
+        background: var(--tag-green-bg);
+      }
+
+      .tag--gray {
+        background: var(--tag-gray-bg);
+      }
+
+      .tag--pink {
+        background: var(--tag-pink-bg);
+      }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: var(--fs-sm);
+      }
+
+      .table th,
+      .table td {
+        text-align: left;
+        padding: var(--space-3) var(--space-4);
+        border-top: var(--line) solid var(--border);
+        border-bottom: var(--line) solid var(--border);
+      }
+
+      .table th {
+        color: var(--text-secondary);
+        font-weight: var(--fw-regular);
+      }
+
+      .table td + td,
+      .table th + th {
+        border-left: var(--line) solid var(--border);
+      }
+
+      .badge {
+        position: absolute;
+        right: var(--space-6);
+        bottom: var(--space-6);
+        z-index: var(--z-header);
+        padding: var(--space-1) var(--space-4);
+        border-radius: var(--radius-pill);
+        font-size: var(--fs-xs);
+        color: var(--text-tertiary);
+        background: var(--bg);
+        box-shadow: var(--shadow-floating);
+      }
+
+      /* modal */
+      .overlay {
+        position: fixed;
+        inset: 0;
+        display: none;
+        place-items: center;
+        background: var(--overlay);
+        z-index: var(--z-overlay);
+      }
+
+      .overlay--open {
+        display: grid;
+      }
+
+      .modal {
+        width: min(var(--modal-width), calc(100% - 2 * var(--space-9)));
+        height: calc(100dvh - 2 * var(--space-9));
+        border-radius: var(--radius-lg);
+        background: var(--bg);
+        box-shadow: var(--shadow-floating);
+        z-index: var(--z-modal);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .modal__bar {
+        display: flex;
+        justify-content: space-between;
+        padding: var(--space-4) var(--space-5);
+        flex-shrink: 0;
+      }
+
+      .modal .page__body {
+        padding: 0 var(--space-10) var(--space-9);
+        overflow: hidden auto;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+      }
+
+      @media (max-width: 767px) {
+        .app,
+        .app--collapsed {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .sidebar {
+          position: fixed;
+          inset: 0 auto 0 0;
+          width: min(var(--sidebar-width), var(--sidebar-max-mobile));
+          display: none;
+          box-shadow: var(--shadow-floating);
+        }
+
+        .app--mobile-open .sidebar {
+          display: block;
+        }
+
+        .main {
+          grid-column: 1;
+        }
+
+        .tabs {
+          order: 3;
+          align-items: center;
+          border-top: var(--line) solid var(--border);
+        }
+
+        .tab {
+          width: var(--tab-width-mobile);
+          border-radius: var(--radius-md);
+          height: var(--item-height);
+        }
+
+        .page__body {
+          padding: 0 var(--page-gutter-mobile) var(--space-10);
+        }
+
+        .banner {
+          height: var(--banner-height-mobile);
+        }
+
+        .page__icon {
+          width: var(--icon-size-mobile);
+          height: var(--icon-size-mobile);
+          margin-top: calc(var(--icon-size-mobile) / -2);
+          font-size: var(--fs-title-mobile);
+        }
+
+        .page__title {
+          font-size: var(--fs-title-mobile);
+        }
+
+        .props {
+          grid-template-columns: var(--prop-name-width-mobile) minmax(0, 1fr);
+        }
+
+        .columns {
+          grid-template-columns: minmax(0, 1fr);
+          gap: 0;
+        }
+
+        .badge {
+          display: none;
+        }
+
+        .modal {
+          width: calc(100% - 2 * var(--space-4));
+          height: calc(100dvh - 2 * var(--space-4));
+        }
+
+        .modal .page__body {
+          padding: 0 var(--page-gutter-mobile) var(--space-9);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol id="i-chevron" viewBox="0 0 16 16">
+        <path d="M6 4l4 4-4 4" />
+      </symbol>
+      <symbol id="i-search" viewBox="0 0 16 16">
+        <circle cx="7" cy="7" r="4.5" />
+        <path d="M10.5 10.5L14 14" />
+      </symbol>
+      <symbol id="i-gear" viewBox="0 0 16 16">
+        <circle cx="8" cy="8" r="2.2" />
+        <path
+          d="M8 1.5v2M8 12.5v2M1.5 8h2M12.5 8h2M3.4 3.4l1.4 1.4M11.2 11.2l1.4 1.4M3.4 12.6l1.4-1.4M11.2 4.8l1.4-1.4"
+        />
+      </symbol>
+      <symbol id="i-sidebar" viewBox="0 0 16 16">
+        <rect x="2" y="3" width="12" height="10" rx="2" />
+        <path d="M6.5 3v10" />
+      </symbol>
+      <symbol id="i-dots" viewBox="0 0 16 16">
+        <circle cx="3.5" cy="8" r="0.6" />
+        <circle cx="8" cy="8" r="0.6" />
+        <circle cx="12.5" cy="8" r="0.6" />
+      </symbol>
+      <symbol id="i-plus" viewBox="0 0 16 16">
+        <path d="M8 3v10M3 8h10" />
+      </symbol>
+      <symbol id="i-x" viewBox="0 0 16 16">
+        <path d="M4 4l8 8M12 4l-8 8" />
+      </symbol>
+      <symbol id="i-moon" viewBox="0 0 16 16">
+        <path d="M13 9.5A5.5 5.5 0 016.5 3a5.5 5.5 0 106.5 6.5z" />
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 16 16">
+        <path d="M3.5 8.5l3 3 6-7" />
+      </symbol>
+      <symbol id="i-expand" viewBox="0 0 16 16">
+        <path d="M9.5 3H13v3.5M6.5 13H3V9.5M13 3L9 7M3 13l4-4" />
+      </symbol>
+      <symbol id="i-grid" viewBox="0 0 16 16">
+        <rect x="2.5" y="2.5" width="4.5" height="4.5" rx="1" />
+        <rect x="9" y="2.5" width="4.5" height="4.5" rx="1" />
+        <rect x="2.5" y="9" width="4.5" height="4.5" rx="1" />
+        <rect x="9" y="9" width="4.5" height="4.5" rx="1" />
+      </symbol>
+      <symbol id="i-table" viewBox="0 0 16 16">
+        <rect x="2" y="3" width="12" height="10" rx="1.5" />
+        <path d="M2 6.5h12M6.5 6.5V13" />
+      </symbol>
+    </svg>
+
+    <div class="app" id="app">
+      <aside class="sidebar" aria-label="Pages">
+        <div class="sidebar__owner">
+          <span class="sidebar__avatar">MP</span>
+          <span>My Portfolio <span class="sidebar__handle">@user</span></span>
+        </div>
+        <button class="item">
+          <svg><use href="#i-search" /></svg><span>Search</span>
+        </button>
+        <button class="item">
+          <svg><use href="#i-gear" /></svg><span>Settings</span>
+        </button>
+
+        <div class="sidebar__section">
+          <div class="sidebar__label">Favorites</div>
+          <button class="item">
+            <svg class="item__chevron"><use href="#i-chevron" /></svg>🏠<span
+              class="item__name"
+              >About me</span
+            >
+          </button>
+          <button class="item item--active">
+            <svg class="item__chevron"><use href="#i-chevron" /></svg>📚<span
+              class="item__name"
+              >Projects</span
+            >
+          </button>
+        </div>
+
+        <div class="sidebar__section">
+          <div class="sidebar__label">Private</div>
+          <button class="item">
+            <svg class="item__chevron"><use href="#i-chevron" /></svg>🏠<span
+              class="item__name"
+              >About me</span
+            >
+          </button>
+          <button class="item item--active">
+            <svg class="item__chevron" style="transform: rotate(90deg)">
+              <use href="#i-chevron" /></svg
+            >📚<span class="item__name">Projects</span>
+          </button>
+          <button class="item item--child">
+            🧩<span class="item__name">Component library</span>
+          </button>
+          <button class="item item--child">
+            📝<span class="item__name">Writing</span>
+          </button>
+          <button class="item">
+            <svg class="item__chevron"><use href="#i-chevron" /></svg>✉️<span
+              class="item__name"
+              >Contact</span
+            >
+          </button>
+        </div>
+      </aside>
+
+      <div class="main">
+        <nav class="tabs" aria-label="Open tabs">
+          <div class="tab tab--active">
+            <span class="item__name">📚 Projects</span
+            ><button class="tab__close" aria-label="Close tab">
+              <svg><use href="#i-x" /></svg>
+            </button>
+          </div>
+          <div class="tab">
+            <span class="item__name">🏠 About me</span
+            ><button class="tab__close" aria-label="Close tab">
+              <svg><use href="#i-x" /></svg>
+            </button>
+          </div>
+          <button class="tabs__add" aria-label="New tab">
+            <svg><use href="#i-plus" /></svg>
+          </button>
+        </nav>
+
+        <header class="header">
+          <button
+            class="icon-btn"
+            id="toggle-sidebar"
+            aria-label="Toggle sidebar"
+          >
+            <svg><use href="#i-sidebar" /></svg>
+          </button>
+          <div class="crumbs">
+            <span class="crumb"><span>🏠 About me</span></span>
+            <span class="crumbs__sep">/</span>
+            <span class="crumb"><span>📚 Projects</span></span>
+          </div>
+          <button
+            class="icon-btn"
+            id="toggle-theme"
+            aria-label="Toggle dark theme"
+          >
+            <svg><use href="#i-moon" /></svg>
+          </button>
+          <button class="icon-btn" aria-label="Page settings">
+            <svg><use href="#i-dots" /></svg>
+          </button>
+        </header>
+
+        <main class="page">
+          <div class="banner" role="img" aria-label="Page banner"></div>
+          <div class="page__body">
+            <div class="page__icon" aria-hidden="true">📚</div>
+            <h1 class="page__title">Projects</h1>
+
+            <div class="blocks">
+              <p>
+                Things I built and maintain. Open a card to read about a
+                project, or switch to the table to compare them. My favorite is
+                <span class="mention">🧩 <a href="#">Component library</a></span
+                >, which I run with <code>npm create</code>.
+              </p>
+
+              <div class="callout">
+                <span>💡</span
+                ><span
+                  >Every card opens as a page. On a phone it opens in a modal
+                  that uses the full screen height.</span
+                >
+              </div>
+
+              <h2>Selected work</h2>
+
+              <div class="db__tabs" role="tablist">
+                <button
+                  class="db__tab db__tab--active"
+                  data-view="gallery"
+                  role="tab"
+                >
+                  <svg><use href="#i-grid" /></svg>Gallery
+                </button>
+                <button class="db__tab" data-view="table" role="tab">
+                  <svg><use href="#i-table" /></svg>Table
+                </button>
+              </div>
+
+              <div class="gallery" data-panel="gallery">
+                <button class="card" data-open-modal>
+                  <div class="card__cover"></div>
+                  <div class="card__body">
+                    <div class="card__title">📦 Component library</div>
+                    <div class="tags">
+                      <span class="tag tag--orange">npm package</span
+                      ><span class="tag tag--green">Vue</span>
+                    </div>
+                  </div>
+                </button>
+                <button class="card" data-open-modal>
+                  <div class="card__cover card__cover--alt"></div>
+                  <div class="card__body">
+                    <div class="card__title">🗓️ Planner app</div>
+                    <div class="tags">
+                      <span class="tag tag--blue">Web app</span
+                      ><span class="tag tag--purple">TypeScript</span>
+                    </div>
+                  </div>
+                </button>
+                <button class="card" data-open-modal>
+                  <div class="card__cover card__cover--alt2"></div>
+                  <div class="card__body">
+                    <div class="card__title">✍️ Writing</div>
+                    <div class="tags">
+                      <span class="tag tag--pink">Articles</span
+                      ><span class="tag tag--gray">Markdown</span>
+                    </div>
+                  </div>
+                </button>
+              </div>
+
+              <table class="table" data-panel="table" hidden>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Created</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>📦 Component library</td>
+                    <td><span class="tag tag--orange">npm package</span></td>
+                    <td>December 2023</td>
+                  </tr>
+                  <tr>
+                    <td>🗓️ Planner app</td>
+                    <td><span class="tag tag--blue">Web app</span></td>
+                    <td>March 2025</td>
+                  </tr>
+                  <tr>
+                    <td>✍️ Writing</td>
+                    <td><span class="tag tag--pink">Articles</span></td>
+                    <td>June 2025</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h2>Blocks</h2>
+              <h3>Lists</h3>
+              <ul class="list">
+                <li>Bullet item with a <a href="#">link</a></li>
+                <li>Another bullet item</li>
+              </ul>
+              <ul class="todo">
+                <li class="done">
+                  <span class="check check--done"
+                    ><svg><use href="#i-check" /></svg></span
+                  ><span>Publish the first version</span>
+                </li>
+                <li><span class="check"></span><span>Write the docs</span></li>
+              </ul>
+              <details class="toggle">
+                <summary>
+                  <svg><use href="#i-chevron" /></svg>Toggle list
+                </summary>
+                <div><p>Hidden content shows here.</p></div>
+              </details>
+
+              <h3>Quote and code</h3>
+              <blockquote class="quote">
+                A quote block, proposed for long-form pages and Markdown posts.
+              </blockquote>
+              <pre class="code"><code>const metadata: IMetadata = {
+  user: { author: "My Portfolio", socialMedia: "@user" },
+};</code></pre>
+
+              <hr class="divider" />
+
+              <div class="columns">
+                <div>
+                  <h3>Columns</h3>
+                  <p>Two columns on desktop, one on mobile.</p>
+                </div>
+                <div>
+                  <h3>Bookmark</h3>
+                  <a class="bookmark" href="#">
+                    <div class="bookmark__text">
+                      <div class="bookmark__title">Project repository</div>
+                      <div class="bookmark__desc">
+                        Source code, issues and releases.
+                      </div>
+                      <div class="bookmark__url">github.com/user/project</div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <footer class="badge">by Kami</footer>
+      </div>
+    </div>
+
+    <div class="overlay" id="overlay">
+      <div
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+      >
+        <div class="modal__bar">
+          <button class="icon-btn" aria-label="Open as full page">
+            <svg><use href="#i-expand" /></svg>
+          </button>
+          <button class="icon-btn" id="close-modal" aria-label="Close">
+            <svg><use href="#i-x" /></svg>
+          </button>
+        </div>
+        <div class="page__body">
+          <h1 class="page__title" id="modal-title">📦 Component library</h1>
+          <div class="props">
+            <div class="props__name">Created</div>
+            <div class="props__value">December 2023</div>
+            <div class="props__name">Tags</div>
+            <div class="props__value">
+              <span class="tag tag--orange">npm package</span
+              ><span class="tag tag--green">Vue</span
+              ><span class="tag tag--purple">Pinia</span>
+            </div>
+          </div>
+          <hr class="divider" />
+          <div class="blocks">
+            <h2>About</h2>
+            <p>
+              A page opened from a database card. The modal keeps a small margin
+              around it and uses the visible screen height.
+            </p>
+            <p>
+              Long pages scroll inside the modal, and the last block can always
+              reach the screen.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const root = document.documentElement;
+      const app = document.getElementById("app");
+      const mobile = matchMedia("(max-width: 767px)");
+
+      document.getElementById("toggle-theme").addEventListener("click", () => {
+        root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+      });
+
+      document
+        .getElementById("toggle-sidebar")
+        .addEventListener("click", () => {
+          app.classList.toggle(
+            mobile.matches ? "app--mobile-open" : "app--collapsed"
+          );
+        });
+
+      document.querySelector(".page").addEventListener("pointerdown", () => {
+        app.classList.remove("app--mobile-open");
+      });
+
+      document.querySelectorAll(".db__tab").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          document
+            .querySelectorAll(".db__tab")
+            .forEach((t) => t.classList.toggle("db__tab--active", t === tab));
+          document
+            .querySelectorAll("[data-panel]")
+            .forEach((p) => (p.hidden = p.dataset.panel !== tab.dataset.view));
+        });
+      });
+
+      const overlay = document.getElementById("overlay");
+      document
+        .querySelectorAll("[data-open-modal]")
+        .forEach((card) =>
+          card.addEventListener("click", () =>
+            overlay.classList.add("overlay--open")
+          )
+        );
+      document
+        .getElementById("close-modal")
+        .addEventListener("click", () =>
+          overlay.classList.remove("overlay--open")
+        );
+      overlay.addEventListener("click", (e) => {
+        if (e.target === overlay) overlay.classList.remove("overlay--open");
+      });
+    </script>
+  </body>
+</html>
