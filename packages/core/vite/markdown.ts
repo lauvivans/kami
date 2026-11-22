@@ -83,9 +83,10 @@ class Page {
           const tag = { strong: "strong", em: "em", del: "s" }[t.type];
           return [`h("${tag}", null, [${this.inline(t.tokens).join(", ")}])`];
         }
+        // Character references stay literal inside code.
         case "codespan":
           return [
-            `h(${this.block("Code")}, { inline: true }, () => ${str(decode(t.text))})`,
+            `h(${this.block("Code")}, { inline: true }, () => ${str(t.text)})`,
           ];
         case "link":
           return [

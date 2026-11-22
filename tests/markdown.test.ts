@@ -42,11 +42,12 @@ describe("markdown pages", () => {
 
   it("keeps text as text and warns about what has no block", () => {
     const { code, warnings } = toModule(
-      "a <b>{{ x }}</b> &amp; b\n\n| a |\n|---|\n| 1 |\n",
+      "a <b>{{ x }}</b> &amp; b `&amp;`\n\n| a |\n|---|\n| 1 |\n",
       "kami"
     );
     expect(code).toContain(JSON.stringify("a "));
-    expect(code).toContain(JSON.stringify(" & b"));
+    expect(code).toContain(JSON.stringify(" & b "));
+    expect(code).toContain(`() => ${JSON.stringify("&amp;")}`);
     expect(warnings).toContain('block "table" is not supported');
   });
 });
