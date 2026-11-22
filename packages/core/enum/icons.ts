@@ -20,6 +20,7 @@ enum Icons {
   expand = "material-symbols:expand-content-rounded",
   clock = "eva:clock-fill",
   list = "eva:list-outline",
+  text = "eva:text-outline",
   close = "eva:close-outline",
   search = "eva:search-outline",
   arrowLink = "eva:diagonal-arrow-right-up-fill",

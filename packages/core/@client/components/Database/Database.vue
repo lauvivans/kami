@@ -117,7 +117,7 @@ function openPage(page: PageInfo) {
     column-gap: 3px;
     cursor: pointer;
     color: $black-6;
-    padding-bottom: 15px;
+    padding-bottom: $default-spacing;
     border-bottom: 2px solid transparent;
 
     &--active {

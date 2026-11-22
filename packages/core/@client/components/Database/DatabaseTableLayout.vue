@@ -31,7 +31,12 @@ const valueOf = (page: PageInfo, key: string) =>
       <table>
         <thead>
           <tr>
-            <th>Name</th>
+            <th>
+              <span class="database-table__heading">
+                <Icon :icon="Icons.text" />
+                Name
+              </span>
+            </th>
             <th v-for="[key, icon] in columns" :key="key">
               <span class="database-table__heading">
                 <Icon :icon="Icons[icon]" />
@@ -78,6 +83,15 @@ const valueOf = (page: PageInfo, key: string) =>
   &__scroll {
     max-width: 100%;
     overflow-x: auto;
+
+    // on phones the table scrolls by swiping, so the scrollbar only takes room
+    @media (max-width: $screen-small) {
+      scrollbar-width: none;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
   }
 
   table {
