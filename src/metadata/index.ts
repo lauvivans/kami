@@ -19,6 +19,39 @@ import Bookshelf from "../pages/demo/bookshelf.vue";
 import CoffeeMenu from "../pages/demo/coffee-menu.vue";
 import SeasonalDrinks from "../pages/demo/seasonal-drinks.vue";
 
+// Spike #174: each Markdown post becomes a page under Demo, read from its
+// front matter.
+interface PostFrontmatter {
+  title: string;
+  date: string;
+  banner?: PageInfo["banner"];
+  icon?: PageInfo["icon"];
+}
+
+const postFiles = import.meta.glob<{
+  default: PageInfo["component"];
+  frontmatter: PostFrontmatter;
+}>("../pages/demo/posts/*.md", { eager: true });
+
+const posts: Record<string, PageInfo> = Object.fromEntries(
+  Object.entries(postFiles).map(([file, post]) => {
+    const id = file.split("/").pop()!.replace(/\.md$/, "");
+    const { title, banner, icon } = post.frontmatter;
+    return [
+      id,
+      {
+        id,
+        path: `/demo/posts/${id}`,
+        title,
+        banner,
+        icon,
+        component: post.default,
+        parentPage: "demo",
+      },
+    ];
+  })
+);
+
 const coffeeIcon: PageInfo["icon"] = {
   author: "Paula Lee",
   path: "/icons/page-example.png",
@@ -146,7 +179,7 @@ const metadata: IMetadata = {
       banner: restaurantBanner,
       icon: coffeeIcon,
       component: Demo,
-      pages: ["blocks", "coffee-shop", "bookshelf"],
+      pages: ["blocks", "coffee-shop", "bookshelf", ...Object.keys(posts)],
     },
     blocks: {
       id: "blocks",
@@ -204,6 +237,7 @@ const metadata: IMetadata = {
       component: SeasonalDrinks,
       parentPage: "coffee-menu",
     },
+    ...posts,
   },
   favorites: ["home", "client-docs", "demo"],
 };
