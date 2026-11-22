@@ -2,6 +2,44 @@
 
 > Versions up to 1.1.6 were published as `@lauravivan/notion-portfolio`. The notes for 2.0.0 to 2.0.8 are only on the [GitHub releases page](https://github.com/lauvivans/kami/releases). From the next version on, release-please writes this file.
 
+## [3.0.0](https://github.com/lauvivans/kami/compare/v2.2.0...v3.0.0) (2026-11-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* removed Sass variables and their replacements:
+
+### Features
+
+* add a load limit with a Load more button to database views ([#205](https://github.com/lauvivans/kami/issues/205)) ([44e0324](https://github.com/lauvivans/kami/commit/44e0324671c188e399eacdd268f743b350f5899b)), closes [#192](https://github.com/lauvivans/kami/issues/192)
+* add a Quote block ([#196](https://github.com/lauvivans/kami/issues/196)) ([80026d8](https://github.com/lauvivans/kami/commit/80026d82812ad673e8ac39374eacfddf9b80ff02)), closes [#185](https://github.com/lauvivans/kami/issues/185)
+* add a Show more block that limits any list of blocks ([#219](https://github.com/lauvivans/kami/issues/219)) ([988bfc5](https://github.com/lauvivans/kami/commit/988bfc54b48cc7901b2688637c47ffa6bfb52e26)), closes [#218](https://github.com/lauvivans/kami/issues/218)
+* center the page content in a reading column ([#195](https://github.com/lauvivans/kami/issues/195)) ([2440096](https://github.com/lauvivans/kami/commit/244009609657d8eaf75f9b9dc5850ddcece2992c)), closes [#179](https://github.com/lauvivans/kami/issues/179)
+* finish moving the themes to the semantic tokens ([#204](https://github.com/lauvivans/kami/issues/204)) ([0961e6e](https://github.com/lauvivans/kami/commit/0961e6e6bee898ca8e22f41ed051f86bcef2352d)), closes [#183](https://github.com/lauvivans/kami/issues/183)
+* give the bookmark block a favicon and Notion-like spacing ([#214](https://github.com/lauvivans/kami/issues/214)) ([f1025d5](https://github.com/lauvivans/kami/commit/f1025d5d5b48b7a4635d08dd301d1e74098544cc)), closes [#212](https://github.com/lauvivans/kami/issues/212)
+* make Filter and Sort work in database views ([#167](https://github.com/lauvivans/kami/issues/167)) ([7b97ddd](https://github.com/lauvivans/kami/commit/7b97dddbf1d023d51d8124587403efed742c88fd)), closes [#164](https://github.com/lauvivans/kami/issues/164)
+* refresh the database views and the tags ([#197](https://github.com/lauvivans/kami/issues/197)) ([bed145b](https://github.com/lauvivans/kami/commit/bed145bab18d7d7b904303c04ea9c671b95c9cee)), closes [#181](https://github.com/lauvivans/kami/issues/181)
+* refresh the header, breadcrumb and tabs ([#198](https://github.com/lauvivans/kami/issues/198)) ([0bbd043](https://github.com/lauvivans/kami/commit/0bbd043e116fcbb464af865a515f828ba3f0e493)), closes [#178](https://github.com/lauvivans/kami/issues/178)
+* refresh the page, settings and search modals ([#199](https://github.com/lauvivans/kami/issues/199)) ([f64b829](https://github.com/lauvivans/kami/commit/f64b829d11a3407da0f557ce9981a4884e1a1c9a)), closes [#182](https://github.com/lauvivans/kami/issues/182)
+* refresh the sidebar and floating sidebar ([#201](https://github.com/lauvivans/kami/issues/201)) ([6b7f0aa](https://github.com/lauvivans/kami/commit/6b7f0aa607d1e15c43f499588ad5f51e806fc7c5)), closes [#177](https://github.com/lauvivans/kami/issues/177)
+* refresh the text blocks ([#202](https://github.com/lauvivans/kami/issues/202)) ([40a8b53](https://github.com/lauvivans/kami/commit/40a8b530595c37e3082841cf0c162cb41bbdb6d4)), closes [#180](https://github.com/lauvivans/kami/issues/180)
+* replace the design tokens with a semantic set ([#194](https://github.com/lauvivans/kami/issues/194)) ([487e480](https://github.com/lauvivans/kami/commit/487e4808fe7045c2a4d4c219753e928c4de91e84)), closes [#176](https://github.com/lauvivans/kami/issues/176)
+* restyle the footer badge as a small pill ([#200](https://github.com/lauvivans/kami/issues/200)) ([f5879fa](https://github.com/lauvivans/kami/commit/f5879faaf4a422b54b7820349713fae6553832b3)), closes [#184](https://github.com/lauvivans/kami/issues/184)
+* show the full page title in a tooltip when it's cut off ([#207](https://github.com/lauvivans/kami/issues/207)) ([0629f80](https://github.com/lauvivans/kami/commit/0629f80c745b35c90fde598225e473fc8ffad605)), closes [#191](https://github.com/lauvivans/kami/issues/191)
+
+
+### Bug Fixes
+
+* close the floating sidebar on touch screens ([#188](https://github.com/lauvivans/kami/issues/188)) ([ce0b29e](https://github.com/lauvivans/kami/commit/ce0b29e9510fffca726edc9c45cc92d0571a37bd)), closes [#172](https://github.com/lauvivans/kami/issues/172)
+* give the sidebar scrollbar room and a thin style in every browser ([#203](https://github.com/lauvivans/kami/issues/203)) ([de21a69](https://github.com/lauvivans/kami/commit/de21a695d26d6969e10ad363a123d064c549cbd9)), closes [#186](https://github.com/lauvivans/kami/issues/186)
+* keep the header above the content and fit the layout to the mobile viewport ([#171](https://github.com/lauvivans/kami/issues/171)) ([b9bed20](https://github.com/lauvivans/kami/commit/b9bed207882a3f796d8855873a9d56bbcfcb0ad7)), closes [#168](https://github.com/lauvivans/kami/issues/168)
+* let link components set their own hover color ([#209](https://github.com/lauvivans/kami/issues/209)) ([51f8ec7](https://github.com/lauvivans/kami/commit/51f8ec73f5519e97e39c3d034a70093b3638a755)), closes [#208](https://github.com/lauvivans/kami/issues/208)
+* make the page modal use the screen height on phones ([#187](https://github.com/lauvivans/kami/issues/187)) ([cb772e0](https://github.com/lauvivans/kami/commit/cb772e03f3648c9b27c8caf57c707207390b3290)), closes [#173](https://github.com/lauvivans/kami/issues/173)
+* open links to portfolio pages in the same tab ([#206](https://github.com/lauvivans/kami/issues/206)) ([e990c1a](https://github.com/lauvivans/kami/commit/e990c1a7840c2910d2b736a36aa5f82ed07daeaf)), closes [#190](https://github.com/lauvivans/kami/issues/190)
+* point the Icons enum at icon names that exist ([#217](https://github.com/lauvivans/kami/issues/217)) ([acd5efe](https://github.com/lauvivans/kami/commit/acd5efef9323256419b76224070c81a282053b27)), closes [#216](https://github.com/lauvivans/kami/issues/216)
+* rebuild the toggle list on native details to match the visual refresh ([#215](https://github.com/lauvivans/kami/issues/215)) ([826456b](https://github.com/lauvivans/kami/commit/826456bc71bc130a234f9288b84ee24f570a3c8a)), closes [#210](https://github.com/lauvivans/kami/issues/210)
+* show the URL in link mentions that have no label ([#213](https://github.com/lauvivans/kami/issues/213)) ([0e48d31](https://github.com/lauvivans/kami/commit/0e48d31e4a673ab6308136dd0109ab9296a2314b)), closes [#211](https://github.com/lauvivans/kami/issues/211)
+
 ## [2.2.0](https://github.com/lauvivans/kami/compare/v2.1.0...v2.2.0) (2026-11-22)
 
 
