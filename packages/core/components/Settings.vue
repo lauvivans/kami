@@ -3,8 +3,8 @@ import { FontFamily } from "@core/enum";
 import { useToggle } from "@core/hooks";
 import { useStore } from "@core/store";
 import { watch } from "vue";
-import Modal from "./Modal/Modal.vue";
-import ToggleBtn from "./ToggleBtn.vue";
+import Dropdown from "@core/components/Dropdown.vue";
+import ToggleBtn from "@core/components/ToggleBtn.vue";
 import { storeToRefs } from "pinia";
 
 const store = useStore;
@@ -12,12 +12,10 @@ const store = useStore;
 const { getDynamicPageInfo } = storeToRefs(store);
 
 const props = defineProps<{
-  hideSettingsModal: () => void;
-  addSettingsModalListener: () => void;
-  menuProvider: string;
-  modalStyles: { top: string; right: string };
+  anchor: HTMLElement | null;
   pageId: string;
 }>();
+const open = defineModel<boolean>("open", { required: true });
 
 const PAGE_SIZE_PROVIDE_NAME = "pageSize";
 const FONT_SIZE_PROVIDE_NAME = "fontSize";
@@ -55,13 +53,7 @@ watch(activeFontSize, (newFontSize) => {
 </script>
 
 <template>
-  <Modal
-    class="modal-settings"
-    :provideName="props.menuProvider"
-    :hideModal="props.hideSettingsModal"
-    :addModalListener="props.addSettingsModalListener"
-    :modalStyles="props.modalStyles"
-  >
+  <Dropdown v-model:open="open" :anchor="props.anchor" align="right">
     <div class="modal-settings__style">
       <span>Style</span>
       <div class="modal-settings__fonts">
@@ -98,7 +90,7 @@ watch(activeFontSize, (newFontSize) => {
         >Full width</ToggleBtn
       >
     </div>
-  </Modal>
+  </Dropdown>
 </template>
 
 <style lang="scss">
