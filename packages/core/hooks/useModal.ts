@@ -17,7 +17,7 @@ export default function useModal({ provideName }: { provideName: string }) {
 
       store.storeCurrentModalPageId("");
 
-      body.removeEventListener("click", handleGlobalClick);
+      modalRef.value.removeEventListener("click", handleGlobalClick);
     }
   }
 
@@ -49,7 +49,8 @@ export default function useModal({ provideName }: { provideName: string }) {
   }
 
   function addModalListener() {
-    body.addEventListener("click", handleGlobalClick);
+    // On the overlay, not body: iOS Safari only sends click from a tap on an element with a listener.
+    modalRef.value?.addEventListener("click", handleGlobalClick);
   }
 
   return {
