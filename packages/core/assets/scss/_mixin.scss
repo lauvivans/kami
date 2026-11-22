@@ -26,16 +26,16 @@
 // @extend them without pulling in the global styles of main.scss.
 %hover-default {
   cursor: pointer;
-  padding: 0.35rem;
-  border-radius: 3px;
+  padding: var.$space-3;
+  border-radius: var.$radius-sm;
   transition: background-color 0.1s;
-  font-size: 0.85rem;
-  font-weight: var.$fw-600;
+  font-size: var.$fs-sm;
+  font-weight: var.$fw-semibold;
   width: 100%;
-  color: var.$black-5;
+  color: var.$text-secondary;
 
   &:hover {
-    background-color: var.$gray;
+    background-color: var.$bg-hover;
   }
 }
 
@@ -45,12 +45,12 @@
   align-items: center;
   text-align: center;
   cursor: pointer;
-  padding: 0.1rem;
+  padding: var.$space-1;
   width: max-content;
 
   &:hover {
-    border-radius: 10%;
-    background-color: var.$black-1;
+    border-radius: var.$radius-sm;
+    background-color: var.$bg-hover;
   }
 }
 
@@ -58,11 +58,4 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-}
-
-@each $theme, $bg-hover in var.$theme-bg-hover {
-  .#{$theme} %hover-default:hover,
-  .#{$theme} %button:hover {
-    background-color: $bg-hover !important;
-  }
 }

@@ -97,7 +97,7 @@ const handleCrumb = (page: PageInfo) => {
         <div>
           <img
             v-if="page.icon"
-            style="max-width: 1.1rem; height: auto"
+            class="breadcrumb__icon"
             :src="page.icon.path"
           />
           <span :title="page.title">{{ page.title }}</span>
@@ -118,7 +118,7 @@ const handleCrumb = (page: PageInfo) => {
         <div>
           <img
             v-if="page.icon"
-            style="max-width: 1.1rem; height: auto"
+            class="breadcrumb__icon"
             :src="page.icon.path"
           />
           <span :title="page.title">{{ page.title }}</span>
@@ -164,6 +164,11 @@ const handleCrumb = (page: PageInfo) => {
     }
   }
 
+  &__icon {
+    max-width: $icon-size-inline;
+    height: auto;
+  }
+
   &__menu {
     @include flex-layout;
   }
@@ -174,7 +179,7 @@ const handleCrumb = (page: PageInfo) => {
 
     > div {
       display: flex;
-      column-gap: 0.4rem;
+      column-gap: $space-3;
       align-items: center;
 
       @extend %hover-default;

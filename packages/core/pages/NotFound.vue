@@ -32,7 +32,7 @@ const props = defineProps(["previousRoute"]);
     transform: translate(-50%, -50%);
 
     > div {
-      @include flex-layout($row-gap: 15px);
+      @include flex-layout($row-gap: $space-6);
     }
   }
 
@@ -49,13 +49,13 @@ const props = defineProps(["previousRoute"]);
       all: unset;
       display: block;
       width: max-content;
-      background-color: $active;
-      color: $white !important;
-      padding: 0.5rem;
-      border-radius: 3px;
+      background-color: $accent;
+      color: $text-inverse !important;
+      padding: $space-4;
+      border-radius: $radius-sm;
 
       &:hover {
-        color: $white !important;
+        color: $text-inverse !important;
       }
     }
   }

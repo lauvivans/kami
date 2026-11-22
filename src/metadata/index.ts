@@ -181,7 +181,10 @@ const metadata: IMetadata = {
       parentPage: "demo",
       databaseInfo: {
         Created: { icon: "clock", value: "July 2026" },
-        Languages: { icon: "code", value: ["JavaScript", "Sass"] },
+        Languages: {
+          icon: "code",
+          value: ["JavaScript", { name: "Sass", color: "pink" }],
+        },
         Status: { icon: "check", value: "In progress" },
       },
     },

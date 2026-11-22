@@ -78,7 +78,7 @@ const handleNavigate = () => {
   }
 
   .page-wrapper {
-    margin-top: 25px !important;
+    margin-top: $space-7 !important;
   }
 
   &__header {
@@ -100,34 +100,34 @@ const handleNavigate = () => {
   .page-modal {
     width: 100%;
 
-    // Fill the visible screen minus a margin of 2 * $default-spacing above and
-    // below; dvh follows the mobile toolbar, vh is the fallback.
+    // Fill the visible screen minus a margin of $space-6 above and below;
+    // dvh follows the mobile toolbar, vh is the fallback.
     .modal-static {
-      height: calc(100vh - 4 * $default-spacing);
-      height: calc(100dvh - 4 * $default-spacing);
+      height: calc(100vh - 2 * $space-6);
+      height: calc(100dvh - 2 * $space-6);
       max-height: none;
-      padding: $default-spacing 0.5rem;
+      padding: $space-4;
     }
 
     .page-content {
-      top: 10px;
+      top: $space-4;
     }
 
     :has(.page-content--banner):has(.page-content--icon) {
       .page-content {
-        top: 160px;
+        top: calc($space-10 + $icon-size-mobile);
       }
     }
 
     :not(:has(.page-content--icon)):has(.page-content--banner) {
       .page-content {
-        top: 190px;
+        top: calc($banner-height-mobile + $space-8);
       }
     }
 
     :not(:has(.page-content--banner)) {
       .page-content {
-        top: 10px;
+        top: $space-4;
       }
     }
   }

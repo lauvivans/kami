@@ -27,7 +27,15 @@ export interface PageInfo {
 
 // The colors of $tag-colors in _var.scss.
 export type TagColor =
-  "purple" | "blue" | "yellow" | "brown" | "green" | "orange" | "gray";
+  | "purple"
+  | "blue"
+  | "yellow"
+  | "brown"
+  | "green"
+  | "orange"
+  | "gray"
+  | "pink"
+  | "red";
 
 // A tag is its text, or its text and a color. Without a color, the tag gets
 // one from its text, the same on every page.

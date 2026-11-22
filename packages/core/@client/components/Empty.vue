@@ -4,6 +4,6 @@
 
 <style lang="scss">
 .empty {
-  height: calc($default-spacing * 3);
+  height: $space-7;
 }
 </style>

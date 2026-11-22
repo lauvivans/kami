@@ -22,7 +22,7 @@ const { page } = defineProps<{ page: PageInfo }>();
 .page-title {
   display: flex;
   flex-direction: column;
-  row-gap: 40px;
+  row-gap: $space-8;
 
   &__img-wrapper {
     display: flex;
@@ -31,25 +31,25 @@ const { page } = defineProps<{ page: PageInfo }>();
 
     a {
       cursor: pointer;
-      font-size: 11px;
+      font-size: $fs-xs;
       align-self: flex-end;
     }
   }
 
   img {
-    max-width: 5.8rem;
+    max-width: $icon-size;
   }
 
   span {
-    font-size: 2.5rem;
-    font-weight: $fw-900;
+    font-size: $fs-title;
+    font-weight: $fw-bold;
   }
 }
 
 @media (min-width: $screen-small) {
   .font-size-small .page-title {
     span {
-      font-size: $fs-large + 0.7rem;
+      font-size: $fs-title-mobile;
     }
   }
 }
@@ -57,7 +57,7 @@ const { page } = defineProps<{ page: PageInfo }>();
 @media (max-width: $screen-xs) {
   .page-wrapper .page-title {
     span {
-      font-size: $fs-xl;
+      font-size: $fs-title-mobile;
     }
   }
 }

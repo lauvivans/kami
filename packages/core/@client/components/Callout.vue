@@ -14,11 +14,11 @@ const props = defineProps<{ emoji?: string }>();
 <style scoped lang="scss">
 .callout {
   display: flex;
-  column-gap: 5px;
+  column-gap: $space-2;
   align-items: center;
-  border-radius: 5px;
-  line-height: 1.4;
-  padding: 20px;
-  background-color: #f1f1f6;
+  border-radius: $radius-md;
+  line-height: $lh-body;
+  padding: $space-6;
+  background-color: $bg-block;
 }
 </style>

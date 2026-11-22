@@ -77,16 +77,15 @@ onBeforeUnmount(() => {
 </template>
 
 <style lang="scss">
-// .modal-dynamic: the class the themes in _theme.scss color.
 .modal-dynamic {
   // Fixed: the anchor's position comes from the viewport.
   position: fixed;
-  z-index: 2500;
-  min-width: 200px;
-  padding: 6px;
-  box-shadow: $box-shadow-3;
-  background-color: $white;
-  border-radius: 6px;
+  z-index: $z-dropdown;
+  min-width: $menu-min-width;
+  padding: $space-3;
+  box-shadow: $shadow-floating;
+  background-color: $bg-floating;
+  border-radius: $radius-md;
   outline: none;
   animation: fade-in 0.4s ease-in-out;
   animation-fill-mode: forwards;

@@ -15,8 +15,8 @@ const props = defineProps<{
 
 <style lang="scss">
 .icon {
-  color: $black-3;
-  font-size: 20px;
+  color: $text-tertiary;
+  font-size: $icon-size-inline;
   display: flex;
   align-items: center;
 }

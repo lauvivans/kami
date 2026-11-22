@@ -42,11 +42,8 @@ function updateTabs(page: PageInfo) {
           @click="updateTabs(props.page)"
         >
           <div>
-            <div style="max-width: 1.1rem" v-if="props.page.icon">
-              <img
-                :src="props.page.icon.path"
-                style="width: 100%; height: auto"
-              />
+            <div class="nav-link__icon" v-if="props.page.icon">
+              <img :src="props.page.icon.path" />
             </div>
             <span class="nav-link__pagename">
               {{ props.page.title }}
@@ -68,7 +65,7 @@ function updateTabs(page: PageInfo) {
 
 <style lang="scss">
 .nav-link {
-  margin-bottom: 1px;
+  margin-bottom: $space-1;
 
   &__toggle-list {
     margin: 0;
@@ -79,18 +76,18 @@ function updateTabs(page: PageInfo) {
 
       &__summary {
         &--icon {
-          border-top-left-radius: 3px;
-          border-bottom-left-radius: 3px;
+          border-top-left-radius: $radius-sm;
+          border-bottom-left-radius: $radius-sm;
 
           > div {
-            font-size: $fs-medium;
-            color: $black-3;
+            font-size: $fs-md;
+            color: $text-tertiary;
           }
         }
 
         &--content {
-          border-top-right-radius: 3px;
-          border-bottom-right-radius: 3px;
+          border-top-right-radius: $radius-sm;
+          border-bottom-right-radius: $radius-sm;
         }
       }
     }
@@ -99,26 +96,36 @@ function updateTabs(page: PageInfo) {
   &__link {
     all: unset;
     display: block;
-    padding: 4px 0;
+    padding: $space-2 0;
 
     > div {
-      @include flex-layout($flex-direction: row, $column-gap: 0.4rem);
+      @include flex-layout($flex-direction: row, $column-gap: $space-3);
 
       align-items: center;
+    }
+  }
+
+  &__icon {
+    max-width: $icon-size-inline;
+
+    img {
+      width: 100%;
+      height: auto;
     }
   }
 
   &__pagename {
     @extend %ellipsis;
 
-    max-width: 160px;
+    // leaves room for the toggle and the page icon
+    max-width: calc($nested-link-size - $space-9);
   }
 }
 
 .nav-link__toggle-list {
   &--active {
     .details .details__summary {
-      background-color: $black-1 !important;
+      background-color: $bg-active !important;
     }
 
     .details__content .details .details__summary {
@@ -126,7 +133,7 @@ function updateTabs(page: PageInfo) {
     }
 
     .nav-link__pagename {
-      color: $black-9;
+      color: $text;
     }
   }
 }

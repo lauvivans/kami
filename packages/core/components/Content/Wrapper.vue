@@ -36,11 +36,11 @@ const store = useStore;
 }
 
 .font-roboto-mono {
-  font-family: $mono;
+  font-family: $font-mono;
 }
 
 .font-roboto-serif {
-  font-family: $serif;
+  font-family: $font-serif;
 }
 
 @media (min-width: $screen-small) {
@@ -48,7 +48,7 @@ const store = useStore;
     p,
     span,
     div:not(:has(h1, h2, h3, h4)) {
-      font-size: $fs-small;
+      font-size: $fs-sm;
     }
   }
 }

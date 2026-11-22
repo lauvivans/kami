@@ -88,15 +88,14 @@ onBeforeUnmount(() => {
 <style lang="scss">
 .app .tabs {
   display: flex;
-  background-color: $gray-4;
+  background-color: $bg-tabs;
   top: 0;
   height: $tabs-height;
-  z-index: 888;
+  z-index: $z-tabs;
 
   @media (max-width: $screen-small) {
     top: auto;
     bottom: 0;
-    background-color: $gray;
     overflow-x: auto;
 
     &::-webkit-scrollbar,
@@ -120,32 +119,33 @@ onBeforeUnmount(() => {
   }
 
   &__tab {
-    padding: 10px;
+    padding: $space-4;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 200px;
-    font-size: calc($fs-small - 1px);
-    border-right: 1px solid $black-1;
-    color: $black-6;
+    width: $tab-width;
+    font-size: $fs-sm;
+    border-right: $line solid $border;
+    color: $text-secondary;
 
     span {
       @extend %ellipsis;
     }
 
     @media (max-width: $screen-small) {
-      min-width: 150px;
+      min-width: $tab-width-mobile;
     }
 
     &:hover {
-      background-color: $gray-6;
+      background-color: $bg-hover;
     }
 
     &--active {
-      background-color: $white;
+      background-color: $bg;
+      color: $text;
 
       &:hover {
-        background-color: $white;
+        background-color: $bg;
       }
     }
 
@@ -161,7 +161,7 @@ onBeforeUnmount(() => {
   }
 
   &__add {
-    @include spacing($mt: auto, $mb: auto, $ml: 7px);
+    @include spacing($mt: auto, $mb: auto, $ml: $space-4);
   }
 
   &__add,

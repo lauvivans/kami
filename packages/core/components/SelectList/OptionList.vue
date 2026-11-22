@@ -47,7 +47,7 @@ const toSelect = (option: string) => {
   }
 
   &__icon {
-    font-size: 15px;
+    font-size: $fs-md;
   }
 
   &__list {

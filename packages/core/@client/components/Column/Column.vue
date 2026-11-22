@@ -6,6 +6,6 @@
 .column {
   display: flex;
   flex-direction: column;
-  row-gap: $default-spacing;
+  row-gap: $space-4;
 }
 </style>

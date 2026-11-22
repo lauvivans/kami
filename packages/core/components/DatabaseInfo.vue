@@ -51,18 +51,18 @@ const props = defineProps<{ page: PageInfo }>();
 
 <style lang="scss">
 .database {
-  margin-bottom: 20px;
+  margin-bottom: $space-6;
 
   &__properties {
     display: flex;
-    column-gap: 10px;
+    column-gap: $space-4;
   }
 
   &__property {
     display: flex;
     width: max-content !important;
-    min-width: 100px;
-    column-gap: 5px;
+    min-width: $prop-name-width-mobile;
+    column-gap: $space-2;
     align-items: center;
     flex-wrap: wrap;
 
@@ -78,14 +78,15 @@ const props = defineProps<{ page: PageInfo }>();
 
 .multi-select {
   display: flex;
-  gap: 5px;
+  gap: $space-2;
   align-items: center;
   flex-wrap: wrap;
 
   div {
-    padding: 0.3rem 0.5rem;
+    padding: $space-2 $space-4;
     width: max-content;
-    border-radius: 2px;
+    border-radius: $radius-sm;
+    color: $tag-text;
   }
 
   // one class per color in $tag-colors, picked by tagColorClass()

@@ -13,7 +13,7 @@ const { page } = defineProps<{ page: PageInfo }>();
     }"
   >
     <slot />
-    <div style="width: auto; height: 200px"></div>
+    <div class="page-content__end"></div>
   </div>
 </template>
 
@@ -23,27 +23,32 @@ const { page } = defineProps<{ page: PageInfo }>();
   @include grid-layout(minmax(0, 1fr));
 
   position: absolute;
-  top: 100px;
+  top: $space-10;
   left: 50%;
   transform: translate(-50%, 0%);
-  z-index: 1;
+  z-index: $z-raised;
   width: 50%;
-  row-gap: $default-spacing;
+  row-gap: $space-4;
+
+  // room below the last block
+  &__end {
+    height: calc($space-10 * 2);
+  }
 
   &--icon {
-    top: 160px;
+    top: calc($space-10 + $icon-size-mobile);
   }
 }
 
 .page-full-width .page-content {
-  padding: 0 50px !important;
+  padding: 0 $space-9 !important;
   width: 100% !important;
 }
 
 @media (max-width: $screen-xs) {
   .page-wrapper .page-content {
     width: 100% !important;
-    padding: 0 20px !important;
+    padding: 0 $page-gutter-mobile !important;
   }
 }
 </style>

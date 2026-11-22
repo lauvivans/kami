@@ -32,14 +32,14 @@
 
 @keyframes blink {
   0% {
-    background-color: var.$gray-3;
+    background-color: var.$bg-hover;
   }
 
   50% {
-    background-color: rgb(237 236 233 / 90%);
+    background-color: var.$bg-active;
   }
 
   100% {
-    background-color: var.$gray-3;
+    background-color: var.$bg-hover;
   }
 }
