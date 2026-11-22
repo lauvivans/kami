@@ -14,8 +14,14 @@ const props = withDefaults(
 );
 
 // Dates are YYYY-MM-DD, read as UTC so no time zone moves a post to
-// another day or month.
-const toDate = (date: string) => new Date(`${date.slice(0, 10)}T00:00:00Z`);
+// another day or month. Anything else counts as no date, since Intl throws
+// on an invalid one.
+const toDate = (date?: string) => {
+  const parsed = /^\d{4}-\d{2}-\d{2}/.test(date ?? "")
+    ? new Date(`${date!.slice(0, 10)}T00:00:00Z`)
+    : undefined;
+  return parsed && !isNaN(parsed.getTime()) ? parsed : undefined;
+};
 
 const groups = computed(() => {
   const month = new Intl.DateTimeFormat(props.locale, {
@@ -30,31 +36,27 @@ const groups = computed(() => {
   const pages = Array.isArray(props.pages)
     ? props.pages
     : Object.values(props.pages);
-  // ISO dates sort as text; posts without a date go last.
-  const sorted = [...pages].sort((a, b) =>
-    (b.date ?? "").localeCompare(a.date ?? "")
-  );
+  // ISO dates sort as text; posts without a valid date go last.
+  const dated = pages
+    .map((page) => {
+      const date = toDate(page.date);
+      return { page, date, iso: date ? page.date!.slice(0, 10) : "" };
+    })
+    .sort((a, b) => b.iso.localeCompare(a.iso));
 
   const result: {
     key: string;
     label: string;
-    posts: { page: PageInfo; date: string }[];
+    posts: { page: PageInfo; iso: string; date: string }[];
   }[] = [];
-  for (const page of sorted) {
-    const key = page.date?.slice(0, 7) ?? "";
+  for (const { page, date, iso } of dated) {
+    const key = iso.slice(0, 7);
     let group = result[result.length - 1];
     if (group?.key !== key) {
-      group = {
-        key,
-        label: page.date ? month.format(toDate(page.date)) : "",
-        posts: [],
-      };
+      group = { key, label: date ? month.format(date) : "", posts: [] };
       result.push(group);
     }
-    group.posts.push({
-      page,
-      date: page.date ? day.format(toDate(page.date)) : "",
-    });
+    group.posts.push({ page, iso, date: date ? day.format(date) : "" });
   }
   return result;
 });
@@ -65,10 +67,10 @@ const groups = computed(() => {
     <section v-for="group in groups" :key="group.key">
       <Heading v-if="group.label" :level="4">{{ group.label }}</Heading>
       <ul class="post-list__posts">
-        <li v-for="{ page, date } in group.posts" :key="page.id">
+        <li v-for="{ page, iso, date } in group.posts" :key="page.id">
           <router-link class="post-list__post" :to="page.path">
             <span class="post-list__title">{{ page.title }}</span>
-            <time v-if="page.date" :datetime="page.date">{{ date }}</time>
+            <time v-if="iso" :datetime="iso">{{ date }}</time>
           </router-link>
         </li>
       </ul>

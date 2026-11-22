@@ -47,6 +47,21 @@ describe("PostList", () => {
     expect(time.text()).toBe("Nov 1, 2026");
   });
 
+  it.each(["November 2026", "2026-1-5", "2026-13-40"])(
+    "treats %s as no date instead of breaking the list",
+    (date) => {
+      const wrapper = mount(PostList, {
+        props: { pages: [page("bad", date), page("a", "2026-11-01")] },
+        global,
+      });
+      const sections = wrapper.findAll("section");
+      expect(sections).toHaveLength(2);
+      expect(sections[1]!.find("h4").exists()).toBe(false);
+      expect(sections[1]!.find("time").exists()).toBe(false);
+      expect(sections[1]!.text()).toBe("Title bad");
+    }
+  );
+
   it("names the months in the given locale", () => {
     const wrapper = mount(PostList, {
       props: { pages: [page("a", "2026-11-01")], locale: "pt-BR" },
