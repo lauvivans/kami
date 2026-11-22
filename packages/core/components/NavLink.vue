@@ -2,6 +2,7 @@
 import type { IMetadata, PageInfo } from "@core/@types";
 import { ToggleList } from "@core/@client/components";
 import NestedLink from "./NestedLink.vue";
+import Tooltip from "@core/components/Tooltip.vue";
 import { Icons } from "@core/enum";
 import { useStore } from "@core/store";
 
@@ -45,9 +46,7 @@ function updateTabs(page: PageInfo) {
             <div class="nav-link__icon" v-if="props.page.icon">
               <img :src="props.page.icon.path" />
             </div>
-            <span class="nav-link__pagename">
-              {{ props.page.title }}
-            </span>
+            <Tooltip class="nav-link__pagename" :text="props.page.title" />
           </div>
         </router-link>
       </template>
