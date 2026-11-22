@@ -81,6 +81,12 @@ const handleNavigate = () => {
     margin-top: $space-7 !important;
   }
 
+  // The modal's own header sits above the page, so a page without a banner
+  // starts the column at the top.
+  .page-content:not(.page-content--banner) {
+    padding-top: 0;
+  }
+
   &__header {
     display: flex;
     justify-content: space-between;
@@ -107,28 +113,6 @@ const handleNavigate = () => {
       height: calc(100dvh - 2 * $space-6);
       max-height: none;
       padding: $space-4;
-    }
-
-    .page-content {
-      top: $space-4;
-    }
-
-    :has(.page-content--banner):has(.page-content--icon) {
-      .page-content {
-        top: calc($space-10 + $icon-size-mobile);
-      }
-    }
-
-    :not(:has(.page-content--icon)):has(.page-content--banner) {
-      .page-content {
-        top: calc($banner-height-mobile + $space-8);
-      }
-    }
-
-    :not(:has(.page-content--banner)) {
-      .page-content {
-        top: $space-4;
-      }
     }
   }
 }
