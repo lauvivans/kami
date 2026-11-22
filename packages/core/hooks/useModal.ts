@@ -1,5 +1,5 @@
 import { useStore } from "@core/store";
-import { provide, ref } from "vue";
+import { onScopeDispose, provide, ref } from "vue";
 
 export default function useModal({ provideName }: { provideName: string }) {
   const body = document.body;
@@ -9,8 +9,20 @@ export default function useModal({ provideName }: { provideName: string }) {
 
   provide(provideName, modalRef);
 
+  let isOpen = false;
+
+  // A link inside an open modal changes the route and unmounts it without
+  // hideModal, so give the page its clicks back here.
+  onScopeDispose(() => {
+    if (isOpen) {
+      body.style.pointerEvents = "auto";
+      store.storeCurrentModalPageId("");
+    }
+  });
+
   function hideModal() {
     if (modalRef.value && modalRef.value) {
+      isOpen = false;
       modalRef.value.style.display = "none";
       modalRef.value.style.pointerEvents = "";
       body.style.pointerEvents = "auto";
@@ -24,6 +36,7 @@ export default function useModal({ provideName }: { provideName: string }) {
   function showModal() {
     setTimeout(() => {
       if (modalRef.value && modalRef.value) {
+        isOpen = true;
         modalRef.value.style.display = "block";
         body.style.pointerEvents = "none";
 

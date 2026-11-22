@@ -82,4 +82,15 @@ describe("useModal", () => {
     expect(pageEl.style.display).toBe("block");
     wrapper.unmount();
   });
+
+  it("gives the page its clicks back when an open modal unmounts", () => {
+    vi.useFakeTimers();
+    const { page, wrapper } = mountModals();
+    open(page);
+    expect(document.body.style.pointerEvents).toBe("none");
+
+    // A link inside the modal changes the route and unmounts it, without hideModal.
+    wrapper.unmount();
+    expect(document.body.style.pointerEvents).toBe("auto");
+  });
 });
