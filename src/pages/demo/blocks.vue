@@ -73,7 +73,7 @@ const code = {
   links: `<Text>An inline <Link href="https://vuejs.org/">link</Link>.</Text>
 <LinkMention :page="metadata.pages['coffee-shop']" emoji="☕" />
 <LinkMention href="https://github.com/lauvivans/kami" emoji="🐙">Kami on GitHub</LinkMention>
-<Bookmark title="Kami" subtitle="Source code" link="https://github.com/lauvivans/kami" icon="/icons/page-example.png" />`,
+<Bookmark title="Kami" subtitle="Source code" link="https://github.com/lauvivans/kami" icon="/icons/page-example.png" image="/banners/page-example.webp" />`,
   showMore: `<!-- limit blocks show at first; the button shows the next ones -->
 <ShowMore :limit="1">
   <Callout emoji="1️⃣">First block</Callout>
@@ -174,6 +174,7 @@ console.log(greeting);`;
     subtitle="Source code"
     :link="repoUrl"
     icon="/icons/page-example.png"
+    image="/banners/page-example.webp"
   />
   <Code lang="vue">{{ code.links }}</Code>
 

@@ -4,6 +4,7 @@ const props = defineProps<{
   subtitle?: string;
   link: string;
   icon?: string;
+  image?: string;
 }>();
 </script>
 
@@ -24,6 +25,9 @@ const props = defineProps<{
         <span>{{ props.link.replace(/^https?:\/\//, "") }}</span>
       </span>
     </div>
+    <div v-if="props.image" class="bookmark__image">
+      <img :src="props.image" alt="" />
+    </div>
   </a>
 </template>
 
@@ -43,6 +47,7 @@ const props = defineProps<{
 
   &__text {
     display: flex;
+    flex: 1;
     flex-direction: column;
     gap: $space-1;
     min-width: 0;
@@ -83,6 +88,24 @@ const props = defineProps<{
     width: $icon-size-inline;
     height: $icon-size-inline;
     object-fit: contain;
+  }
+
+  // The image is absolute, so the text alone sets the card's height.
+  &__image {
+    position: relative;
+    flex: 0 0 $bookmark-image-width;
+
+    @media (max-width: $screen-small) {
+      display: none;
+    }
+
+    img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
 }
 </style>
