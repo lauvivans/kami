@@ -251,10 +251,26 @@ onBeforeUnmount(() => {
   color: $text-secondary;
   user-select: none;
 
+  // the same 28px square as the header buttons, so they line up
   .nav-btn {
     @extend %button;
 
+    justify-content: center;
+    padding: 0;
+    width: $item-height;
+    height: $item-height;
     margin-left: $space-5;
+    color: $text-secondary;
+
+    &,
+    &:hover {
+      border-radius: $radius-md;
+    }
+
+    .icon {
+      color: inherit;
+      font-size: $fs-md;
+    }
   }
 
   .nav-default .nav-list {
