@@ -76,7 +76,7 @@ The generated module for the sample post is 906 bytes gzip for a 979-byte Markdo
 | Markdown        | Today in the plugin          | Plan             |
 | --------------- | ---------------------------- | ---------------- |
 | Numbered list   | `NumberedList` block         | Done             |
-| Table (GFM)     | Dropped, with a warning      | New table block  |
+| Table (GFM)     | `Table` block                | Done             |
 | Heading 5 and 6 | Rendered as level 4          | Keep             |
 | Footnote        | Not parsed (not in `marked`) | Out of scope     |
 | Raw HTML        | Dropped, with a warning      | Keep, for safety |

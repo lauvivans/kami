@@ -21,6 +21,12 @@ This post is a **Markdown file**. Kami turns it into a page at build time, with 
 2. Tamp it level
 3. Pull about 36 g of espresso in 25 to 30 seconds
 
+| Drink         |  Dose |   Yield |
+| ------------- | ----: | ------: |
+| **Espresso**  |  18 g |    36 g |
+| Ristretto     |  18 g |    18 g |
+| Lungo         |  18 g |    54 g |
+
 Write it down in [the menu](/demo/coffee-shop/menu) when it tastes right.
 
 ```ts

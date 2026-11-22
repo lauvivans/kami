@@ -27,6 +27,9 @@ export interface PageInfo {
   };
 }
 
+// A Table column's alignment; null keeps the default (left).
+export type TableAlign = "left" | "center" | "right" | null;
+
 // The colors of $tag-colors in _var.scss.
 export type TagColor =
   | "purple"

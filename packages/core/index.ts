@@ -21,6 +21,7 @@ export {
   PostList,
   Quote,
   ShowMore,
+  Table,
   Text,
   ToDoItem,
   ToDoList,
@@ -39,6 +40,7 @@ export type {
   IMetadata,
   DatabaseTag,
   TagColor,
+  TableAlign,
   MarkdownFrontmatter,
   MarkdownModule,
 } from "./@types";

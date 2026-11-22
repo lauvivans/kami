@@ -140,6 +140,8 @@ class Page {
           return [`h(${this.block("Divider")})`];
         case "list":
           return [this.list(t as Tokens.List)];
+        case "table":
+          return [this.table(t as Tokens.Table)];
         case "html":
           this.warnings.push("raw HTML is dropped");
           return [];
@@ -148,6 +150,29 @@ class Page {
           return [];
       }
     });
+  }
+
+  // Cells hold inline Markdown, so the rows go in Table's slot.
+  table(table: Tokens.Table): string {
+    const row = (tag: "th" | "td", cells: Tokens.TableCell[]) => {
+      const nodes = cells.map((cell, column) => {
+        const props = [
+          tag === "th" ? `scope: "col"` : "",
+          table.align[column]
+            ? `style: { textAlign: ${str(table.align[column])} }`
+            : "",
+        ].filter(Boolean);
+        const attrs = props.length > 0 ? `{ ${props.join(", ")} }` : "null";
+        return `h("${tag}", ${attrs}, [${this.inline(cell.tokens).join(", ")}])`;
+      });
+      return `h("tr", null, [${nodes.join(", ")}])`;
+    };
+    const sections = [`h("thead", null, [${row("th", table.header)}])`];
+    if (table.rows.length > 0)
+      sections.push(
+        `h("tbody", null, [${table.rows.map((cells) => row("td", cells)).join(", ")}])`
+      );
+    return `h(${this.block("Table")}, null, ${this.children(sections)})`;
   }
 
   list(list: Tokens.List): string {

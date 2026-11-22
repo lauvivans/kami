@@ -147,8 +147,11 @@ const tsconfig =`"types": ["vite/client", "@lauvivans/kami/markdown"]`;
       and gets bundled with it.</BulletItem
     >
     <BulletItem
-      >Tables and raw HTML are left out, and the build prints a warning for
-      each. Text is never run as code, so <Code inline>{{ braces }}</Code> in a
+      >Tables become <Code inline>Table</Code>, with a header row and the
+      alignment set by the <Code inline>:</Code> in the separator line.</BulletItem
+    >
+    <BulletItem
+      >Raw HTML is left out, and the build prints a warning for it. Text is never run as code, so <Code inline>{{ braces }}</Code> in a
       post shows as written.</BulletItem
     >
   </BulletList>

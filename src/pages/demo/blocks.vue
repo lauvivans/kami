@@ -23,6 +23,7 @@ import {
   Database,
   ShowMore,
   PostList,
+  Table,
   Icons,
 } from "@core/index.ts";
 import metadata, { posts } from "@/metadata";
@@ -83,6 +84,15 @@ const code = {
 <LinkMention :page="metadata.pages['coffee-shop']" emoji="☕" />
 <LinkMention href="https://github.com/lauvivans/kami" emoji="🐙">Kami on GitHub</LinkMention>
 <Bookmark title="Kami" subtitle="Source code" link="https://github.com/lauvivans/kami" icon="/icons/page-example.png" image="/banners/page-example.webp" />`,
+  table: `<!-- align takes one entry per column: left, center, right or null -->
+<Table
+  :head="['Drink', 'Dose', 'Yield']"
+  :rows="[
+    ['Espresso', '18 g', '36 g'],
+    ['Ristretto', '18 g', '18 g'],
+  ]"
+  :align="[null, 'right', 'right']"
+/>`,
   postList: `<!-- posts comes from markdownPages; locale sets the month names -->
 <PostList :pages="posts" locale="en-US" />`,
   showMore: `<!-- limit blocks show at first; the button shows the next ones -->
@@ -195,6 +205,21 @@ console.log(greeting);`;
     image="/banners/page-example.webp"
   />
   <Code lang="vue">{{ code.links }}</Code>
+
+  <Heading :level="3">Table</Heading>
+  <Text
+    >A simple table with a header row. A table wider than the page scrolls
+    sideways inside its own box.</Text
+  >
+  <Table
+    :head="['Drink', 'Dose', 'Yield']"
+    :rows="[
+      ['Espresso', '18 g', '36 g'],
+      ['Ristretto', '18 g', '18 g'],
+    ]"
+    :align="[null, 'right', 'right']"
+  />
+  <Code lang="vue">{{ code.table }}</Code>
 
   <Heading :level="3">Posts list</Heading>
   <Text
