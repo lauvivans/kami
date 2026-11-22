@@ -32,7 +32,8 @@ const projects = [metadata.pages["coffee-shop"], metadata.pages["bookshelf"]].fi
 );
 
 const code = {
-  text: `<Text>A paragraph with <TextHighlight>highlighted</TextHighlight> words.</Text>`,
+  text: `<Text>A paragraph with <TextHighlight>highlighted</TextHighlight> words.</Text>
+<Text>A highlight with a <TextHighlight color="yellow">tag color</TextHighlight>.</Text>`,
   heading: `<Heading :level="4">Heading level 4</Heading>`,
   callout: `<Callout emoji="💡">A callout with an emoji.</Callout>`,
   code: `<Text>Run <Code inline>npm run dev</Code> to start.</Text>
@@ -58,7 +59,7 @@ const code = {
     { name: 'Not yet', isChecked: false },
   ]"
 />`,
-  toggle: `<ToggleList :iconToOpen="Icons.arrowRightFilled" :iconToClose="Icons.arrowDownFilled">
+  toggle: `<ToggleList :iconToOpen="Icons.arrowRightFilled">
   <template #summaryContent>Click the arrow</template>
   <template #detailsContent><Text>Hidden content.</Text></template>
 </ToggleList>`,
@@ -90,6 +91,7 @@ console.log(greeting);`;
 
   <Heading :level="3">Text</Heading>
   <Text>A paragraph with <TextHighlight>highlighted</TextHighlight> words.</Text>
+  <Text>A highlight with a <TextHighlight color="yellow">tag color</TextHighlight>.</Text>
   <Code lang="vue">{{ code.text }}</Code>
 
   <Heading :level="3">Heading</Heading>
@@ -129,7 +131,7 @@ console.log(greeting);`;
   <Code lang="vue">{{ code.todo }}</Code>
 
   <Heading :level="3">Toggle list</Heading>
-  <ToggleList :iconToOpen="Icons.arrowRightFilled" :iconToClose="Icons.arrowDownFilled">
+  <ToggleList :iconToOpen="Icons.arrowRightFilled">
     <template #summaryContent>Click the arrow</template>
     <template #detailsContent><Text>Hidden content.</Text></template>
   </ToggleList>

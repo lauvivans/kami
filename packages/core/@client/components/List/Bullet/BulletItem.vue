@@ -19,7 +19,8 @@ import { Icons } from "@core/enum";
   width: 100%;
 
   &__icon {
-    margin-top: $space-3;
+    // centers the dot on the first line, below Text's top padding
+    margin-top: $space-4;
     font-size: $fs-xs;
     color: $text;
   }

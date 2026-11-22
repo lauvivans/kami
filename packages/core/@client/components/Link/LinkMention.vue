@@ -34,18 +34,24 @@ const props = defineProps<{
   display: flex;
   padding: $space-4 $space-1;
   cursor: pointer;
-  color: $text !important;
+  color: $text;
   column-gap: $space-2;
+
+  span {
+    font-weight: $fw-medium;
+    text-decoration: underline;
+    text-decoration-color: $text-tertiary;
+    text-underline-offset: $space-1;
+    transition: text-decoration-color $duration;
+  }
 
   &:hover {
     background-color: $bg-hover;
     border-radius: $radius-md;
-  }
 
-  span {
-    font-weight: $fw-semibold;
-    border-bottom: $line solid $border;
-    padding-bottom: $space-1;
+    span {
+      text-decoration-color: $text;
+    }
   }
 
   > div:first-of-type {
