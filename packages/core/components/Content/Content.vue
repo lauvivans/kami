@@ -19,7 +19,8 @@ const { page } = defineProps<{ page: PageInfo }>();
 
 <style lang="scss">
 .page-content {
-  @include grid-layout;
+  // minmax(0, 1fr) keeps a wide block from stretching the column past the page.
+  @include grid-layout(minmax(0, 1fr));
 
   position: absolute;
   top: 100px;
