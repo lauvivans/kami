@@ -52,7 +52,10 @@ function onKeydown(e: KeyboardEvent) {
 }
 
 const events = {
-  pointerenter: schedule,
+  // A tap on a touch laptop also fires pointerenter; only hover pointers show it.
+  pointerenter: (e: Event) => {
+    if ((e as PointerEvent).pointerType !== "touch") schedule();
+  },
   pointerleave: hide,
   focusin: schedule,
   focusout: hide,

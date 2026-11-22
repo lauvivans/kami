@@ -52,6 +52,14 @@ describe("Tooltip", () => {
     expect(tooltip()).toBeNull();
   });
 
+  it("shows nothing on a touch tap", async () => {
+    const wrapper = mountLink(300);
+    await wrapper.find("a").trigger("pointerenter", { pointerType: "touch" });
+    vi.runAllTimers();
+    await flushPromises();
+    expect(tooltip()).toBeNull();
+  });
+
   it("shows on keyboard focus and hides on Escape", async () => {
     const wrapper = mountLink(300);
     await wrapper.find("a").trigger("focusin");
