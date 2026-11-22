@@ -44,6 +44,11 @@ const tree = `my-portfolio/
     >The styles come from one CSS file, imported once in
     <Code inline>src/main.ts</Code>: <Code inline>@lauvivans/kami/dist/kami.css</Code>.</Text
   >
+  <Text
+    >The "by Kami" badge at the bottom right is optional. To remove it, delete
+    the <Code inline>&lt;footer class="footer"&gt;</Code> line from
+    <Code inline>src/App.vue</Code>.</Text
+  >
 
   <Text>Next step:</Text>
   <LinkMention :page="metadata.pages['first-page']" emoji="🔨" />

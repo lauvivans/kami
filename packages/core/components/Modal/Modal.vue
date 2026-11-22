@@ -42,37 +42,22 @@ dialog {
   z-index: $z-overlay;
 }
 
+// Sizes to its content inside the visible screen; the page modal sets its own size.
 .modal-static {
   z-index: $z-modal;
   box-shadow: $shadow-floating;
-  border-radius: $radius-md;
-  background-color: $bg-floating;
+  border-radius: $radius-lg;
+  background-color: $bg;
   animation: fade-in 1s;
-  transition: width 0.3s;
   user-select: none;
   outline: none;
-  min-width: 70%;
-  max-width: 80%;
-  width: auto;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: $space-8;
-  overflow-y: hidden;
-  height: auto;
-  max-height: 80vh;
-
-  @media (max-width: $screen-medium) {
-    padding: $space-8 $space-4;
-    max-width: 90%;
-    min-width: 90%;
-  }
-}
-
-@media (max-width: $screen-xs) {
-  .modal-static {
-    max-height: 70vh;
-  }
+  padding: $space-6 $space-7 $space-7;
+  max-width: calc(100% - 2 * $space-4);
+  max-height: calc(100dvh - 2 * $space-9);
+  overflow: hidden auto;
 }
 </style>

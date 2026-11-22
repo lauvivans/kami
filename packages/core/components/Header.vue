@@ -50,17 +50,37 @@ const settingsBtn = ref<HTMLElement | null>(null);
   background-color: $bg;
   height: $header-height;
   z-index: $z-header;
+  font-size: $fs-sm;
 
   &__content {
     display: flex;
+    align-items: center;
+    gap: $space-2;
+    height: 100%;
     user-select: none;
     justify-content: space-between;
   }
 
   &__btn {
-    flex-shrink: 0;
-
     @extend %button;
+
+    flex-shrink: 0;
+    justify-content: center;
+    padding: 0;
+    width: $item-height;
+    height: $item-height;
+    color: $text-secondary;
+    transition: background-color $duration;
+
+    &,
+    &:hover {
+      border-radius: $radius-md;
+    }
+
+    .icon {
+      color: inherit;
+      font-size: $fs-md;
+    }
   }
 }
 </style>

@@ -139,7 +139,10 @@ function openPage(page: PageInfo) {
             :class="{ 'database-block__action--active': filter }"
             @click="toggleMenu('filter')"
           >
-            {{ filter ? `Filter: ${filter.values.join(", ")}` : "Filter" }}
+            <Icon :icon="Icons.filter" />
+            <span>{{
+              filter ? `Filter: ${filter.values.join(", ")}` : "Filter"
+            }}</span>
           </button>
           <button
             ref="sortButton"
@@ -149,11 +152,12 @@ function openPage(page: PageInfo) {
             :class="{ 'database-block__action--active': sort }"
             @click="toggleMenu('sort')"
           >
-            {{
+            <Icon :icon="Icons.sort" />
+            <span>{{
               sort
                 ? `Sort: ${sort.property ?? "Name"} ${sort.desc ? "↓" : "↑"}`
                 : "Sort"
-            }}
+            }}</span>
           </button>
         </div>
       </div>
@@ -275,23 +279,29 @@ function openPage(page: PageInfo) {
   }
 
   &__views {
-    @include flex-layout($flex-direction: row, $column-gap: $space-4);
+    @include flex-layout($flex-direction: row, $column-gap: $space-2);
   }
 
   &__view {
     all: unset;
     display: flex;
     align-items: center;
-    column-gap: $space-1;
+    column-gap: $space-3;
     cursor: pointer;
+    font-size: $fs-sm;
     color: $text-secondary;
-    padding-bottom: $space-4;
-    border-bottom: $line-thick solid transparent;
+    height: $item-height;
+    padding: 0 $space-4;
+    margin-bottom: $space-2;
+    border-radius: $radius-md;
+
+    &:hover {
+      background-color: $bg-hover;
+    }
 
     &--active {
-      font-weight: $fw-bold;
-      color: inherit;
-      border-bottom-color: $text;
+      color: $text;
+      background-color: $bg-active;
     }
 
     &:focus-visible {
@@ -300,7 +310,7 @@ function openPage(page: PageInfo) {
   }
 
   &__actions {
-    @include flex-layout($flex-direction: row, $column-gap: $space-4);
+    @include flex-layout($flex-direction: row, $column-gap: $space-2);
 
     visibility: hidden;
 
@@ -309,16 +319,21 @@ function openPage(page: PageInfo) {
       visibility: visible;
     }
 
+    // same shape as the view tabs, in the secondary text color
     button {
       all: unset;
-      color: $text;
+      display: flex;
+      align-items: center;
+      column-gap: $space-3;
       cursor: pointer;
-      box-sizing: border-box;
-      padding: $space-3 $space-2;
+      font-size: $fs-sm;
+      color: $text-secondary;
+      height: $item-height;
+      padding: 0 $space-4;
       margin-bottom: $space-2;
+      border-radius: $radius-md;
 
       &:hover {
-        border-radius: $radius-sm;
         background-color: $bg-hover;
       }
 
@@ -327,7 +342,8 @@ function openPage(page: PageInfo) {
       }
     }
 
-    .database-block__action--active {
+    .database-block__action--active,
+    .database-block__action--active .icon {
       color: $accent;
     }
   }
