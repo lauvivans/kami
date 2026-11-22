@@ -142,6 +142,10 @@ const handleCrumb = (page: PageInfo) => {
 .breadcrumb {
   display: flex;
   align-items: center;
+
+  // Takes the free header space instead of sizing by its crumbs, whose
+  // `width` below is only a shrink floor and would make it too narrow.
+  flex: 1 1 0;
   min-width: 0;
   overflow: hidden;
 
