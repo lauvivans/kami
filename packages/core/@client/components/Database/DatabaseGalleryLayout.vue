@@ -1,16 +1,7 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import MainModalView from "@core/components/Modal/MainModalView.vue";
 import Icon from "@core/@client/components/Icon.vue";
-import { useModal } from "../../../hooks";
 import { Icons } from "@core/enum";
 import type { PageInfo } from "@core/@types";
-import { useStore } from "@core/store";
-
-const store = useStore;
-
-const isClicked = ref(false);
-const pageModal = ref<PageInfo>();
 
 const props = defineProps<{
   title?: string;
@@ -18,21 +9,10 @@ const props = defineProps<{
   pages: PageInfo[];
 }>();
 
-const { showModal, hideModal, addModalListener } = useModal({
-  provideName: "pageModal",
-});
-
-function showPageModal(page: PageInfo) {
-  pageModal.value = page;
-  isClicked.value = true;
-  setTimeout(() => {
-    showModal();
-  }, 250);
-}
+const emit = defineEmits<{ open: [page: PageInfo] }>();
 
 function handleCard(page: PageInfo) {
-  showPageModal(page);
-  store.storeCurrentModalPageId(page.id);
+  emit("open", page);
 }
 </script>
 
@@ -86,13 +66,6 @@ function handleCard(page: PageInfo) {
       </div>
     </div>
   </div>
-  <MainModalView
-    provideName="pageModal"
-    :page="pageModal"
-    :hideMainModal="hideModal"
-    :addMainModalListener="addModalListener"
-    v-if="isClicked && pageModal"
-  />
 </template>
 
 <style lang="scss">

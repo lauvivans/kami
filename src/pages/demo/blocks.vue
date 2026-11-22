@@ -17,6 +17,7 @@ import {
   Bookmark,
   Image,
   Loader,
+  Database,
   Icons,
 } from "@core/index.ts";
 import metadata from "@/metadata";
@@ -25,6 +26,10 @@ import metadata from "@/metadata";
 // breaks the type check of every expression after it, so URLs live here.
 const vueUrl = "https://vuejs.org/";
 const repoUrl = "https://github.com/lauvivans/kami";
+
+const projects = [metadata.pages["coffee-shop"], metadata.pages["bookshelf"]].filter(
+  (page) => page !== undefined,
+);
 
 const code = {
   text: `<Text>A paragraph with <TextHighlight>highlighted</TextHighlight> words.</Text>`,
@@ -69,6 +74,10 @@ const code = {
   others: `<Divider />
 <Empty />
 <Loader />`,
+  database: `<Database layout="table" title="Projects" :pages="projects" />
+
+<!-- Or a gallery of cards -->
+<Database layout="gallery" title="Projects" :pages="projects" />`,
 };
 
 const sample = `const greeting = "Hello";
@@ -157,8 +166,12 @@ console.log(greeting);`;
 
   <Heading :level="3">Database</Heading>
   <Text
-    >A gallery of pages. Clicking a card opens the page in a modal. See it on
-    the demo's home page.</Text
+    >A list of pages, shown as a table or as a gallery of cards. Each page's
+    <Code inline>databaseInfo</Code> fills the table's columns. Clicking a
+    title or a card opens the page in a modal. The demo's home page shows the
+    gallery.</Text
   >
+  <Database layout="table" title="Projects" :pages="projects" />
+  <Code lang="vue">{{ code.database }}</Code>
   <LinkMention :page="metadata.pages['demo']" emoji="✨" />
 </template>
