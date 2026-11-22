@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import Icon from "@core/@client/components/Icon.vue";
-import { Icons } from "@core/enum";
 import type { PageInfo } from "@core/@types";
 
 const props = defineProps<{
-  title?: string;
   cardPreviewIsCover: boolean;
   pages: PageInfo[];
 }>();
@@ -18,21 +15,6 @@ function handleCard(page: PageInfo) {
 
 <template>
   <div class="gallery">
-    <div class="gallery__navbar">
-      <ul class="gallery__menu">
-        <li class="gallery__menu-item">
-          <Icon :icon="Icons.gridView" />
-          <span>Gallery</span>
-        </li>
-        <li class="gallery__menu-item">
-          <button>Filter</button>
-          <button>Sort</button>
-        </li>
-      </ul>
-
-      <h3 v-if="props.title" class="gallery__title">{{ props.title }}</h3>
-    </div>
-
     <div class="gallery__cards-wrapper">
       <div
         class="gallery__card-wrapper"
@@ -71,59 +53,6 @@ function handleCard(page: PageInfo) {
 <style lang="scss">
 .gallery {
   overflow-x: auto;
-
-  &:hover {
-    .gallery__menu-item:nth-child(2) {
-      visibility: visible;
-    }
-  }
-
-  &__navbar {
-    @include flex-layout($row-gap: 15px);
-
-    margin-bottom: 30px;
-  }
-
-  &__menu {
-    @include flex-layout($flex-direction: row);
-
-    justify-content: space-between;
-    border-bottom: 1px solid $black-2;
-  }
-
-  &__menu-item:nth-child(1) {
-    @include flex-layout($flex-direction: row, $column-gap: 3px);
-
-    align-items: center;
-    font-weight: $fw-700;
-    border-bottom: 2px solid $black;
-    padding-bottom: 15px;
-  }
-
-  &__menu-item:nth-child(2) {
-    @include flex-layout($flex-direction: row, $column-gap: 10px);
-
-    visibility: hidden;
-
-    button {
-      all: unset;
-      color: $black-8;
-      cursor: pointer;
-      box-sizing: border-box;
-      padding: 7px 5px;
-      margin-bottom: 5px;
-
-      &:hover {
-        border-radius: 10%;
-        background-color: $gray-4;
-      }
-    }
-  }
-
-  &__title {
-    font-weight: $fw-700;
-    font-size: $fs-large;
-  }
 
   &__cards-wrapper {
     display: grid;

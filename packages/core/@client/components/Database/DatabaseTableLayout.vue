@@ -5,7 +5,6 @@ import { Icons } from "@core/enum";
 import type { PageInfo } from "@core/@types";
 
 const props = defineProps<{
-  title?: string;
   pages: PageInfo[];
 }>();
 
@@ -28,8 +27,6 @@ const valueOf = (page: PageInfo, key: string) =>
 
 <template>
   <div class="database-table">
-    <h3 v-if="props.title" class="database-table__title">{{ props.title }}</h3>
-
     <div class="database-table__scroll">
       <table>
         <thead>
@@ -76,12 +73,6 @@ const valueOf = (page: PageInfo, key: string) =>
 <style lang="scss">
 .database-table {
   margin-bottom: 20px;
-
-  &__title {
-    font-weight: $fw-700;
-    font-size: $fs-large;
-    margin-bottom: 15px;
-  }
 
   // the table scrolls inside this box, so a wide table never widens the page
   &__scroll {

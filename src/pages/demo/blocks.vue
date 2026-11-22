@@ -74,10 +74,8 @@ const code = {
   others: `<Divider />
 <Empty />
 <Loader />`,
-  database: `<Database layout="table" title="Projects" :pages="projects" />
-
-<!-- Or a gallery of cards -->
-<Database layout="gallery" title="Projects" :pages="projects" />`,
+  database: `<!-- layout is the view it opens with: "table" or "gallery" -->
+<Database layout="table" title="Projects" :pages="projects" />`,
 };
 
 const sample = `const greeting = "Hello";
@@ -166,10 +164,10 @@ console.log(greeting);`;
 
   <Heading :level="3">Database</Heading>
   <Text
-    >A list of pages, shown as a table or as a gallery of cards. Each page's
+    >A list of pages, shown as a table or as a gallery of cards. The tabs on
+    top switch between the two views. Each page's
     <Code inline>databaseInfo</Code> fills the table's columns. Clicking a
-    title or a card opens the page in a modal. The demo's home page shows the
-    gallery.</Text
+    title or a card opens the page in a modal.</Text
   >
   <Database layout="table" title="Projects" :pages="projects" />
   <Code lang="vue">{{ code.database }}</Code>

@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { mount, shallowMount } from "@vue/test-utils";
 import { Database } from "@core/index.ts";
 import DatabaseTableLayout from "@core/@client/components/Database/DatabaseTableLayout.vue";
+import DatabaseGalleryLayout from "@core/@client/components/Database/DatabaseGalleryLayout.vue";
 import { useStore } from "@core/store";
 import type { PageInfo } from "@core/@types";
 
@@ -81,5 +82,40 @@ describe("Database table layout", () => {
     expect(
       wrapper.findComponent({ name: "MainModalView" }).props("page")
     ).toEqual(pages[0]);
+  });
+});
+
+describe("Database views", () => {
+  const tabs = (wrapper: ReturnType<typeof shallowMount>) =>
+    wrapper.findAll(".database__view");
+
+  it("opens with the view set by layout", () => {
+    const wrapper = shallowMount(Database, {
+      props: { layout: "gallery", pages },
+    });
+
+    expect(wrapper.findComponent(DatabaseGalleryLayout).exists()).toBe(true);
+    expect(wrapper.findComponent(DatabaseTableLayout).exists()).toBe(false);
+    expect(tabs(wrapper).map((tab) => tab.attributes("aria-pressed"))).toEqual([
+      "true",
+      "false",
+    ]);
+  });
+
+  it("switches views with the tabs", async () => {
+    const wrapper = shallowMount(Database, {
+      props: { layout: "gallery", title: "Projects", pages },
+    });
+
+    await tabs(wrapper)[1]!.trigger("click");
+
+    expect(wrapper.findComponent(DatabaseTableLayout).exists()).toBe(true);
+    expect(wrapper.findComponent(DatabaseGalleryLayout).exists()).toBe(false);
+    expect(tabs(wrapper)[1]!.attributes("aria-pressed")).toBe("true");
+    expect(wrapper.find(".database__title").text()).toBe("Projects");
+
+    await tabs(wrapper)[0]!.trigger("click");
+
+    expect(wrapper.findComponent(DatabaseGalleryLayout).exists()).toBe(true);
   });
 });

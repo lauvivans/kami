@@ -44,8 +44,8 @@ import { aboutPage as page, aboutMetadata as meta } from "@/code-samples";
     <BulletItem
       ><Code inline>databaseInfo</Code> shows properties under the title, like the
       properties of a Notion database item. A <Code inline>Database</Code> block
-      with <Code inline>layout="table"</Code> lists its pages as rows, with one
-      column per property.</BulletItem
+      in the table view lists its pages as rows, with one column per
+      property.</BulletItem
     >
   </BulletList>
   <Text
