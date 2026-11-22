@@ -78,6 +78,22 @@
         @include mixin.spacing($pl: var.$space-5, $pr: var.$space-5);
       }
     }
+
+    // on phones the open sidebar floats over the page instead of pushing it
+    @media (max-width: var.$screen-small) {
+      margin-left: 0;
+
+      .aside-click {
+        width: min(var.$sidebar-width, var.$sidebar-max-mobile);
+        box-shadow: var.$shadow-floating;
+      }
+
+      .header,
+      .tabs {
+        margin-left: 0;
+        width: 100%;
+      }
+    }
   }
 
   .footer {

@@ -39,6 +39,15 @@ const props = defineProps<{ metadata: IMetadata }>();
 
 store.storeDropStaleTabs(props.metadata.pages);
 
+const initials = computed(() =>
+  props.metadata.user.author
+    .split(/\s+/)
+    .map((word) => word.charAt(0))
+    .join("")
+    .slice(0, 2)
+    .toUpperCase()
+);
+
 const asideClasses = computed(() => {
   return {
     "aside-default": asideDefault.value,
@@ -105,10 +114,13 @@ function toggleNavHover(toShow = false) {
   }
 }
 
-function closeNavHoverOutside(event: Event) {
-  if (!navWrapper.value?.contains(event.target as Node)) {
-    navHover.value = false;
-  }
+const isMobile = useIsMobile();
+
+// A press outside closes the floating sidebar, and on small screens the open one too.
+function closeNavOutside(event: Event) {
+  if (navWrapper.value?.contains(event.target as Node)) return;
+  navHover.value = false;
+  if (isMobile.value && navClick.value) toggleNavState();
 }
 
 watch(navClasses, (currentClass) => {
@@ -120,8 +132,6 @@ watch(navClasses, (currentClass) => {
     navBtnIcon.value = Icons.doubleArrowLeft;
   }
 });
-
-const isMobile = useIsMobile();
 
 // On small screens the open or floating sidebar covers the page, so close it after navigation.
 watch(
@@ -139,12 +149,12 @@ function saveAsideOpen() {
 
 onMounted(() => {
   window.addEventListener("beforeunload", saveAsideOpen);
-  document.addEventListener("pointerdown", closeNavHoverOutside);
+  document.addEventListener("pointerdown", closeNavOutside);
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener("beforeunload", saveAsideOpen);
-  document.removeEventListener("pointerdown", closeNavHoverOutside);
+  document.removeEventListener("pointerdown", closeNavOutside);
 });
 </script>
 
@@ -156,6 +166,7 @@ onBeforeUnmount(() => {
       @mouseenter="toggleNavHover(true)"
       @mouseleave="toggleNavHover()"
     >
+      <div v-if="asideDefault" class="nav-edge" aria-hidden="true"></div>
       <nav :class="navClasses">
         <div class="nav-btn" role="button" id="nav-btn" @click="toggleNavState">
           <Icon :icon="navBtnIcon" />
@@ -163,8 +174,13 @@ onBeforeUnmount(() => {
         <div class="nav-list-wrapper">
           <ul class="nav-list">
             <li class="nav-list__nav-item">
-              <span>{{ props.metadata.user.author }}</span>
-              {{ props.metadata.user.socialMedia }}
+              <span class="nav-list__avatar">{{ initials }}</span>
+              <span>
+                {{ props.metadata.user.author }}
+                <span class="nav-list__handle">
+                  {{ props.metadata.user.socialMedia }}
+                </span>
+              </span>
             </li>
             <li class="nav-list__nav-item">
               <div role="button" @click="showSearchModal">
@@ -267,14 +283,42 @@ onBeforeUnmount(() => {
 </template>
 
 <style lang="scss">
+@use "sass:map";
+
+// The hidden floating panel keeps its place in the layout so it can slide out,
+// so only the button, the edge strip and the open panel take the pointer.
+.aside-default {
+  pointer-events: none;
+
+  .nav-edge,
+  .nav-btn {
+    pointer-events: auto;
+  }
+}
+
 .nav-wrapper {
   color: $text-secondary;
   user-select: none;
+
+  // the strip at the left edge that brings in the floating sidebar
+  .nav-edge {
+    display: none;
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: $space-6;
+    z-index: $z-content;
+
+    @media (hover: hover) {
+      display: block;
+    }
+  }
 
   // the same 28px square as the header buttons, so they line up
   .nav-btn {
     @extend %button;
 
+    position: relative;
+    z-index: $z-raised;
     justify-content: center;
     padding: 0;
     width: $item-height;
@@ -293,33 +337,31 @@ onBeforeUnmount(() => {
     }
   }
 
-  .nav-default .nav-list {
-    display: none;
-  }
-
-  .nav-hover {
+  // closed sidebar: the floating panel, shown while nav-hover is set
+  .nav-default {
     @include flex-layout($row-gap: $space-8);
 
-    border-radius: $radius-sm;
     width: $sidebar-width;
 
     .nav-list {
-      box-shadow: $shadow-floating;
-
-      @include spacing($mt: $space-1, $pb: $space-4);
-
-      transform: translateX(-100%);
-      animation: slide-in 0.4s ease-in-out;
-      animation-fill-mode: forwards;
-      padding-right: $space-6;
-      background-color: $bg-floating;
-      border-radius: $radius-md;
-      height: min-content;
+      position: relative; // paints above the edge strip
+      margin-top: $space-1;
       max-height: 75vh;
+      background-color: $bg-floating;
+      border-radius: $radius-lg;
+      box-shadow: $shadow-floating;
+      transition:
+        transform $duration,
+        visibility $duration;
+    }
 
-      &__nav-item {
-        width: 100%;
-      }
+    &.nav-hover {
+      pointer-events: auto;
+    }
+
+    &:not(.nav-hover) .nav-list {
+      visibility: hidden;
+      transform: translateX(calc(-100% - $space-6));
     }
   }
 
@@ -336,7 +378,6 @@ onBeforeUnmount(() => {
       visibility: hidden;
       position: absolute;
       left: 78%;
-      z-index: $z-raised;
       margin: $space-5 $space-6 0;
     }
 
@@ -347,59 +388,77 @@ onBeforeUnmount(() => {
     }
   }
 
-  .nav-hover,
-  .nav-click {
-    .nav-list {
-      @include flex-layout($row-gap: $space-7);
+  .nav-list {
+    @include flex-layout($row-gap: $space-2);
 
-      font-size: $fs-sm;
+    padding: $space-4 $space-4 $space-7;
+    font-size: $fs-sm;
+    overflow: hidden auto;
 
-      &__nav-item:nth-child(1) {
-        @include flex-layout($row-gap: $space-2);
+    // owner row
+    &__nav-item:nth-child(1) {
+      @include flex-layout($flex-direction: row, $column-gap: $space-4);
 
-        font-size: $fs-xs;
+      align-items: center;
+      padding: $space-3 $space-4;
+      color: $text;
+      font-weight: $fw-medium;
+    }
 
-        @include spacing($ml: $space-5, $pt: $space-5);
+    &__avatar {
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      width: $space-7;
+      height: $space-7;
+      border-radius: $radius-sm;
+      background-color: map.get($tag-colors, "orange");
+      font-size: $fs-xs;
+      font-weight: $fw-semibold;
+    }
 
-        span {
-          color: $text;
-          font-size: $fs-md;
-        }
+    &__handle {
+      display: block;
+      font-size: $fs-xs;
+      font-weight: $fw-regular;
+      color: $text-tertiary;
+      line-height: $lh-heading;
+    }
+
+    // Search and Settings
+    &__nav-item:nth-child(2) > div {
+      @include flex-layout($flex-direction: row, $column-gap: $space-3);
+
+      align-items: center;
+      height: $item-height;
+      padding: 0 $space-4;
+      border-radius: $radius-md;
+      cursor: pointer;
+      transition: background-color $duration;
+
+      &:hover {
+        background-color: $bg-hover;
       }
+    }
 
-      &__nav-item:nth-child(2) {
-        @include flex-layout($row-gap: $space-1);
+    // Favorites and Private
+    &__nav-item:nth-child(3) {
+      @include flex-layout($row-gap: $space-6);
 
-        margin: $space-4;
+      margin-top: $space-6;
 
-        & > div {
-          @include flex-layout($flex-direction: row, $column-gap: $space-3);
-
-          align-items: center;
-
-          @extend %hover-default;
-        }
-      }
-
-      &__nav-item:nth-child(3) {
-        display: flex;
-        flex-direction: column;
-        row-gap: $space-8;
-        height: max-content;
+      .nested-link {
         width: $nested-link-size;
-        margin: 0 $space-1 $space-5 $space-5;
-        overflow: hidden auto;
-
-        .nested-link {
-          width: $nested-link-size;
-        }
       }
+    }
 
-      &__nav-item--category {
-        margin-bottom: $space-4;
-        font-weight: $fw-semibold;
-        font-size: $fs-xs;
-      }
+    &__nav-item--category {
+      padding: 0 $space-4;
+      margin-bottom: $space-1;
+      font-size: $fs-xs;
+      font-weight: $fw-medium;
+      color: $text-tertiary;
+      line-height: $item-height;
     }
   }
 }
