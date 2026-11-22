@@ -24,6 +24,8 @@ describe("markdown pages", () => {
     expect(wrapper.find("h3.heading").text()).toBe("Checklist");
     expect(wrapper.find("p.text strong").text()).toBe("Markdown file");
     expect(wrapper.findAll(".bullet-item")).toHaveLength(3);
+    expect(wrapper.find("ol.numbered-list").attributes("start")).toBe("1");
+    expect(wrapper.findAll(".numbered-item")).toHaveLength(3);
     expect(wrapper.findAll(".todo-item")).toHaveLength(3);
     expect(wrapper.find(".todo-item__checkbox").element).toHaveProperty(
       "checked",
@@ -55,6 +57,14 @@ describe("markdown pages", () => {
     expect(toModule("<div>a</div>\n", "kami").warnings).toContain(
       "raw HTML is dropped"
     );
+  });
+
+  it("keeps the start number of a numbered list", () => {
+    const { code, warnings } = toModule("3. c\n4. d\n", "kami");
+    expect(code).toContain("h(NumberedList, { start: 3 }");
+    expect(code).toContain(`h(NumberedItem, null, () => ["c"])`);
+    expect(warnings).toEqual([]);
+    expect(toModule("1. a\n", "kami").code).toContain("h(NumberedList, null");
   });
 
   it("bundles a relative image and keeps a public path", () => {

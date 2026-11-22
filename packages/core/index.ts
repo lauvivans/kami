@@ -16,6 +16,8 @@ export {
   Image,
   LinkMention,
   Loader,
+  NumberedItem,
+  NumberedList,
   Quote,
   ShowMore,
   Text,

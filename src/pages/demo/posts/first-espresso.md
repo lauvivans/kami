@@ -17,7 +17,11 @@ This post is a **Markdown file**. Kami turns it into a page at build time, with 
 
 ## The recipe
 
-Grind 18 g of coffee, tamp it level and pull about 36 g of espresso in 25 to 30 seconds. Write it down in [the menu](/demo/coffee-shop/menu) when it tastes right.
+1. Grind 18 g of coffee
+2. Tamp it level
+3. Pull about 36 g of espresso in 25 to 30 seconds
+
+Write it down in [the menu](/demo/coffee-shop/menu) when it tastes right.
 
 ```ts
 const recipe = { dose: 18, yield: 36, seconds: [25, 30] };

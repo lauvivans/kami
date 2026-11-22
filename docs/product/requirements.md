@@ -33,8 +33,8 @@ What Kami offers and the rules it follows.
 
 - A page can be a `.md` file with front matter. The Vite plugin `markdown()` from `@lauvivans/kami/vite`, placed before `vue()`, turns each file into a component built from Kami blocks at build time, so no Markdown parser reaches the browser. See [decision 006](../decisions/006-markdown-pages.md).
 - The front matter (`title`, `date`, `banner`, `icon`) is exported as `frontmatter`. `markdownPages(files, { parentPage, path })` builds one page per file from an eager `import.meta.glob`: the id is the file name, the path is `path` plus the id, the title falls back to the id, and the pages are ordered by date, newest first.
-- Headings (5 and 6 as 4), paragraphs, bold, italic, strikethrough, inline and fenced code, quotes, dividers, links, images, bullet lists and to-do lists map to their blocks. A fenced block in a language `Code` highlights gets highlighted. An image alone on its line is an `Image` block; a relative image path is bundled with the post.
-- Numbered lists render as bullets. Tables and raw HTML are dropped, and the build prints a warning for each without failing. Text is never compiled as a Vue template.
+- Headings (5 and 6 as 4), paragraphs, bold, italic, strikethrough, inline and fenced code, quotes, dividers, links, images, bullet lists, numbered lists (with their start number) and to-do lists map to their blocks. A fenced block in a language `Code` highlights gets highlighted. An image alone on its line is an `Image` block; a relative image path is bundled with the post.
+- Tables and raw HTML are dropped, and the build prints a warning for each without failing. Text is never compiled as a Vue template.
 - The portfolio loads the `*.md` module type with `"types": ["@lauvivans/kami/markdown"]` in its `tsconfig.app.json`.
 
 ## Layout
@@ -61,7 +61,7 @@ The components a page uses for its content, named after Notion's blocks:
 - **Code:** `Code`, as a block or, with `inline`, inside a line of text. A block keeps the line breaks of the code it receives. With `lang` (`ts`, `js`, `vue`, `html`, `scss`, `json` or `bash`), the block gets syntax highlighting from highlight.js, colored with the `$code-*` tokens (GitHub's code colors), with a light and a dark set.
 - **Callout:** a box with an emoji and text.
 - **Quote:** `Quote`, a quotation with a line on its left in the text color. It takes any content in its slot, such as text, links and highlights.
-- **Lists:** `BulletList` and `BulletItem`, `ToDoList` and `ToDoItem` (with a checked state), and `ToggleList`, which shows and hides its content and rotates the icon given in `iconToOpen` when open (`iconToClose` is still accepted and no longer shown).
+- **Lists:** `BulletList` and `BulletItem`, `NumberedList` and `NumberedItem` (with an optional `start`), `ToDoList` and `ToDoItem` (with a checked state), and `ToggleList`, which shows and hides its content and rotates the icon given in `iconToOpen` when open (`iconToClose` is still accepted and no longer shown).
 - **Layout:** `Columns` with 2 to 5 `Column`s and an optional size for each, `Divider` and `Empty` (blank space).
 - **Links:** `Link` (inline), `LinkMention` (an emoji and the name of a page or an external link) and `Bookmark` (a card with title, subtitle and URL; the subtitle wraps to two lines before the ellipsis, and an optional `icon`, a favicon path, shows before the URL; an optional `image` fills the right side of the card and is hidden on phones).
 - **Media:** `Image`, with an optional `alt` (empty for a decorative image). A click, Enter or Space opens it in a full-screen viewer, a native modal `<dialog>` that closes with Escape, its close button or a click on the backdrop and returns focus to the image. `zoomable` (on by default) turns the viewer off; an image inside a list item shows as an inline icon and never opens.
