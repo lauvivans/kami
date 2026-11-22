@@ -15,7 +15,8 @@ body {
   @include mixin.sizing(100vw, 100vh);
 
   // On mobile, vh ignores the browser toolbar, so the layout ends up taller
-  // than the screen. dvh follows the visible viewport; vh stays as a fallback.
+  // than the screen. dvh follows the visible viewport, and every browser in
+  // the build target (baseline-widely-available) supports it.
   height: 100dvh;
   overflow: hidden;
   background-color: var.$bg;

@@ -76,14 +76,13 @@ const handleNavigate = () => {
 
 <style lang="scss">
 .page-modal {
-  // The visible height minus a margin; dvh follows the mobile toolbar, vh is
-  // the fallback. The page wrapper scrolls, so the end of a long page stays reachable.
+  // The visible height minus a margin; dvh follows the mobile toolbar.
+  // The page wrapper scrolls, so the end of a long page stays reachable.
   .modal-static {
     display: flex;
     flex-direction: column;
     width: min($modal-width, calc(100% - 2 * $space-9));
     max-width: none;
-    height: calc(100vh - 2 * $space-9);
     height: calc(100dvh - 2 * $space-9);
     max-height: none;
     padding: 0;
@@ -126,7 +125,6 @@ const handleNavigate = () => {
 @media (max-width: $screen-small) {
   .page-modal .modal-static {
     width: calc(100% - 2 * $space-4);
-    height: calc(100vh - 2 * $space-4);
     height: calc(100dvh - 2 * $space-4);
   }
 }

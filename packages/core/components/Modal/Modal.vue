@@ -57,7 +57,6 @@ dialog {
   transform: translate(-50%, -50%);
   padding: $space-6 $space-7 $space-7;
   max-width: calc(100% - 2 * $space-4);
-  max-height: calc(100vh - 2 * $space-9);
   max-height: calc(100dvh - 2 * $space-9);
   overflow: hidden auto;
 }
