@@ -30,6 +30,7 @@ function mountAt(pageId: string) {
   store.storeActivePage(pages[pageId]!);
   return mount(Breadcrumb, {
     props: { metadata },
+    attrs: { class: "custom" },
     global: { stubs: { RouterLink: RouterLinkStub } },
   });
 }
@@ -45,6 +46,7 @@ describe("Breadcrumb", () => {
   it("shows the full path up to 3 levels", () => {
     const wrapper = mountAt("c");
     expect(crumbText(wrapper)).toEqual(["A", "B", "C"]);
+    expect(wrapper.find(".breadcrumb").classes()).toContain("custom");
     expect(wrapper.find(".breadcrumb__menu a").exists()).toBe(false);
   });
 

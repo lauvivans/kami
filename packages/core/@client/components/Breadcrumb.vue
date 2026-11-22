@@ -5,6 +5,9 @@ import { useModal } from "@core/hooks";
 import Modal from "@core/components/Modal/Modal.vue";
 import { computed, ref } from "vue";
 
+// Two root nodes (breadcrumb + menu), so attributes from the parent go to the breadcrumb
+defineOptions({ inheritAttrs: false });
+
 const props = defineProps<{ metadata: IMetadata }>();
 
 const store = useStore;
@@ -70,7 +73,7 @@ const handleCrumb = (page: PageInfo) => {
 </script>
 
 <template>
-  <div class="breadcrumb">
+  <div class="breadcrumb" v-bind="$attrs">
     <div
       class="breadcrumb__crumb"
       :class="{ 'breadcrumb__crumb--more': !page }"
