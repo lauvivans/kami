@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { PageInfo } from "@core/@types";
+import type { DatabaseTag, PageInfo } from "@core/@types";
+import { tagColorClass, tagName } from "@core/util/tagColorClass";
 
 const props = defineProps<{
   cardPreviewIsCover: boolean;
@@ -11,6 +12,12 @@ const emit = defineEmits<{ open: [page: PageInfo] }>();
 function handleCard(page: PageInfo) {
   emit("open", page);
 }
+
+// the tags of every multi-select property, shown under the card title
+const tagsOf = (page: PageInfo): DatabaseTag[] =>
+  Object.values(page.databaseInfo ?? {}).flatMap(({ value }) =>
+    Array.isArray(value) ? value : []
+  );
 </script>
 
 <template>
@@ -39,13 +46,24 @@ function handleCard(page: PageInfo) {
             <img v-if="page.banner" :src="page.banner.path" />
           </div>
         </div>
-        <div class="gallery__card-footer">
-          <img
-            class="gallery__page-icon"
-            v-if="page.icon"
-            :src="page.icon.path"
-          />
-          <div>{{ page.title }}</div>
+        <div class="gallery__card-body">
+          <div class="gallery__card-title">
+            <img
+              class="gallery__page-icon"
+              v-if="page.icon"
+              :src="page.icon.path"
+            />
+            <div>{{ page.title }}</div>
+          </div>
+          <div v-if="tagsOf(page).length" class="multi-select">
+            <div
+              v-for="item in tagsOf(page)"
+              :key="tagName(item)"
+              :class="tagColorClass(item)"
+            >
+              {{ tagName(item) }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -59,15 +77,18 @@ function handleCard(page: PageInfo) {
   &__cards-wrapper {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax($card-min-width, 1fr));
-    gap: $space-4;
+    gap: $space-5;
   }
 
   &__card-wrapper {
     border: $line solid $border;
-    border-radius: $radius-md;
+    border-radius: $radius-lg;
+    overflow: hidden;
     cursor: pointer;
     font-size: $fs-sm;
-    color: $text-secondary;
+    color: $text;
+    background-color: $bg;
+    transition: background-color $duration;
 
     &:hover {
       background-color: $bg-hover;
@@ -96,13 +117,17 @@ function handleCard(page: PageInfo) {
     }
   }
 
-  &__card-footer {
-    padding: $space-4;
+  &__card-body {
+    @include flex-layout($row-gap: $space-3);
 
+    padding: $space-4 $space-5 $space-5;
+  }
+
+  &__card-title {
     @include flex-layout($flex-direction: row, $column-gap: $space-4);
 
     align-items: center;
-    font-weight: $fw-bold;
+    font-weight: $fw-medium;
   }
 
   &__page-icon {

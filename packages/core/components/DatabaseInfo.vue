@@ -83,9 +83,12 @@ const props = defineProps<{ page: PageInfo }>();
   flex-wrap: wrap;
 
   div {
-    padding: $space-2 $space-4;
+    padding: 0 $space-3;
     width: max-content;
     border-radius: $radius-sm;
+    font-size: $fs-xs;
+    line-height: $tag-height;
+    white-space: nowrap;
     color: $tag-text;
   }
 

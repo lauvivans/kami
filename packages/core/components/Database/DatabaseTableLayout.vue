@@ -108,13 +108,13 @@ const valueOf = (page: PageInfo, key: string) =>
   th,
   td {
     border: $line solid $border;
-    padding: $space-4;
+    padding: $space-3 $space-4;
     text-align: left;
     white-space: nowrap;
   }
 
   th {
-    font-weight: $fw-medium;
+    font-weight: $fw-regular;
     color: $text-secondary;
   }
 
