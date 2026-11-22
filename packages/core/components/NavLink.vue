@@ -70,9 +70,10 @@ function updateTabs(page: PageInfo) {
   &__toggle-list {
     margin: 0;
 
+    // fixed layout keeps sub-pages inside their indented cell; a fixed width
+    // made them overflow up to the sidebar scrollbar
     .details {
-      width: $nested-link-size !important;
-      max-width: $nested-link-size !important;
+      table-layout: fixed;
 
       &__summary {
         height: $item-height;
