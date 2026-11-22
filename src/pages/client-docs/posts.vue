@@ -93,7 +93,9 @@ const tsconfig =`"types": ["vite/client", "@lauvivans/kami/markdown"]`;
       >The file name is the post's id and the end of its address, so
       <Code inline>first-espresso.md</Code> opens at
       <Code inline>/posts/first-espresso</Code>. Ids are shared with the other
-      pages, so pick a name no other page uses.</BulletItem
+      pages, so pick a name no other page uses, with at least one letter: a
+      name made only of digits, like <Code inline>2.md</Code>, breaks the
+      order.</BulletItem
     >
   </BulletList>
 

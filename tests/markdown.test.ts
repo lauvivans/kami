@@ -57,6 +57,18 @@ describe("markdown pages", () => {
     );
   });
 
+  it("bundles a relative image and keeps a public path", () => {
+    const { code } = toModule(
+      "![Alt](./photo.png)\n\nA logo ![Logo](/icons/a.png) here\n",
+      "kami"
+    );
+    expect(code).toContain(`import __img0 from "./photo.png";`);
+    expect(code).toContain(`h(Image, { src: __img0, alt: "Alt" })`);
+    expect(code).toContain(
+      `h(Text, null, () => ["A logo ", h(Image, { src: "/icons/a.png", alt: "Logo" }), " here"])`
+    );
+  });
+
   it("builds one page per file, newest first", () => {
     const post = (frontmatter: MarkdownModule["frontmatter"]) => ({
       default: Post,
