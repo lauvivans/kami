@@ -6,7 +6,9 @@ const value = defineModel<boolean>("isChecked");
 
 <template>
   <li class="todo-item">
-    <input class="todo-item__checkbox" type="checkbox" v-model="value" />
+    <span class="todo-item__box">
+      <input class="todo-item__checkbox" type="checkbox" v-model="value" />
+    </span>
     <Text
       class="todo-item__item"
       :style="value ? { textDecoration: 'line-through' } : ''"
@@ -17,14 +19,21 @@ const value = defineModel<boolean>("isChecked");
 </template>
 
 <style lang="scss">
-// The checkbox and the text share a line; baseline keeps the box on the
-// first line of a long item.
 .todo-item {
   display: flex;
-  align-items: baseline;
+  align-items: flex-start;
   column-gap: $default-spacing;
 
+  // As tall as one line of text (Text.vue uses line-height 1.5), so the
+  // checkbox is centered on the first line, also when the text wraps.
+  &__box {
+    display: flex;
+    align-items: center;
+    height: 1.5em;
+  }
+
   &__checkbox {
+    margin: 0;
     pointer-events: none;
   }
 
