@@ -160,7 +160,6 @@ onBeforeUnmount(() => {
           id="nav-btn"
           @click="toggleNavState"
           @mouseenter="toggleNavHover(true)"
-          @touchstart="toggleNavState"
         >
           <Icon :icon="navBtnIcon" />
         </div>
