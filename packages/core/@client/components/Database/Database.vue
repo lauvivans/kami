@@ -4,7 +4,7 @@ import type { PageInfo } from "@core/@types";
 import Icon from "@core/@client/components/Icon.vue";
 import { Icons } from "@core/enum";
 import MainModalView from "@core/components/Modal/MainModalView.vue";
-import { useModal } from "../../../hooks";
+import { useModal } from "@core/hooks";
 import { useStore } from "@core/store";
 import DatabaseGalleryLayout from "@core/components/Database/DatabaseGalleryLayout.vue";
 import DatabaseTableLayout from "@core/components/Database/DatabaseTableLayout.vue";
