@@ -49,6 +49,7 @@ const settingsBtn = ref<HTMLElement | null>(null);
 .header {
   background-color: $white;
   height: $header-height;
+  z-index: 1;
 
   &__content {
     display: flex;

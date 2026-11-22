@@ -23,6 +23,8 @@ const props = defineProps(["previousRoute"]);
 
   @include sizing(100%, 100vh);
 
+  height: 100dvh;
+
   > div {
     position: absolute;
     top: 50%;
