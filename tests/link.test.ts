@@ -85,4 +85,15 @@ describe("LinkMention", () => {
     expectExternal(wrapper, href);
     expect(wrapper.find("span").text()).toBe("GitHub");
   });
+
+  it.each([
+    ["https://github.com/lauvivans/kami", "github.com/lauvivans/kami"],
+    ["/my-projects", "/my-projects"],
+  ])("shows %s as %s when there is no text", (href, text) => {
+    const wrapper = mount(LinkMention, {
+      props: { href, emoji: "🐙" },
+      global,
+    });
+    expect(wrapper.find("span").text()).toBe(text);
+  });
 });
