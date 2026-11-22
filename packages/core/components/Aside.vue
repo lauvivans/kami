@@ -265,6 +265,17 @@ onBeforeUnmount(() => {
 <style lang="scss">
 @use "sass:map";
 
+// The hidden floating panel keeps its place in the layout so it can slide out,
+// so only the button, the edge strip and the open panel take the pointer.
+.aside-default {
+  pointer-events: none;
+
+  .nav-edge,
+  .nav-btn {
+    pointer-events: auto;
+  }
+}
+
 .nav-wrapper {
   color: $text-secondary;
   user-select: none;
@@ -308,17 +319,13 @@ onBeforeUnmount(() => {
         visibility $duration;
     }
 
-    &:not(.nav-hover) {
-      pointer-events: none;
+    &.nav-hover {
+      pointer-events: auto;
+    }
 
-      .nav-btn {
-        pointer-events: auto;
-      }
-
-      .nav-list {
-        visibility: hidden;
-        transform: translateX(calc(-100% - $space-6));
-      }
+    &:not(.nav-hover) .nav-list {
+      visibility: hidden;
+      transform: translateX(calc(-100% - $space-6));
     }
   }
 
