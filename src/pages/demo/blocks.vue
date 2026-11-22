@@ -38,6 +38,14 @@ const code = {
 
 <BulletList>
   <BulletItem>Or write the items <TextHighlight>by hand</TextHighlight></BulletItem>
+</BulletList>
+
+<!-- An image in an item stays on the text line, like an icon before a link -->
+<BulletList>
+  <BulletItem>
+    <Image src="/icons/page-example.png" />
+    <Link href="https://github.com/lauvivans/kami">GitHub</Link>
+  </BulletItem>
 </BulletList>`,
   todo: `<ToDoList
   :items="[
@@ -95,6 +103,12 @@ console.log(greeting);`;
   <BulletList :items="['First item', 'Second item']" />
   <BulletList>
     <BulletItem>Or write the items <TextHighlight>by hand</TextHighlight></BulletItem>
+  </BulletList>
+  <BulletList>
+    <BulletItem>
+      <Image src="/icons/page-example.png" />
+      <Link :href="repoUrl">GitHub</Link>
+    </BulletItem>
   </BulletList>
   <Code lang="vue">{{ code.bullets }}</Code>
 
