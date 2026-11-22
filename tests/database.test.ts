@@ -1,8 +1,8 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { mount, shallowMount } from "@vue/test-utils";
 import { Database } from "@core/index.ts";
-import DatabaseTableLayout from "@core/@client/components/Database/DatabaseTableLayout.vue";
-import DatabaseGalleryLayout from "@core/@client/components/Database/DatabaseGalleryLayout.vue";
+import DatabaseTableLayout from "@core/components/Database/DatabaseTableLayout.vue";
+import DatabaseGalleryLayout from "@core/components/Database/DatabaseGalleryLayout.vue";
 import { useStore } from "@core/store";
 import type { PageInfo } from "@core/@types";
 
@@ -87,7 +87,7 @@ describe("Database table layout", () => {
 
 describe("Database views", () => {
   const tabs = (wrapper: ReturnType<typeof shallowMount>) =>
-    wrapper.findAll(".database__view");
+    wrapper.findAll(".database-block__view");
 
   it("opens with the view set by layout", () => {
     const wrapper = shallowMount(Database, {
@@ -112,7 +112,7 @@ describe("Database views", () => {
     expect(wrapper.findComponent(DatabaseTableLayout).exists()).toBe(true);
     expect(wrapper.findComponent(DatabaseGalleryLayout).exists()).toBe(false);
     expect(tabs(wrapper)[1]!.attributes("aria-pressed")).toBe("true");
-    expect(wrapper.find(".database__title").text()).toBe("Projects");
+    expect(wrapper.find(".database-block__title").text()).toBe("Projects");
 
     await tabs(wrapper)[0]!.trigger("click");
 

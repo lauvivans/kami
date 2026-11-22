@@ -6,8 +6,8 @@ import { Icons } from "@core/enum";
 import MainModalView from "@core/components/Modal/MainModalView.vue";
 import { useModal } from "../../../hooks";
 import { useStore } from "@core/store";
-import DatabaseGalleryLayout from "./DatabaseGalleryLayout.vue";
-import DatabaseTableLayout from "./DatabaseTableLayout.vue";
+import DatabaseGalleryLayout from "@core/components/Database/DatabaseGalleryLayout.vue";
+import DatabaseTableLayout from "@core/components/Database/DatabaseTableLayout.vue";
 
 type View = "gallery" | "table";
 
@@ -41,16 +41,16 @@ function openPage(page: PageInfo) {
 </script>
 
 <template>
-  <div class="database">
-    <div class="database__navbar">
-      <div class="database__menu">
-        <div class="database__views">
+  <div class="database-block">
+    <div class="database-block__navbar">
+      <div class="database-block__menu">
+        <div class="database-block__views">
           <button
             v-for="item in views"
             :key="item.id"
             type="button"
-            class="database__view"
-            :class="{ 'database__view--active': view === item.id }"
+            class="database-block__view"
+            :class="{ 'database-block__view--active': view === item.id }"
             :aria-pressed="view === item.id"
             @click="view = item.id"
           >
@@ -58,13 +58,15 @@ function openPage(page: PageInfo) {
             <span>{{ item.label }}</span>
           </button>
         </div>
-        <div class="database__actions">
+        <div class="database-block__actions">
           <button type="button">Filter</button>
           <button type="button">Sort</button>
         </div>
       </div>
 
-      <h3 v-if="props.title" class="database__title">{{ props.title }}</h3>
+      <h3 v-if="props.title" class="database-block__title">
+        {{ props.title }}
+      </h3>
     </div>
 
     <DatabaseGalleryLayout
@@ -85,10 +87,10 @@ function openPage(page: PageInfo) {
 </template>
 
 <style lang="scss">
-.database {
+.database-block {
   &:hover,
   &:focus-within {
-    .database__actions {
+    .database-block__actions {
       visibility: visible;
     }
   }
