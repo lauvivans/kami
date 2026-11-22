@@ -44,7 +44,7 @@ function handleNavigate(path: string) {
                     />
                 </router-view>
 
-                <footer class="footer">by Kami (^.^)</footer>
+                <footer class="footer">by Kami</footer>
             </div>
         </div>
     </div>
