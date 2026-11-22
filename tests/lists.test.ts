@@ -44,17 +44,29 @@ describe("ToDoList", () => {
 });
 
 describe("ToggleList", () => {
-  it("rotates the open icon while the content is shown", async () => {
-    const wrapper = mount(ToggleList, {
+  const mountToggle = () =>
+    mount(ToggleList, {
       props: { iconToOpen: Icons.arrowRightFilled },
       slots: { summaryContent: "Summary", detailsContent: "Hidden" },
     });
-    const icon = () => wrapper.find(".details__summary--icon .icon");
 
-    expect(icon().classes()).not.toContain("details__chevron--open");
-    await icon().trigger("click");
-    expect(icon().classes()).toContain("details__chevron--open");
-    await icon().trigger("click");
-    expect(icon().classes()).not.toContain("details__chevron--open");
+  it("opens and closes when the summary text is clicked", async () => {
+    const wrapper = mountToggle();
+    const details = wrapper.find("details").element as HTMLDetailsElement;
+
+    expect(details.open).toBe(false);
+    await wrapper.find(".details__summary--content").trigger("click");
+    expect(details.open).toBe(true);
+    await wrapper.find(".details__summary--content").trigger("click");
+    expect(details.open).toBe(false);
+  });
+
+  it("uses a native summary, so Enter and Space toggle it from the keyboard", () => {
+    const wrapper = mountToggle();
+    const summary = wrapper.find("details > summary");
+
+    expect(summary.exists()).toBe(true);
+    expect(summary.text()).toBe("Summary");
+    expect(wrapper.find("details > .details__content").text()).toBe("Hidden");
   });
 });

@@ -69,32 +69,17 @@ function updateTabs(page: PageInfo) {
   &__toggle-list {
     margin: 0;
 
-    // fixed layout keeps sub-pages inside their indented cell; a fixed width
-    // made them overflow up to the sidebar scrollbar
-    .details {
-      table-layout: fixed;
+    .details__summary {
+      @extend %hover-default;
 
-      &__summary {
-        height: $item-height;
-        font-weight: $fw-regular;
-        transition: background-color $duration;
+      height: $item-height;
+      padding: 0 $space-2;
+      border-radius: $radius-md;
+      font-weight: $fw-regular;
+      transition: background-color $duration;
 
-        &--icon {
-          padding: 0 $space-2;
-          vertical-align: middle;
-          border-top-left-radius: $radius-md;
-          border-bottom-left-radius: $radius-md;
-
-          > div {
-            font-size: $fs-md;
-            color: $text-tertiary;
-          }
-        }
-
-        &--content {
-          border-top-right-radius: $radius-md;
-          border-bottom-right-radius: $radius-md;
-        }
+      .details__chevron {
+        color: $text-tertiary;
       }
     }
   }
