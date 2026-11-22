@@ -1,10 +1,12 @@
-import type { IMetadata, PageInfo } from "@core/index";
+import { markdownPages } from "@core/index";
+import type { IMetadata, MarkdownModule, PageInfo } from "@core/index";
 import Home from "../pages/home.vue";
 import ClientDocs from "../pages/client-docs/index.vue";
 import StartFromHere from "../pages/client-docs/start-from-here.vue";
 import Setup from "../pages/client-docs/setup.vue";
 import FirstPage from "../pages/client-docs/first-page.vue";
 import FirstDeploy from "../pages/client-docs/first-deploy.vue";
+import WritingPosts from "../pages/client-docs/posts.vue";
 import DeveloperDocs from "../pages/developer-docs/index.vue";
 import Contributing from "../pages/developer-docs/contributing.vue";
 import VersionControl from "../pages/developer-docs/version-control.vue";
@@ -19,37 +21,10 @@ import Bookshelf from "../pages/demo/bookshelf.vue";
 import CoffeeMenu from "../pages/demo/coffee-menu.vue";
 import SeasonalDrinks from "../pages/demo/seasonal-drinks.vue";
 
-// Spike #174: each Markdown post becomes a page under Demo, read from its
-// front matter.
-interface PostFrontmatter {
-  title: string;
-  date: string;
-  banner?: PageInfo["banner"];
-  icon?: PageInfo["icon"];
-}
-
-const postFiles = import.meta.glob<{
-  default: PageInfo["component"];
-  frontmatter: PostFrontmatter;
-}>("../pages/demo/posts/*.md", { eager: true });
-
-const posts: Record<string, PageInfo> = Object.fromEntries(
-  Object.entries(postFiles).map(([file, post]) => {
-    const id = file.split("/").pop()!.replace(/\.md$/, "");
-    const { title, banner, icon } = post.frontmatter;
-    return [
-      id,
-      {
-        id,
-        path: `/demo/posts/${id}`,
-        title,
-        banner,
-        icon,
-        component: post.default,
-        parentPage: "demo",
-      },
-    ];
-  })
+// Each Markdown file in pages/demo/posts becomes a page under Demo.
+const posts = markdownPages(
+  import.meta.glob<MarkdownModule>("../pages/demo/posts/*.md", { eager: true }),
+  { parentPage: "demo", path: "/demo/posts" }
 );
 
 const coffeeIcon: PageInfo["icon"] = {
@@ -85,7 +60,13 @@ const metadata: IMetadata = {
       title: "Client docs",
       icon: coffeeIcon,
       component: ClientDocs,
-      pages: ["start-from-here", "setup", "first-page", "first-deploy"],
+      pages: [
+        "start-from-here",
+        "setup",
+        "first-page",
+        "first-deploy",
+        "writing-posts",
+      ],
     },
     "start-from-here": {
       id: "start-from-here",
@@ -113,6 +94,13 @@ const metadata: IMetadata = {
       path: "/client-docs/first-deploy",
       title: "Your first deploy",
       component: FirstDeploy,
+      parentPage: "client-docs",
+    },
+    "writing-posts": {
+      id: "writing-posts",
+      path: "/client-docs/writing-posts",
+      title: "Writing posts in Markdown",
+      component: WritingPosts,
       parentPage: "client-docs",
     },
     "developer-docs": {

@@ -6,5 +6,5 @@
     "emitDeclarationOnly": false,
     "noEmit": true
   },
-  "include": ["tests", "src/markdown.d.ts"]
+  "include": ["tests", "packages/core/markdown.d.ts"]
 }

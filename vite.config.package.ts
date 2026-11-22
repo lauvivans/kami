@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
+import fs from "fs";
 import path from "path";
 import dts from "vite-plugin-dts";
 
@@ -12,6 +13,20 @@ export default defineConfig({
       tsconfigPath: path.resolve(import.meta.dirname, "./tsconfig.app.json"),
       insertTypesEntry: true,
     }),
+    {
+      // The *.md module declaration, loaded with "@lauvivans/kami/markdown".
+      name: "kami-markdown-types",
+      generateBundle() {
+        this.emitFile({
+          type: "asset",
+          fileName: "markdown.d.ts",
+          source: fs.readFileSync(
+            path.resolve(import.meta.dirname, "packages/core/markdown.d.ts"),
+            "utf8"
+          ),
+        });
+      },
+    },
   ],
 
   resolve: {
@@ -36,12 +51,20 @@ export default defineConfig({
     outDir: "dist",
     emptyOutDir: true,
     lib: {
-      entry: path.resolve(import.meta.dirname, "packages/core/index.ts"),
-      fileName: (format) => `index.${format}.js`,
+      entry: {
+        index: path.resolve(import.meta.dirname, "packages/core/index.ts"),
+        // The Markdown plugin, imported by the portfolio's vite.config.ts.
+        // It runs in Node during the build, never in the browser.
+        vite: path.resolve(
+          import.meta.dirname,
+          "packages/core/vite/markdown.ts"
+        ),
+      },
+      fileName: (format, entry) => `${entry}.${format}.js`,
       formats: ["es"],
     },
     rolldownOptions: {
-      external: ["vue", "vue-router", "pinia"],
+      external: ["vue", "vue-router", "pinia", "marked", "yaml"],
     },
   },
 });

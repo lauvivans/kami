@@ -1,6 +1,6 @@
-// Proof of concept for spike #174: a Vite plugin that turns each .md file into
-// a Vue component built from Kami blocks, at build time. The page ships as
-// plain render functions, so no Markdown parser reaches the browser.
+// The kami-markdown Vite plugin, shipped as @lauvivans/kami/vite. It turns each
+// .md file into a Vue component built from Kami blocks, at build time, so no
+// Markdown parser reaches the browser. See docs/decisions/006-markdown-pages.md.
 import { Lexer, type Token, type Tokens } from "marked";
 import { parse as parseYaml } from "yaml";
 import type { Plugin } from "vite";
@@ -98,6 +98,9 @@ class Page {
           ];
         case "br":
           return [`h("br")`];
+        case "html":
+          this.warnings.push("raw HTML is dropped");
+          return [];
         default:
           this.warnings.push(`inline "${t.type}" is not supported`);
           return [];
@@ -137,6 +140,9 @@ class Page {
           return [`h(${this.block("Divider")})`];
         case "list":
           return [this.list(t as Tokens.List)];
+        case "html":
+          this.warnings.push("raw HTML is dropped");
+          return [];
         default:
           this.warnings.push(`block "${t.type}" is not supported`);
           return [];
