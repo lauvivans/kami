@@ -2,6 +2,7 @@
 import type { IMetadata, PageInfo } from "@core/@types";
 import { ToggleList } from "@core/@client/components";
 import NestedLink from "./NestedLink.vue";
+import Tooltip from "@core/components/Tooltip.vue";
 import { Icons } from "@core/enum";
 import { useStore } from "@core/store";
 
@@ -42,16 +43,10 @@ function updateTabs(page: PageInfo) {
           @click="updateTabs(props.page)"
         >
           <div>
-            <div style="max-width: 1.1rem" v-if="props.page.icon">
-              <img
-                alt=""
-                :src="props.page.icon.path"
-                style="width: 100%; height: auto"
-              />
+            <div class="nav-link__icon" v-if="props.page.icon">
+              <img alt="" :src="props.page.icon.path" />
             </div>
-            <span class="nav-link__pagename">
-              {{ props.page.title }}
-            </span>
+            <Tooltip class="nav-link__pagename" :text="props.page.title" />
           </div>
         </router-link>
       </template>
@@ -69,30 +64,22 @@ function updateTabs(page: PageInfo) {
 
 <style lang="scss">
 .nav-link {
-  margin-bottom: 1px;
+  margin-bottom: $space-1;
 
   &__toggle-list {
     margin: 0;
 
-    .details {
-      width: $nested-link-size !important;
-      max-width: $nested-link-size !important;
+    .details__summary {
+      @extend %hover-default;
 
-      &__summary {
-        &--icon {
-          border-top-left-radius: 3px;
-          border-bottom-left-radius: 3px;
+      height: $item-height;
+      padding: 0 $space-2;
+      border-radius: $radius-md;
+      font-weight: $fw-regular;
+      transition: background-color $duration;
 
-          > button > div {
-            font-size: $fs-medium;
-            color: $black-3;
-          }
-        }
-
-        &--content {
-          border-top-right-radius: 3px;
-          border-bottom-right-radius: 3px;
-        }
+      .details__chevron {
+        color: $text-tertiary;
       }
     }
   }
@@ -100,34 +87,44 @@ function updateTabs(page: PageInfo) {
   &__link {
     all: unset;
     display: block;
-    padding: 4px 0;
 
     > div {
-      @include flex-layout($flex-direction: row, $column-gap: 0.4rem);
+      @include flex-layout($flex-direction: row, $column-gap: $space-3);
 
       align-items: center;
+    }
+  }
+
+  &__icon {
+    max-width: $icon-size-inline;
+
+    img {
+      width: 100%;
+      height: auto;
     }
   }
 
   &__pagename {
     @extend %ellipsis;
 
-    max-width: 160px;
+    // leaves room for the toggle and the page icon
+    max-width: calc($nested-link-size - $space-9);
   }
 }
 
 .nav-link__toggle-list {
   &--active {
     .details .details__summary {
-      background-color: $black-1 !important;
+      background-color: $bg-active;
     }
 
     .details__content .details .details__summary {
-      background-color: transparent !important;
+      background-color: transparent;
     }
 
     .nav-link__pagename {
-      color: $black-9;
+      color: $text;
+      font-weight: $fw-medium;
     }
   }
 }

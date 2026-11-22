@@ -13,36 +13,44 @@ const { page } = defineProps<{ page: PageInfo }>();
     }"
   >
     <slot />
-    <div style="width: auto; height: 200px"></div>
+    <div class="page-content__end"></div>
   </div>
 </template>
 
 <style lang="scss">
+// A centered reading column in normal flow, below the banner.
 .page-content {
-  @include grid-layout;
+  // minmax(0, 1fr) keeps a wide block from stretching the column past the page.
+  @include grid-layout(minmax(0, 1fr));
 
-  position: absolute;
-  top: 100px;
-  left: 50%;
-  transform: translate(-50%, 0%);
-  z-index: 1;
-  width: 50%;
-  row-gap: $default-spacing;
+  row-gap: $space-4;
+  max-width: calc($page-width + 2 * $page-gutter);
+  margin: 0 auto;
+  padding: $space-9 $page-gutter 0;
 
-  &--icon {
-    top: 160px;
+  // The icon overlaps the banner, so the column starts right below it.
+  &--banner {
+    padding-top: 0;
+  }
+
+  // room below the last block
+  &__end {
+    height: $space-10;
   }
 }
 
-.page-full-width .page-content {
-  padding: 0 50px !important;
-  width: 100% !important;
+.page-content--banner:not(.page-content--icon) {
+  padding-top: $space-8;
 }
 
-@media (max-width: $screen-xs) {
-  .page-wrapper .page-content {
-    width: 100% !important;
-    padding: 0 20px !important;
+.page-full-width .page-content {
+  max-width: none;
+}
+
+@media (max-width: $screen-small) {
+  .page-content {
+    padding-left: $page-gutter-mobile;
+    padding-right: $page-gutter-mobile;
   }
 }
 </style>

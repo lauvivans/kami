@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Icon from "@core/@client/components/Icon.vue";
+import Tooltip from "@core/components/Tooltip.vue";
 import { onBeforeUnmount, onMounted } from "vue";
 import { useStore } from "@core/store";
 import { Icons } from "@core/enum";
@@ -69,7 +70,6 @@ onBeforeUnmount(() => {
       :key="index"
       :class="store.activeTab == index ? 'tabs__tab--active' : ''"
       @click.stop="updateActiveTab(index)"
-      @touchstart="updateActiveTab(index)"
     >
       <!-- Activates through the tab's click handler; it is here for keyboard focus. -->
       <button
@@ -77,14 +77,13 @@ onBeforeUnmount(() => {
         class="tabs__name"
         :aria-current="store.activeTab == index ? 'page' : undefined"
       >
-        {{ page.pageName }}
+        <Tooltip :text="page.pageName" />
       </button>
       <button
         type="button"
         class="tabs__tab--close"
         :aria-label="`Close tab ${page.pageName}`"
         @click.stop="removeTab(index)"
-        @touchstart="removeTab(index)"
       >
         <Icon :icon="Icons.close" />
       </button>
@@ -94,7 +93,6 @@ onBeforeUnmount(() => {
       class="tabs__add"
       aria-label="New tab"
       @click.stop="addTab()"
-      @touchstart="addTab()"
       v-if="store.tabs.length < 10"
     >
       <Icon :icon="Icons.add" />
@@ -105,15 +103,20 @@ onBeforeUnmount(() => {
 <style lang="scss">
 .app .tabs {
   display: flex;
-  background-color: $gray-4;
+  align-items: flex-end;
+  gap: $space-1;
+  padding: 0 $space-4;
+  box-sizing: border-box;
+  background-color: $bg-tabs;
   top: 0;
   height: $tabs-height;
-  z-index: 888;
+  z-index: $z-tabs;
 
   @media (max-width: $screen-small) {
     top: auto;
     bottom: 0;
-    background-color: $gray;
+    align-items: center;
+    border-top: $line solid $border;
     overflow-x: auto;
 
     &::-webkit-scrollbar,
@@ -137,38 +140,47 @@ onBeforeUnmount(() => {
   }
 
   &__tab {
-    padding: 10px;
+    padding: 0 $space-5;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 200px;
-    font-size: calc($fs-small - 1px);
-    border-right: 1px solid $black-1;
-    color: $black-6;
+    gap: $space-3;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width: $tab-width;
+    height: calc($tabs-height - $space-2);
+    border-radius: $radius-md $radius-md 0 0;
+    font-size: $fs-sm;
+    color: $text-secondary;
 
-    // Written out: an @extend %ellipsis would come before `all: unset` and be wiped.
+    span {
+      @extend %ellipsis;
+    }
+
+    // Written out: an @extend would come before `all: unset` and be wiped.
     .tabs__name {
       all: unset;
       flex: 1;
       min-width: 0;
-      text-overflow: ellipsis;
-      white-space: nowrap;
       overflow: hidden;
     }
 
     @media (max-width: $screen-small) {
-      min-width: 150px;
+      width: $tab-width-mobile;
+      height: $item-height;
+      border-radius: $radius-md;
     }
 
     &:hover {
-      background-color: $gray-6;
+      background-color: $bg-hover;
     }
 
     &--active {
-      background-color: $white;
+      background-color: $bg;
+      color: $text;
 
       &:hover {
-        background-color: $white;
+        background-color: $bg;
       }
     }
 
@@ -177,20 +189,42 @@ onBeforeUnmount(() => {
     }
   }
 
+  // the active tab keeps its close button, since touch screens have no hover
   &__tab:hover,
-  &__tab:focus-within {
+  &__tab:focus-within,
+  &__tab--active {
     .tabs__tab--close {
       visibility: visible;
     }
   }
 
   &__add {
-    @include spacing($mt: auto, $mb: auto, $ml: 7px);
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 0;
+    width: $item-height;
+    height: $item-height;
+    margin-bottom: $space-1;
+    color: $text-secondary;
+
+    &,
+    &:hover {
+      border-radius: $radius-md;
+    }
+
+    @media (max-width: $screen-small) {
+      margin-bottom: 0;
+    }
   }
 
   &__add,
   &__tab--close {
     @extend %button;
+
+    .icon {
+      color: inherit;
+      font-size: $fs-sm;
+    }
   }
 }
 </style>

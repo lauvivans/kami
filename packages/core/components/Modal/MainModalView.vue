@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import Modal from "./Modal.vue";
+import { ref } from "vue";
+import Modal from "@core/components/Modal/Modal.vue";
 import Icon from "@core/@client/components/Icon.vue";
 import type { PageInfo } from "@core/@types";
 import { Banner, Wrapper, Content, Title } from "@core/components/Content";
 import { Icons } from "@core/enum";
-import Settings from "../Settings.vue";
-import { useModal } from "@core/hooks";
-import DatabaseInfo from "../DatabaseInfo.vue";
+import Settings from "@core/components/Settings.vue";
+import DatabaseInfo from "@core/components/DatabaseInfo.vue";
 
 const props = defineProps<{
   hideMainModal: () => void;
@@ -15,11 +15,8 @@ const props = defineProps<{
   page: PageInfo;
 }>();
 
-const MAIN_MODAL_PROVIDE_NAME = "mainModalMenu";
-
-const { showModal, hideModal, addModalListener } = useModal({
-  provideName: MAIN_MODAL_PROVIDE_NAME,
-});
+const settingsOpen = ref(false);
+const settingsBtn = ref<HTMLElement | null>(null);
 
 const handleNavigate = () => {
   props.hideMainModal();
@@ -31,28 +28,35 @@ const handleNavigate = () => {
     <Modal
       class="page-modal"
       :provideName="props.provideName"
-      :isStatic="true"
-      :label="props.page.title"
       :hideModal="props.hideMainModal"
       :addModalListener="props.addMainModalListener"
+      :label="props.page.title"
     >
       <div class="page-modal__header">
         <router-link
           @click="handleNavigate"
           :to="props.page.path"
-          aria-label="Go to page expanded"
+          aria-label="Open as full page"
         >
           <Icon class="page-modal__expand" :icon="Icons.expand" />
         </router-link>
-        <button
-          class="page-modal__btn-settings"
-          id="settings-btn"
-          @click="showModal"
-          type="button"
-          aria-label="Open settings"
-        >
-          <Icon :icon="Icons.moreHorizontal" />
-        </button>
+        <div class="page-modal__actions">
+          <button
+            class="page-modal__btn-settings"
+            id="settings-btn"
+            ref="settingsBtn"
+            @click="settingsOpen = !settingsOpen"
+            type="button"
+            aria-label="Open settings"
+            aria-haspopup="menu"
+            :aria-expanded="settingsOpen"
+          >
+            <Icon :icon="Icons.moreHorizontal" />
+          </button>
+          <button type="button" aria-label="Close" @click="props.hideMainModal">
+            <Icon :icon="Icons.close" />
+          </button>
+        </div>
       </div>
       <Wrapper>
         <Banner :page="props.page" />
@@ -63,10 +67,8 @@ const handleNavigate = () => {
         </Content>
       </Wrapper>
       <Settings
-        :addSettingsModalListener="addModalListener"
-        :menuProvider="MAIN_MODAL_PROVIDE_NAME"
-        :hideSettingsModal="hideModal"
-        :modalStyles="{ top: '77px', right: '20px' }"
+        v-model:open="settingsOpen"
+        :anchor="settingsBtn"
         :pageId="props.page.id"
       />
     </Modal>
@@ -75,50 +77,56 @@ const handleNavigate = () => {
 
 <style lang="scss">
 .page-modal {
+  // The visible height minus a margin; dvh follows the mobile toolbar.
+  // The page wrapper scrolls, so the end of a long page stays reachable.
+  .modal-static {
+    display: flex;
+    flex-direction: column;
+    width: min($modal-width, calc(100% - 2 * $space-9));
+    max-width: none;
+    height: calc(100dvh - 2 * $space-9);
+    max-height: none;
+    padding: 0;
+    overflow: hidden;
+  }
+
   .page-wrapper {
-    margin-top: 25px !important;
+    flex: 1;
+    height: auto;
+    margin-top: 0;
+  }
+
+  // The modal's own header sits above the page, so a page without a banner
+  // starts the column at the top.
+  .page-content:not(.page-content--banner) {
+    padding-top: 0;
   }
 
   &__header {
     display: flex;
     justify-content: space-between;
+    flex-shrink: 0;
+    padding: $space-4 $space-5;
 
     button {
       @extend %button;
     }
   }
 
-  &__btn-settings,
+  &__actions {
+    display: flex;
+    column-gap: $space-2;
+  }
+
   &__expand {
     @extend %button;
   }
 }
 
-@media (max-width: $screen-xs) {
-  .page-modal {
-    width: 100%;
-
-    .page-content {
-      top: 10px;
-    }
-
-    :has(.page-content--banner):has(.page-content--icon) {
-      .page-content {
-        top: 160px;
-      }
-    }
-
-    :not(:has(.page-content--icon)):has(.page-content--banner) {
-      .page-content {
-        top: 190px;
-      }
-    }
-
-    :not(:has(.page-content--banner)) {
-      .page-content {
-        top: 10px;
-      }
-    }
+@media (max-width: $screen-small) {
+  .page-modal .modal-static {
+    width: calc(100% - 2 * $space-4);
+    height: calc(100dvh - 2 * $space-4);
   }
 }
 </style>

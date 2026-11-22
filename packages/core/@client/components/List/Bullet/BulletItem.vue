@@ -15,13 +15,14 @@ import { Icons } from "@core/enum";
 .bullet-item {
   display: flex;
   align-items: flex-start;
-  column-gap: 10px;
+  column-gap: $space-4;
   width: 100%;
 
   &__icon {
-    margin-top: 6px;
+    // centers the dot on the first line, below Text's top padding
+    margin-top: $space-4;
     font-size: $fs-xs;
-    color: $black-7;
+    color: $text;
   }
 
   // A plain block, so inline content (code, links, highlights) flows with

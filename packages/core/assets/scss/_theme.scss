@@ -1,183 +1,117 @@
-@use "sass:map";
 @use "var";
 
-@mixin define-theme(
-  $text,
-  $textLighter,
-  $bg,
-  $bgAsideClick,
-  $bgAsideHover,
-  $bgHover,
-  $bgTabs,
-  $activeColor,
-  $link,
-  $thumbColor,
-  $trackColor
-) {
-  background-color: $bg;
-  color: $text;
-
-  li,
-  span,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  div,
-  button,
-  table,
-  td,
-  tr,
-  th,
-  .gallery__card-footer-icon.icon {
-    color: $text !important;
-  }
-
-  .main-container-click .aside-click span,
-  .main-container-click .aside-click div,
-  .main-container-click .aside-click li {
-    color: $textLighter !important;
-  }
-
-  .main-container-click .aside-click {
-    background-color: $bgAsideClick !important;
-    box-shadow: $bgHover 0 0 3px -1px inset !important;
-  }
-
-  .tabs {
-    background-color: $bgTabs !important;
-  }
-
-  .header,
-  .tabs__tab--active,
-  .tabs__tab--active:hover {
-    background-color: $bg !important;
-  }
-
-  .modal,
-  .modal-static,
-  .modal-dynamic,
-  .footer,
-  .gallery__card-footer,
-  .nav-hover .nav-list,
-  .toggle-btn.unchecked,
-  .header-menu .menu,
-  .callout,
-  .code {
-    background-color: $bgAsideHover !important;
-  }
-
-  .multi-select > div {
-    color: var.$dark !important;
-  }
-
-  .nav-link__toggle-list--active .details > .details__summary {
-    background-color: $bgHover !important;
-  }
-
-  .menu,
-  .tabs__add:hover {
-    background-color: $bg !important;
-  }
-
-  .tabs__tab {
-    border-right-color: $bgHover !important;
-  }
-
-  .header-menu__font-wrapper--active .header-menu__ag {
-    color: $activeColor !important;
-  }
-
-  .toggle-btn.checked {
-    background-color: $activeColor !important;
-  }
-
-  ::-webkit-scrollbar-track {
-    background-color: $trackColor !important;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: $thumbColor !important;
-  }
-
-  :any-link {
-    color: $text;
-
-    &:hover {
-      color: $link !important;
-    }
-  }
-
-  ::selection {
-    background-color: $bgHover !important;
-  }
-
-  .main-container-click
-    .aside-click
-    .nav-link__toggle-list--active
-    .nav-link__pagename {
-    color: $text !important;
-  }
-
-  .bookmark {
-    border-color: $textLighter;
-  }
+// Every theme sets the same tokens (the custom properties _var.scss points
+// at). The theme class sits on <body>; :root holds the default theme.
+:root,
+.light-theme {
+  --bg: rgb(255 255 255);
+  --bg-sidebar: rgb(248 248 247);
+  --bg-hover: rgb(0 0 0 / 4%);
+  --bg-active: rgb(0 0 0 / 6%);
+  --bg-floating: rgb(255 255 255);
+  --bg-block: rgb(247 246 243);
+  --bg-tabs: rgb(240 240 238);
+  --overlay: rgb(15 15 15 / 60%);
+  --text: rgb(50 48 44);
+  --text-secondary: rgb(115 114 110);
+  --text-tertiary: rgb(165 164 160);
+  --text-inverse: rgb(255 255 255);
+  --border: rgb(0 0 0 / 9%);
+  --accent: rgb(35 131 226);
+  --code-inline: rgb(205 60 58);
+  --code-keyword: #cf222e;
+  --code-string: #0a3069;
+  --code-function: #8250df;
+  --code-number: #0550ae;
+  --code-comment: #6e7781;
+  --tag-gray-bg: rgb(241 241 239);
+  --tag-brown-bg: rgb(244 238 238);
+  --tag-orange-bg: rgb(251 236 221);
+  --tag-yellow-bg: rgb(251 243 219);
+  --tag-green-bg: rgb(237 243 236);
+  --tag-blue-bg: rgb(231 243 248);
+  --tag-purple-bg: rgb(244 240 247);
+  --tag-pink-bg: rgb(249 238 243);
+  --tag-red-bg: rgb(253 235 236);
+  --tag-text: rgb(50 48 44);
+  --shadow-floating:
+    0 0 0 1px rgb(15 15 15 / 5%), 0 3px 6px rgb(15 15 15 / 10%),
+    0 9px 24px rgb(15 15 15 / 20%);
+  --shadow-sidebar: inset -1px 0 0 rgb(0 0 0 / 2.4%);
 }
 
-.dark-theme {
-  @include define-theme(
-    var.$white,
-    #a8a8a8,
-    var.$dark,
-    var.$dark-lighter,
-    var.$black,
-    map.get(var.$theme-bg-hover, "dark-theme"),
-    var.$gray-1,
-    var.$active,
-    var.$gray,
-    var.$gray-2,
-    var.$gray-3
-  );
-}
-
-.cat-latte {
-  @include define-theme(
-    var.$latte-text,
-    var.$latte-subtext0,
-    var.$latte-mantle,
-    var.$latte-base,
-    var.$latte-surface0,
-    map.get(var.$theme-bg-hover, "cat-latte"),
-    var.$latte-surface0,
-    var.$latte-sky,
-    var.$latte-overlay2,
-    var.$latte-surface0,
-    var.$latte-mantle
-  );
-}
-
-.cat-mocha {
-  @include define-theme(
-    var.$mocha-text,
-    var.$mocha-subtext0,
-    var.$mocha-crust,
-    var.$mocha-base,
-    var.$mocha-mantle,
-    map.get(var.$theme-bg-hover, "cat-mocha"),
-    var.$mocha-base,
-    var.$mocha-sapphire,
-    var.$mocha-subtext0,
-    var.$mocha-surface1,
-    var.$mocha-surface0
-  );
-}
-
-// Inline code keeps a red tone that reads on dark backgrounds.
+// Catppuccin Mocha starts from the dark theme, for the tags and code colors.
 .dark-theme,
 .cat-mocha {
-  .code--inline {
-    color: var.$mocha-red !important;
-  }
+  --bg: rgb(25 25 25);
+  --bg-sidebar: rgb(32 32 32);
+  --bg-hover: rgb(255 255 255 / 6%);
+  --bg-active: rgb(255 255 255 / 9%);
+  --bg-floating: rgb(37 37 37);
+  --bg-block: rgb(37 37 37);
+  --bg-tabs: rgb(20 20 20);
+  --overlay: rgb(0 0 0 / 70%);
+  --text: rgb(255 255 255 / 81%);
+  --text-secondary: rgb(255 255 255 / 52%);
+  --text-tertiary: rgb(255 255 255 / 34%);
+  --text-inverse: rgb(25 25 25);
+  --border: rgb(255 255 255 / 9%);
+  --accent: rgb(82 156 202);
+  --code-inline: rgb(235 87 87);
+  --code-keyword: #ff7b72;
+  --code-string: #a5d6ff;
+  --code-function: #d2a8ff;
+  --code-number: #79c0ff;
+  --code-comment: #8b949e;
+  --tag-gray-bg: rgb(55 55 55);
+  --tag-brown-bg: rgb(74 50 40);
+  --tag-orange-bg: rgb(92 59 35);
+  --tag-yellow-bg: rgb(86 67 40);
+  --tag-green-bg: rgb(36 61 48);
+  --tag-blue-bg: rgb(20 58 78);
+  --tag-purple-bg: rgb(60 45 73);
+  --tag-pink-bg: rgb(78 44 60);
+  --tag-red-bg: rgb(82 46 42);
+  --tag-text: rgb(255 255 255 / 81%);
+  --shadow-floating:
+    0 0 0 1px rgb(255 255 255 / 9%), 0 3px 6px rgb(0 0 0 / 40%),
+    0 9px 24px rgb(0 0 0 / 50%);
+  --shadow-sidebar: inset -1px 0 0 rgb(255 255 255 / 5%);
+}
+
+// Catppuccin themes fill the tokens from the palettes in _var.scss.
+.cat-latte {
+  --bg: #{var.$latte-base};
+  --bg-sidebar: #{var.$latte-mantle};
+  --bg-hover: rgb(76 79 105 / 8%);
+  --bg-active: rgb(76 79 105 / 12%);
+  --bg-floating: #{var.$latte-base};
+  --bg-block: #{var.$latte-mantle};
+  --bg-tabs: #{var.$latte-surface0};
+  --text: #{var.$latte-text};
+  --text-secondary: #{var.$latte-subtext0};
+  --text-tertiary: #{var.$latte-overlay0};
+  --text-inverse: #{var.$latte-base};
+  --border: rgb(76 79 105 / 12%);
+  --accent: #{var.$latte-sky};
+  --code-inline: #{var.$latte-red};
+  --tag-text: #{var.$latte-text};
+}
+
+.cat-mocha {
+  --bg: #{var.$mocha-base};
+  --bg-sidebar: #{var.$mocha-mantle};
+  --bg-hover: rgb(205 214 244 / 6%);
+  --bg-active: rgb(205 214 244 / 10%);
+  --bg-floating: #{var.$mocha-surface0};
+  --bg-block: #{var.$mocha-surface0};
+  --bg-tabs: #{var.$mocha-crust};
+  --text: #{var.$mocha-text};
+  --text-secondary: #{var.$mocha-subtext0};
+  --text-tertiary: #{var.$mocha-overlay1};
+  --text-inverse: #{var.$mocha-base};
+  --border: rgb(205 214 244 / 10%);
+  --accent: #{var.$mocha-sapphire};
+  --code-inline: #{var.$mocha-red};
+  --tag-text: #{var.$mocha-text};
 }

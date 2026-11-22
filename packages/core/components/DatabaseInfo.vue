@@ -2,24 +2,9 @@
 import { Icons } from "@core/enum";
 import Icon from "@core/@client/components/Icon.vue";
 import type { PageInfo } from "@core/@types";
+import { tagColorClass, tagName } from "@core/util/tagColorClass";
 
 const props = defineProps<{ page: PageInfo }>();
-
-//purple, blue, yellow, brown, green, orange and gray
-const colors = [
-  "cdb4db",
-  "bde0fe",
-  "ffd275",
-  "ba9378",
-  "d0f0c0",
-  "fec89a",
-  "ccc5b9",
-];
-
-function getColor() {
-  const randomNumber = Math.floor(Math.random() * 6);
-  return "#" + colors[randomNumber];
-}
 </script>
 
 <template>
@@ -51,10 +36,10 @@ function getColor() {
           >
             <div
               v-for="item in value.value"
-              :key="item"
-              :style="{ 'background-color': getColor() }"
+              :key="tagName(item)"
+              :class="tagColorClass(item)"
             >
-              {{ item }}
+              {{ tagName(item) }}
             </div>
           </div>
           <span v-else>Empty</span>
@@ -66,24 +51,26 @@ function getColor() {
 
 <style lang="scss">
 .database {
-  margin-bottom: 20px;
+  margin-bottom: $space-6;
 
   &__properties {
     display: flex;
-    column-gap: 10px;
+    column-gap: $space-4;
   }
 
   &__property {
     display: flex;
     width: max-content !important;
-    min-width: 100px;
-    column-gap: 5px;
+    min-width: $prop-name-width-mobile;
+    column-gap: $space-2;
     align-items: center;
     flex-wrap: wrap;
 
     @extend %hover-default;
 
     &--val {
+      // Lets the value cell shrink so the tags wrap on narrow screens.
+      width: auto !important;
       vertical-align: middle;
     }
   }
@@ -91,14 +78,25 @@ function getColor() {
 
 .multi-select {
   display: flex;
-  gap: 5px;
+  gap: $space-2;
   align-items: center;
   flex-wrap: wrap;
 
   div {
-    padding: 0.3rem 0.5rem;
+    padding: 0 $space-3;
     width: max-content;
-    border-radius: 2px;
+    border-radius: $radius-sm;
+    font-size: $fs-xs;
+    line-height: $tag-height;
+    white-space: nowrap;
+    color: $tag-text;
+  }
+
+  // one class per color in $tag-colors, picked by tagColorClass()
+  @each $name, $color in $tag-colors {
+    &__tag--#{$name} {
+      background-color: $color;
+    }
   }
 }
 </style>

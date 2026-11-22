@@ -5,6 +5,7 @@ import {
   Heading,
   TextHighlight,
   Callout,
+  Quote,
   BulletList,
   BulletItem,
   ToDoList,
@@ -17,6 +18,8 @@ import {
   Bookmark,
   Image,
   Loader,
+  Database,
+  ShowMore,
   Icons,
 } from "@core/index.ts";
 import metadata from "@/metadata";
@@ -26,10 +29,16 @@ import metadata from "@/metadata";
 const vueUrl = "https://vuejs.org/";
 const repoUrl = "https://github.com/lauvivans/kami";
 
+const projects = [metadata.pages["coffee-shop"], metadata.pages["bookshelf"]].filter(
+  (page) => page !== undefined,
+);
+
 const code = {
-  text: `<Text>A paragraph with <TextHighlight>highlighted</TextHighlight> words.</Text>`,
+  text: `<Text>A paragraph with <TextHighlight>highlighted</TextHighlight> words.</Text>
+<Text>A highlight with a <TextHighlight color="yellow">tag color</TextHighlight>.</Text>`,
   heading: `<Heading :level="4">Heading level 4</Heading>`,
   callout: `<Callout emoji="💡">A callout with an emoji.</Callout>`,
+  quote: `<Quote>A quote can hold <TextHighlight>highlights</TextHighlight> and <Link href="https://vuejs.org/">links</Link>.</Quote>`,
   code: `<Text>Run <Code inline>npm run dev</Code> to start.</Text>
 
 <!-- Pass multi-line code through {{ }} to keep its line breaks -->
@@ -38,6 +47,14 @@ const code = {
 
 <BulletList>
   <BulletItem>Or write the items <TextHighlight>by hand</TextHighlight></BulletItem>
+</BulletList>
+
+<!-- An image in an item stays on the text line, like an icon before a link -->
+<BulletList>
+  <BulletItem>
+    <Image src="/icons/page-example.png" />
+    <Link href="https://github.com/lauvivans/kami">GitHub</Link>
+  </BulletItem>
 </BulletList>`,
   todo: `<ToDoList
   :items="[
@@ -45,7 +62,7 @@ const code = {
     { name: 'Not yet', isChecked: false },
   ]"
 />`,
-  toggle: `<ToggleList :iconToOpen="Icons.arrowRightFilled" :iconToClose="Icons.arrowDownFilled">
+  toggle: `<ToggleList :iconToOpen="Icons.arrowRightFilled">
   <template #summaryContent>Click the arrow</template>
   <template #detailsContent><Text>Hidden content.</Text></template>
 </ToggleList>`,
@@ -55,12 +72,21 @@ const code = {
 </Columns>`,
   links: `<Text>An inline <Link href="https://vuejs.org/">link</Link>.</Text>
 <LinkMention :page="metadata.pages['coffee-shop']" emoji="☕" />
-<LinkMention href="https://github.com/lauvivans/kami" emoji="🐙" />
-<Bookmark title="Kami" subtitle="Source code" link="https://github.com/lauvivans/kami" />`,
+<LinkMention href="https://github.com/lauvivans/kami" emoji="🐙">Kami on GitHub</LinkMention>
+<Bookmark title="Kami" subtitle="Source code" link="https://github.com/lauvivans/kami" icon="/icons/page-example.png" />`,
+  showMore: `<!-- limit blocks show at first; the button shows the next ones -->
+<ShowMore :limit="1">
+  <Callout emoji="1️⃣">First block</Callout>
+  <Callout emoji="2️⃣">Second block</Callout>
+  <Callout emoji="3️⃣">Third block</Callout>
+</ShowMore>`,
   image: `<Image src="/banners/page-example.webp" alt="Example banner" />`,
   others: `<Divider />
 <Empty />
 <Loader />`,
+  database: `<!-- layout is the view it opens with: "table" or "gallery" -->
+<!-- loadLimit shows that many pages, then a "Load more" button -->
+<Database layout="table" title="Projects" :pages="projects" :load-limit="1" />`,
 };
 
 const sample = `const greeting = "Hello";
@@ -75,6 +101,7 @@ console.log(greeting);`;
 
   <Heading :level="3">Text</Heading>
   <Text>A paragraph with <TextHighlight>highlighted</TextHighlight> words.</Text>
+  <Text>A highlight with a <TextHighlight color="yellow">tag color</TextHighlight>.</Text>
   <Code lang="vue">{{ code.text }}</Code>
 
   <Heading :level="3">Heading</Heading>
@@ -86,6 +113,13 @@ console.log(greeting);`;
   <Callout emoji="💡">A callout with an emoji.</Callout>
   <Code lang="vue">{{ code.callout }}</Code>
 
+  <Heading :level="3">Quote</Heading>
+  <Quote
+    >A quote can hold <TextHighlight>highlights</TextHighlight> and
+    <Link :href="vueUrl">links</Link>.</Quote
+  >
+  <Code lang="vue">{{ code.quote }}</Code>
+
   <Heading :level="3">Code</Heading>
   <Text>Run <Code inline>npm run dev</Code> to start.</Text>
   <Code lang="js">{{ sample }}</Code>
@@ -95,6 +129,12 @@ console.log(greeting);`;
   <BulletList :items="['First item', 'Second item']" />
   <BulletList>
     <BulletItem>Or write the items <TextHighlight>by hand</TextHighlight></BulletItem>
+  </BulletList>
+  <BulletList>
+    <BulletItem>
+      <Image src="/icons/page-example.png" />
+      <Link :href="repoUrl">GitHub</Link>
+    </BulletItem>
   </BulletList>
   <Code lang="vue">{{ code.bullets }}</Code>
 
@@ -108,7 +148,7 @@ console.log(greeting);`;
   <Code lang="vue">{{ code.todo }}</Code>
 
   <Heading :level="3">Toggle list</Heading>
-  <ToggleList :iconToOpen="Icons.arrowRightFilled" :iconToClose="Icons.arrowDownFilled">
+  <ToggleList :iconToOpen="Icons.arrowRightFilled">
     <template #summaryContent>Click the arrow</template>
     <template #detailsContent><Text>Hidden content.</Text></template>
   </ToggleList>
@@ -128,9 +168,22 @@ console.log(greeting);`;
   <Heading :level="3">Links</Heading>
   <Text>An inline <Link :href="vueUrl">link</Link>.</Text>
   <LinkMention :page="metadata.pages['coffee-shop']" emoji="☕" />
-  <LinkMention :href="repoUrl" emoji="🐙" />
-  <Bookmark title="Kami" subtitle="Source code" :link="repoUrl" />
+  <LinkMention :href="repoUrl" emoji="🐙">Kami on GitHub</LinkMention>
+  <Bookmark
+    title="Kami"
+    subtitle="Source code"
+    :link="repoUrl"
+    icon="/icons/page-example.png"
+  />
   <Code lang="vue">{{ code.links }}</Code>
+
+  <Heading :level="3">Show more</Heading>
+  <ShowMore :limit="1">
+    <Callout emoji="1️⃣">First block</Callout>
+    <Callout emoji="2️⃣">Second block</Callout>
+    <Callout emoji="3️⃣">Third block</Callout>
+  </ShowMore>
+  <Code lang="vue">{{ code.showMore }}</Code>
 
   <Heading :level="3">Image</Heading>
   <Image src="/banners/page-example.webp" alt="Example banner" />
@@ -143,8 +196,14 @@ console.log(greeting);`;
 
   <Heading :level="3">Database</Heading>
   <Text
-    >A gallery of pages. Clicking a card opens the page in a modal. See it on
-    the demo's home page.</Text
+    >A list of pages, shown as a table or as a gallery of cards. The tabs on
+    top switch between the two views. Each page's
+    <Code inline>databaseInfo</Code> fills the table's columns. Clicking a
+    title or a card opens the page in a modal. With
+    <Code inline>loadLimit</Code>, it shows that many pages and a Load more
+    button for the rest.</Text
   >
+  <Database layout="table" title="Projects" :pages="projects" :load-limit="1" />
+  <Code lang="vue">{{ code.database }}</Code>
   <LinkMention :page="metadata.pages['demo']" emoji="✨" />
 </template>

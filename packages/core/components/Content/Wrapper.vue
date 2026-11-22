@@ -24,7 +24,10 @@ const store = useStore;
   position: relative;
   width: 100%;
   margin-top: calc($header-height + $tabs-height);
-  height: calc(100vh - ($header-height + $tabs-height));
+  height: calc(100dvh - ($header-height + $tabs-height));
+
+  // Keeps the z-indexes inside the page (banner, mentions) below the header.
+  isolation: isolate;
 
   @media (max-width: $screen-small) {
     margin-top: $header-height;
@@ -32,11 +35,11 @@ const store = useStore;
 }
 
 .font-roboto-mono {
-  font-family: $mono;
+  font-family: $font-mono;
 }
 
 .font-roboto-serif {
-  font-family: $serif;
+  font-family: $font-serif;
 }
 
 @media (min-width: $screen-small) {
@@ -44,7 +47,7 @@ const store = useStore;
     p,
     span,
     div:not(:has(h1, h2, h3, h4)) {
-      font-size: $fs-small;
+      font-size: $fs-sm;
     }
   }
 }

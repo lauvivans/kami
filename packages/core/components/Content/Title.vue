@@ -6,9 +6,9 @@ const { page } = defineProps<{ page: PageInfo }>();
 
 <template>
   <div class="page-title">
-    <div class="page-title__img-wrapper">
-      <img v-if="page.icon" alt="" :src="page.icon.path" /><a
-        v-if="page.icon?.link && page.icon?.author"
+    <div v-if="page.icon" class="page-title__img-wrapper">
+      <img alt="" :src="page.icon.path" /><a
+        v-if="page.icon.link && page.icon.author"
         target="_blank"
         :href="page.icon.link"
         >{{ page.icon.author }}</a
@@ -22,7 +22,7 @@ const { page } = defineProps<{ page: PageInfo }>();
 .page-title {
   display: flex;
   flex-direction: column;
-  row-gap: 40px;
+  row-gap: $space-6;
 
   &__img-wrapper {
     display: flex;
@@ -31,34 +31,53 @@ const { page } = defineProps<{ page: PageInfo }>();
 
     a {
       cursor: pointer;
-      font-size: 11px;
+      font-size: $fs-xs;
       align-self: flex-end;
     }
   }
 
   img {
-    max-width: 5.8rem;
+    width: $icon-size;
+    height: $icon-size;
+    object-fit: contain;
   }
 
   span {
-    font-size: 2.5rem;
-    font-weight: $fw-900;
+    font-size: $fs-title;
+    font-weight: $fw-bold;
+    line-height: $lh-heading;
   }
+}
+
+// The icon overlaps the banner by half its size, painted above it.
+.page-content--banner .page-title__img-wrapper {
+  position: relative;
+  z-index: $z-raised;
+  margin-top: calc($icon-size / -2);
 }
 
 @media (min-width: $screen-small) {
   .font-size-small .page-title {
     span {
-      font-size: $fs-large + 0.7rem;
+      font-size: $fs-title-mobile;
     }
   }
 }
 
-@media (max-width: $screen-xs) {
-  .page-wrapper .page-title {
-    span {
-      font-size: $fs-xl;
+@media (max-width: $screen-small) {
+  .page-title {
+    img {
+      width: $icon-size-mobile;
+      height: $icon-size-mobile;
     }
+
+    span {
+      font-size: $fs-title-mobile;
+    }
+  }
+
+  .page-content--banner .page-title__img-wrapper {
+    margin-top: calc($icon-size-mobile / -2);
   }
 }
 </style>

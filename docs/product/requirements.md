@@ -23,7 +23,7 @@ What Kami offers and the rules it follows.
   - a banner and an icon, each with the image path and optional author and link for the credit;
   - `pages`, the ids of its sub-pages, and `parentPage`, the id of its parent;
   - `isHomepage`, for the page shown at `/`;
-  - `databaseInfo`, properties shown under the title (an icon and one or more values), like the properties of a Notion database item.
+  - `databaseInfo`, properties shown under the title (an icon and one or more values), like the properties of a Notion database item. An array value is a multi-select: each item is a tag, written as text or as `{ name, color }` with one of the tag colors (purple, blue, yellow, brown, green, orange, gray, pink, red). A tag without a color gets one from its text, so it has the same color everywhere; two tags can share a color, and setting one avoids that.
 - `metadata.favorites` lists the page ids shown under Favorites in the sidebar.
 - Every page shows its banner, icon, title and properties above its content, through `MainLayout`.
 - A path that matches no page shows the 404 page, with a button back to the previous page.
@@ -31,14 +31,15 @@ What Kami offers and the rules it follows.
 ## Layout
 
 - **Sidebar (`Aside`):** the author, Search and Settings, then two groups of pages: Favorites and Private. Pages with sub-pages expand to show them. The sidebar can be pinned open or closed, and when closed it opens on hover. On screens up to `$screen-small` wide it closes after a page is picked.
-- **Tabs (`Tabs`):** like Notion Desktop. A visitor can open up to 10 tabs, switch between them and close them. The open tabs and the active one survive a reload.
-- **Header (`Header`):** the breadcrumb of the current page and a button that opens the page settings.
+- **Tabs (`Tabs`):** like Notion Desktop. A visitor can open up to 10 tabs, switch between them and close them. The open tabs and the active one survive a reload. A restored tab whose page is no longer in the metadata is dropped.
+- **Header (`Header`):** the breadcrumb of the current page and a button that opens the page settings. On a page more than 3 levels deep, the breadcrumb shows the first page and the last two, with `…` in between; clicking `…` opens a menu with the hidden pages.
 - **Search:** the entry in the sidebar opens an empty modal. Search isn't built yet.
 
 ## Themes and settings
 
 - Four themes, picked in Settings in the sidebar: Light (default), Dark, Catppuccin Latte and Catppuccin Mocha (shown as "Cat Latte" and "Cat Mocha"). The choice applies to the whole portfolio.
-- Each page has its own settings, from the header button:
+- Menus opened from a button (the page settings, the theme list in Settings and the breadcrumb `…` menu) are plain dropdowns, like Notion's: they open next to their button with no overlay, the rest of the page stays clickable, and they close on a press outside or on Escape. A press inside a menu opened from another menu keeps both open.
+- Each page has its own settings, from the header button or the button in the page modal:
   - font: Default (Roboto), Serif (Roboto Serif) or Mono (Roboto Mono);
   - small text, on or off;
   - full width, on or off.
@@ -47,14 +48,18 @@ What Kami offers and the rules it follows.
 
 The components a page uses for its content, named after Notion's blocks:
 
-- **Text:** `Text`, `Heading` (levels 1 to 4) and `TextHighlight`.
+- **Text:** `Text`, `Heading` (levels 1 to 4) and `TextHighlight`, which takes an optional `color` (a `TagColor`) for a background from the tag palette.
 - **Code:** `Code`, as a block or, with `inline`, inside a line of text. A block keeps the line breaks of the code it receives. With `lang` (`ts`, `js`, `vue`, `html`, `scss`, `json` or `bash`), the block gets syntax highlighting from highlight.js, colored with the `$code-*` tokens (GitHub's code colors), with a light and a dark set.
 - **Callout:** a box with an emoji and text.
-- **Lists:** `BulletList` and `BulletItem`, `ToDoList` and `ToDoItem` (with a checked state), and `ToggleList`, which shows and hides its content with the icons given to it.
+- **Quote:** `Quote`, a quotation with a line on its left in the text color. It takes any content in its slot, such as text, links and highlights.
+- **Lists:** `BulletList` and `BulletItem`, `ToDoList` and `ToDoItem` (with a checked state), and `ToggleList`, which shows and hides its content and rotates the icon given in `iconToOpen` when open (`iconToClose` is still accepted and no longer shown).
 - **Layout:** `Columns` with 2 to 5 `Column`s and an optional size for each, `Divider` and `Empty` (blank space).
-- **Links:** `Link` (inline), `LinkMention` (an emoji and the name of a page or an external link) and `Bookmark` (a card with title, subtitle and URL).
+- **Links:** `Link` (inline), `LinkMention` (an emoji and the name of a page or an external link) and `Bookmark` (a card with title, subtitle and URL; the subtitle wraps to two lines before the ellipsis, and an optional `icon`, a favicon path, shows before the URL).
 - **Media:** `Image`.
-- **Database:** a list of pages shown as a gallery of cards. Clicking a card opens the page in a modal, with a link to its full page. The card preview can be the page's cover. The table layout isn't built yet (#49).
+- **Show more:** `ShowMore` shows the first `limit` blocks of its slot (each item of a `v-for` counts as one) with a "Show more" button below while blocks are left. Each click shows the next `limit` blocks and moves focus to the first of them. When every block shows, the button reads "Show less" and goes back to the first `limit`, keeping focus on the button. `label` and `lessLabel` change the texts. Without `limit`, or with 0 or less, every block shows and there is no button. The button is the same one as the database's Load more.
+- **Database:** a list of pages shown as a gallery of cards or a table. Tabs above the database switch between the two views, like Notion's database views; `layout` (`"gallery"` or `"table"`) sets the view it opens with. The chosen view isn't saved, so it goes back to `layout` on reload. Clicking a card, or a title in the table, opens the page in a modal, with a link to its full page. The card preview can be the page's cover. The table has one row per page: the first column is the title and the others are the properties from the pages' `databaseInfo`, in the order they first appear, with multi-select values shown as tags. A page without a property leaves its cell empty. A table wider than the screen scrolls horizontally inside its own box. Editing cells isn't offered.
+  - **Filter and Sort:** two menus in the database's navbar, next to the view tabs, that apply to every view. Filter lists the properties from the pages' `databaseInfo`; choosing one lists the values it has across the pages (each tag counts as a value), and the database keeps only the pages that have at least one of the picked values. One property is filtered at a time. Sort orders the pages by the title (Name) or a property, ascending or descending. Values are compared as text with `localeCompare` and the `numeric` option, so "2" comes before "10"; a multi-select sorts by its first tag, and pages without the property go last in both directions. The button shows what's active ("Filter: Vue", "Sort: Created ↓") and each menu has a Clear option. Filter and sort aren't saved, so they reset on reload. The menus close on a click outside and on Escape; focus moves into a menu when it opens and back to its button when it closes.
+  - **Load limit:** an optional `loadLimit` shows that many pages at first, counted after Filter and Sort, with a "Load more" button below the view while pages are left. Each click shows the next `loadLimit` pages and moves focus to the first of them. Changing the filter, sort or view goes back to the first `loadLimit` pages. `loadMoreLabel` changes the button text (default "Load more"). Without `loadLimit`, every page shows and there is no button.
 - **Loader:** a loading indicator.
 
 ## Documentation site
@@ -67,6 +72,6 @@ The components a page uses for its content, named after Notion's blocks:
 
 ## Public API
 
-- The package exports the layout components, the blocks, `MainLayout`, `NotFoundPage`, `useStore`, `piniaInstance`, `useAside`, `useDisplay`, `useIsMobile`, `isTouchDevice`, the `Icons` enum (the icons `ToggleList` takes), and the types `IMetadata` and `PageInfo`. The full list is in `packages/core/index.ts`.
+- The package exports the layout components, the blocks, `MainLayout`, `NotFoundPage`, `useStore`, `piniaInstance`, `useAside`, `useDisplay`, `useIsMobile`, `isTouchDevice`, the `Icons` enum (the icons `ToggleList` takes), and the types `IMetadata`, `PageInfo`, `DatabaseTag` and `TagColor`. The full list is in `packages/core/index.ts`.
 - The styles ship in one CSS file, `dist/kami.css`, which the portfolio imports once.
 - Changing any of these in a way that breaks an existing portfolio needs a major version. See [decision 001](../decisions/001-stack-and-hosting.md).

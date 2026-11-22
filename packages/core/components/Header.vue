@@ -1,21 +1,18 @@
 <script setup lang="ts">
-import { useModal } from "@core/hooks";
+import { ref } from "vue";
 import { Breadcrumb } from "@core/@client/components";
 import { Icons } from "@core/enum";
 import Icon from "@core/@client/components/Icon.vue";
 import type { IMetadata } from "@core/@types";
-import Settings from "./Settings.vue";
+import Settings from "@core/components/Settings.vue";
 import { useStore } from "@core/store";
 
 const store = useStore;
 
 const props = defineProps<{ metadata: IMetadata }>();
 
-const HEADER_PROVIDE_NAME = "headerMenu";
-
-const { showModal, hideModal, addModalListener } = useModal({
-  provideName: HEADER_PROVIDE_NAME,
-});
+const settingsOpen = ref(false);
+const settingsBtn = ref<HTMLElement | null>(null);
 </script>
 
 <template>
@@ -26,19 +23,20 @@ const { showModal, hideModal, addModalListener } = useModal({
       <button
         class="header__btn"
         id="header-btn"
-        @click="showModal"
+        ref="settingsBtn"
+        @click="settingsOpen = !settingsOpen"
         type="button"
         aria-label="Open settings"
+        aria-haspopup="menu"
+        :aria-expanded="settingsOpen"
       >
         <Icon :icon="Icons.moreHorizontal" />
       </button>
     </div>
   </header>
   <Settings
-    :addSettingsModalListener="addModalListener"
-    :hideSettingsModal="hideModal"
-    :menuProvider="HEADER_PROVIDE_NAME"
-    :modalStyles="{ top: '77px', right: '10px' }"
+    v-model:open="settingsOpen"
+    :anchor="settingsBtn"
     :pageId="
       store.getDynamicCurrentPageInfo
         ? store.getDynamicCurrentPageInfo.pageId
@@ -49,19 +47,40 @@ const { showModal, hideModal, addModalListener } = useModal({
 
 <style lang="scss">
 .header {
-  background-color: $white;
+  background-color: $bg;
   height: $header-height;
+  z-index: $z-header;
+  font-size: $fs-sm;
 
   &__content {
     display: flex;
+    align-items: center;
+    gap: $space-2;
+    height: 100%;
     user-select: none;
     justify-content: space-between;
   }
 
   &__btn {
-    flex-shrink: 0;
-
     @extend %button;
+
+    flex-shrink: 0;
+    justify-content: center;
+    padding: 0;
+    width: $item-height;
+    height: $item-height;
+    color: $text-secondary;
+    transition: background-color $duration;
+
+    &,
+    &:hover {
+      border-radius: $radius-md;
+    }
+
+    .icon {
+      color: inherit;
+      font-size: $fs-md;
+    }
   }
 }
 </style>

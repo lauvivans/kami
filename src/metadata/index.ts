@@ -16,6 +16,8 @@ import Demo from "../pages/demo/index.vue";
 import Blocks from "../pages/demo/blocks.vue";
 import CoffeeShop from "../pages/demo/coffee-shop.vue";
 import Bookshelf from "../pages/demo/bookshelf.vue";
+import CoffeeMenu from "../pages/demo/coffee-menu.vue";
+import SeasonalDrinks from "../pages/demo/seasonal-drinks.vue";
 
 const coffeeIcon: PageInfo["icon"] = {
   author: "Paula Lee",
@@ -161,9 +163,13 @@ const metadata: IMetadata = {
       icon: coffeeIcon,
       component: CoffeeShop,
       parentPage: "demo",
+      pages: ["coffee-menu"],
       databaseInfo: {
         Created: { icon: "clock", value: "March 2026" },
-        Languages: { icon: "code", value: ["Vue", "TypeScript"] },
+        Languages: {
+          icon: "code",
+          value: ["Vue", { name: "TypeScript", color: "purple" }],
+        },
         Status: { icon: "check", value: "Done" },
       },
     },
@@ -175,9 +181,28 @@ const metadata: IMetadata = {
       parentPage: "demo",
       databaseInfo: {
         Created: { icon: "clock", value: "July 2026" },
-        Languages: { icon: "code", value: ["JavaScript", "Sass"] },
+        Languages: {
+          icon: "code",
+          value: ["JavaScript", { name: "Sass", color: "pink" }],
+        },
         Status: { icon: "check", value: "In progress" },
       },
+    },
+    "coffee-menu": {
+      id: "coffee-menu",
+      path: "/demo/coffee-shop/menu",
+      title: "Menu",
+      component: CoffeeMenu,
+      parentPage: "coffee-shop",
+      pages: ["seasonal-drinks"],
+    },
+    // Four levels deep, so the breadcrumb collapses into "…" (see #50)
+    "seasonal-drinks": {
+      id: "seasonal-drinks",
+      path: "/demo/coffee-shop/menu/seasonal-drinks",
+      title: "Seasonal drinks",
+      component: SeasonalDrinks,
+      parentPage: "coffee-menu",
     },
   },
   favorites: ["home", "client-docs", "demo"],

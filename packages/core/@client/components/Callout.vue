@@ -12,13 +12,14 @@ const props = defineProps<{ emoji?: string }>();
 </template>
 
 <style scoped lang="scss">
+// flex-start keeps the emoji on the first line when the text wraps
 .callout {
   display: flex;
-  column-gap: 5px;
-  align-items: center;
-  border-radius: 5px;
-  line-height: 1.4;
-  padding: 20px;
-  background-color: #f1f1f6;
+  column-gap: $space-4;
+  align-items: flex-start;
+  border-radius: $radius-md;
+  line-height: $lh-body;
+  padding: $space-6 $space-6 $space-6 $space-5;
+  background-color: $bg-block;
 }
 </style>

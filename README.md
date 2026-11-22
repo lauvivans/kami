@@ -9,7 +9,7 @@ The idea came from Nitin Ranganath's VS Code Portfolio. Documentation and a demo
 - Sidebar with the author, Favorites and nested pages. It can be pinned open or closed.
 - Tabs for navigation, as in Notion Desktop. Open tabs survive a reload.
 - Four themes: Light, Dark, Catppuccin Latte and Catppuccin Mocha.
-- Page settings: font (Roboto, Roboto Serif or Roboto Mono), small text and full width.
+- Page settings: font (Default, Serif or Mono, from the system fonts), small text and full width.
 - Blocks for page content: text, headings, code with syntax highlighting, callouts, lists, columns, links, bookmarks, images and a database gallery.
 - Preferences are kept in the browser's local storage. There is no backend.
 - Search is not built yet.

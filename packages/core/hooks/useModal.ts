@@ -1,8 +1,8 @@
 import { useStore } from "@core/store";
-import { onBeforeUnmount, provide, ref } from "vue";
+import { onScopeDispose, provide, ref } from "vue";
 
 const FOCUSABLE =
-  'a[href], button:not([disabled]), input:not([disabled]), select, textarea, [tabindex]:not([tabindex="-1"])';
+  'a[href], button:not([disabled]), input:not([disabled]), select, summary, textarea, [tabindex]:not([tabindex="-1"])';
 
 // Open modals, innermost last: only the top one answers Esc and Tab.
 const openModals: (() => void)[] = [];
@@ -16,26 +16,38 @@ export default function useModal({ provideName }: { provideName: string }) {
 
   provide(provideName, modalRef);
 
-  // A modal removed while open (e.g. browser Back) must not leave the page blocked.
-  onBeforeUnmount(() => {
-    if (openModals.includes(hideModal)) hideModal();
+  let isOpen = false;
+
+  // A link inside an open modal changes the route and unmounts it without
+  // hideModal, so give the page its clicks and keys back here.
+  onScopeDispose(() => {
+    if (isOpen) {
+      body.style.pointerEvents = "auto";
+      store.storeCurrentModalPageId("");
+    }
+    forget();
   });
+
+  function forget() {
+    const index = openModals.indexOf(hideModal);
+    if (index === -1) return;
+    openModals.splice(index, 1);
+    document.removeEventListener("keydown", handleKeydown);
+  }
 
   function hideModal() {
     if (modalRef.value) {
+      isOpen = false;
       modalRef.value.style.display = "none";
       modalRef.value.style.pointerEvents = "";
       body.style.pointerEvents = "auto";
 
       store.storeCurrentModalPageId("");
 
-      body.removeEventListener("click", handleGlobalClick);
-      body.removeEventListener("touchstart", handleGlobalClick);
+      modalRef.value.removeEventListener("click", handleGlobalClick);
 
-      const index = openModals.indexOf(hideModal);
-      if (index === -1) return;
-      openModals.splice(index, 1);
-      document.removeEventListener("keydown", handleKeydown);
+      if (!openModals.includes(hideModal)) return;
+      forget();
 
       const active = document.activeElement;
       if (active === body || modalRef.value.contains(active)) opener?.focus();
@@ -50,6 +62,7 @@ export default function useModal({ provideName }: { provideName: string }) {
 
     setTimeout(() => {
       if (modalRef.value) {
+        isOpen = true;
         modalRef.value.style.display = "block";
         body.style.pointerEvents = "none";
 
@@ -101,7 +114,7 @@ export default function useModal({ provideName }: { provideName: string }) {
     }
   }
 
-  function handleGlobalClick(e: PointerEvent | TouchEvent) {
+  function handleGlobalClick(e: MouseEvent) {
     if (modalRef.value) {
       const res = Array.from(modalRef.value.querySelectorAll("*")).some(
         (child) => child === e.target
@@ -116,8 +129,8 @@ export default function useModal({ provideName }: { provideName: string }) {
   }
 
   function addModalListener() {
-    body.addEventListener("click", handleGlobalClick);
-    body.addEventListener("touchstart", handleGlobalClick);
+    // On the overlay, not body: iOS Safari only sends click from a tap on an element with a listener.
+    modalRef.value?.addEventListener("click", handleGlobalClick);
   }
 
   return {

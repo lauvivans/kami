@@ -6,6 +6,7 @@
 
 <style scoped lang="scss">
 .text {
-  line-height: 1.5;
+  padding: $space-1 0;
+  line-height: $lh-body;
 }
 </style>

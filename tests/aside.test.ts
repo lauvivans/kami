@@ -18,16 +18,19 @@ const page: PageInfo = {
   component: {},
 };
 
-function mountAside(mobile: boolean, open: boolean) {
-  vi.spyOn(window, "matchMedia").mockReturnValue({
-    matches: mobile,
-    addEventListener: () => {},
-    removeEventListener: () => {},
-  } as unknown as MediaQueryList);
+function mountAside(mobile: boolean, open: boolean, hover = true) {
+  vi.spyOn(window, "matchMedia").mockImplementation(
+    (query) =>
+      ({
+        matches: query === "(hover: hover)" ? hover : mobile,
+        addEventListener: () => {},
+        removeEventListener: () => {},
+      }) as unknown as MediaQueryList
+  );
   localStorage.setItem("kami-aside", String(open));
   store.$reset();
   store.storeIsAsideOpen(open);
-  return shallowMount(Aside, { props: { metadata } });
+  return shallowMount(Aside, { props: { metadata }, attachTo: document.body });
 }
 
 const mountOpenAside = (mobile: boolean) => mountAside(mobile, true);
@@ -61,6 +64,75 @@ describe("Aside after navigation", () => {
     store.storeActivePage(page);
     await nextTick();
     expect(store.isAsideOpen).toBe(true);
+    wrapper.unmount();
+  });
+});
+
+describe("Aside owner row", () => {
+  it("shows up to two initials of the author", () => {
+    metadata.user.author = "my portfolio site";
+    const wrapper = mountAside(false, true);
+    expect(wrapper.find(".nav-list__avatar").text()).toBe("MP");
+    metadata.user.author = "Ada";
+    wrapper.unmount();
+  });
+});
+
+describe("Open sidebar on mobile", () => {
+  it("closes on a tap outside it", async () => {
+    const wrapper = mountOpenAside(true);
+    await wrapper.find(".nav-list").trigger("pointerdown");
+    expect(store.isAsideOpen).toBe(true);
+    document.body.dispatchEvent(new Event("pointerdown", { bubbles: true }));
+    expect(store.isAsideOpen).toBe(false);
+    wrapper.unmount();
+  });
+});
+
+describe("Aside button", () => {
+  it("toggles the sidebar once on a tap", async () => {
+    const wrapper = mountAside(true, false);
+    const button = wrapper.find("#nav-btn");
+    await button.trigger("touchstart");
+    await button.trigger("click");
+    expect(store.isAsideOpen).toBe(true);
+    wrapper.unmount();
+  });
+
+  it("closes without the floating sidebar on a screen without hover", async () => {
+    const wrapper = mountAside(true, true, false);
+    await wrapper.find("#nav-btn").trigger("click");
+    expect(store.isAsideOpen).toBe(false);
+    expect(wrapper.find("nav").classes()).not.toContain("nav-hover");
+    wrapper.unmount();
+  });
+});
+
+describe("Floating sidebar", () => {
+  it("opens after closing the sidebar on desktop", async () => {
+    const wrapper = mountOpenAside(false);
+    await wrapper.find("#nav-btn").trigger("click");
+    expect(wrapper.find("nav").classes()).toContain("nav-hover");
+    wrapper.unmount();
+  });
+
+  it("closes when the mouse leaves it", async () => {
+    const wrapper = mountAside(false, false);
+    await wrapper.find(".nav-wrapper").trigger("mouseenter");
+    expect(wrapper.find("nav").classes()).toContain("nav-hover");
+    await wrapper.find(".nav-wrapper").trigger("mouseleave");
+    expect(wrapper.find("nav").classes()).not.toContain("nav-hover");
+    wrapper.unmount();
+  });
+
+  it("closes on a press outside it and stays open on a press inside", async () => {
+    const wrapper = mountAside(false, false);
+    await wrapper.find(".nav-wrapper").trigger("mouseenter");
+    await wrapper.find(".nav-list").trigger("pointerdown");
+    expect(wrapper.find("nav").classes()).toContain("nav-hover");
+    document.body.dispatchEvent(new Event("pointerdown", { bubbles: true }));
+    await nextTick();
+    expect(wrapper.find("nav").classes()).not.toContain("nav-hover");
     wrapper.unmount();
   });
 });

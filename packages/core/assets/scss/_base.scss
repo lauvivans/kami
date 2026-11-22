@@ -9,48 +9,66 @@
 }
 
 body {
-  font-family: var.$default;
+  font-family: var.$font-sans;
   -webkit-font-smoothing: auto;
 
   @include mixin.sizing(100vw, 100vh);
 
+  // On mobile, vh ignores the browser toolbar, so the layout ends up taller
+  // than the screen. dvh follows the visible viewport, and every browser in
+  // the build target (baseline-widely-available) supports it.
+  height: 100dvh;
   overflow: hidden;
-  background-color: var.$white;
-  font-size: var.$fs-medium;
-  color: var.$black-8;
-  font-weight: var.$fw-400;
+  background-color: var.$bg;
+  font-size: var.$fs-md;
+  color: var.$text;
+  font-weight: var.$fw-regular;
 
   @media (max-width: var.$screen-xs) {
-    font-size: var.$fs-small;
+    font-size: var.$fs-sm;
   }
 
   ::-webkit-scrollbar {
-    height: 8px;
-    width: 4px;
-    padding: 50px;
+    height: var.$space-4;
+    width: var.$space-2;
   }
 
   ::-webkit-scrollbar-track {
-    background-color: var.$gray-6;
+    background-color: transparent;
   }
 
   ::-webkit-scrollbar-thumb {
-    border-radius: 4px;
-    background-color: var.$gray-1;
+    border-radius: var.$radius-pill;
+    background-color: var.$bg-active;
+  }
+
+  // Firefox ignores ::-webkit-scrollbar. Only there, since Chromium drops the
+  // webkit rules above once the standard properties are set.
+  @supports not selector(::-webkit-scrollbar) {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var.$bg-active transparent;
+    }
   }
 
   ::selection {
-    background-color: var.$gray-4;
+    background-color: var.$bg-active;
   }
+}
 
-  :any-link {
-    color: var.$black-5;
-    transition: color 0.3s;
+// Default link colors with zero specificity, so any component rule overrides them.
+:where(body :any-link) {
+  color: var.$text-secondary;
+  transition: color 0.3s;
+}
 
-    &:hover {
-      color: var.$black-9 !important;
-    }
-  }
+:where(body :any-link:hover) {
+  color: var.$text;
+}
+
+// Native buttons keep the browser's text color, which doesn't follow the theme.
+button {
+  color: inherit;
 }
 
 .hover-default {
@@ -66,15 +84,17 @@ body {
 }
 
 // Many controls reset their styles with `all: unset`, which also drops the
-// browser focus ring, so the ring is set here for every theme.
+// browser focus ring, so the ring is set here for every theme, with the same
+// look the components use for their own rings.
 :where(
   a,
   button,
   input,
   select,
+  summary,
   textarea,
   [tabindex]:not([tabindex="-1"])
 ):focus-visible {
-  outline: var.$focus-ring-width solid var.$active !important;
-  outline-offset: var.$focus-ring-offset !important;
+  outline: var.$line-thick solid var.$accent !important;
+  outline-offset: var.$space-1 !important;
 }

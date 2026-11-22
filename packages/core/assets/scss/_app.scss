@@ -28,11 +28,13 @@
     .aside-default {
       display: flex;
       position: fixed;
-      top: calc(var.$tabs-height + 13px);
-      z-index: 3;
+
+      // centers the 28px open button on the header items
+      top: calc(var.$tabs-height + (var.$header-height - var.$item-height) / 2);
+      z-index: var.$z-sidebar;
 
       @media (max-width: var.$screen-small) {
-        top: 13px;
+        top: calc((var.$header-height - var.$item-height) / 2);
       }
     }
 
@@ -43,51 +45,74 @@
 
     .header {
       &__content {
-        @include mixin.spacing($pt: 11px, $pl: 40px, $pr: 10px, $pb: 8px);
+        // the left padding leaves room for the sidebar button
+        @include mixin.spacing(
+          $pl: calc(var.$space-8 + var.$space-4),
+          $pr: var.$space-5
+        );
       }
     }
   }
 
   .main-container-click {
     position: relative;
-    margin-left: var.$aside-click-size;
+    margin-left: var.$sidebar-width;
 
     .aside-click {
       position: fixed;
-      width: var.$aside-click-size;
+      width: var.$sidebar-width;
       inset: 0;
-      box-shadow: var.$box-shadow-2;
-      background-color: var.$gray-2;
-      z-index: 3;
+      box-shadow: var.$shadow-sidebar;
+      background-color: var.$bg-sidebar;
+      z-index: var.$z-sidebar;
     }
 
     .header,
     .tabs {
-      margin-left: var.$aside-click-size;
-      width: calc(100% - var.$aside-click-size);
+      margin-left: var.$sidebar-width;
+      width: calc(100% - var.$sidebar-width);
     }
 
     .header {
       &__content {
-        @include mixin.spacing($pt: 11px, $pl: 10px, $pr: 10px, $pb: 8px);
+        @include mixin.spacing($pl: var.$space-5, $pr: var.$space-5);
+      }
+    }
+
+    // on phones the open sidebar floats over the page instead of pushing it
+    @media (max-width: var.$screen-small) {
+      margin-left: 0;
+
+      .aside-click {
+        width: min(var.$sidebar-width, var.$sidebar-max-mobile);
+        box-shadow: var.$shadow-floating;
+      }
+
+      .header,
+      .tabs {
+        margin-left: 0;
+        width: 100%;
       }
     }
   }
 
   .footer {
-    font-size: var.$fs-xs;
     position: absolute;
-    right: 20px;
-    bottom: 15px;
-    z-index: 1;
-    background-color: var.$white;
-    border: 1px solid var.$gray-5;
-    box-shadow: var.$box-shadow-1;
-    border-radius: 40px;
-    padding: 15px 14px;
+    right: var.$space-6;
+    bottom: var.$space-6;
+    z-index: var.$z-header;
+    padding: var.$space-1 var.$space-4;
+    border-radius: var.$radius-pill;
+    font-size: var.$fs-xs;
+
+    // the prototype pill takes its height from the body line height
+    line-height: var.$lh-body;
+    color: var.$text-tertiary;
+    background-color: var.$bg;
+    box-shadow: var.$shadow-floating;
 
     @media (max-width: var.$screen-small) {
-      bottom: calc(var.$tabs-height + 0.9rem);
+      display: none;
     }
   }
 }

@@ -4,25 +4,17 @@
 
 <style lang="scss">
 .loader {
-  width: 50px;
+  width: $space-9;
   aspect-ratio: 1;
   display: grid;
   border-radius: 50%;
   background:
-    linear-gradient(
-        0deg,
-        rgb(0 0 0 / 50%) 30%,
-        #0000 0 70%,
-        rgb(0 0 0 / 100%) 0
-      )
-      50% / 8% 100%,
-    linear-gradient(
-        90deg,
-        rgb(0 0 0 / 25%) 30%,
-        #0000 0 70%,
-        rgb(0 0 0 / 75%) 0
-      )
-      50% / 100% 8%;
+    linear-gradient(0deg, $text-tertiary 30%, transparent 0 70%, $text 0),
+    linear-gradient(90deg, $text-tertiary 30%, transparent 0 70%, $text 0);
+  background-position: 50%;
+  background-size:
+    8% 100%,
+    100% 8%;
   background-repeat: no-repeat;
   animation: l23 1s infinite steps(12);
 }

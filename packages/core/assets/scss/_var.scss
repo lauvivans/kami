@@ -1,35 +1,55 @@
-/* colors default */
-$white: rgb(255 255 255 / 100%);
-$black: rgb(0 0 0 / 100%);
-$black-1: rgb(0 0 0 / 10%);
-$black-2: rgb(0 0 0 / 20%);
-$black-3: rgb(0 0 0 / 30%);
-$black-4: rgb(0 0 0 / 40%);
-$black-5: rgb(0 0 0 / 50%);
-$black-6: rgb(0 0 0 / 60%);
-$black-7: rgb(0 0 0 / 70%);
-$black-8: rgb(0 0 0 / 80%);
-$black-9: rgb(0 0 0 / 90%);
-$gray: rgb(237 236 233 / 100%);
-$gray-stroke: rgb(0 0 0 / 15%);
-$gray-1: rgb(237 236 233 / 10%);
-$gray-2: rgb(237 236 233 / 20%);
-$gray-3: rgb(237 236 233 / 30%);
-$gray-4: rgb(237 236 233 / 40%);
-$gray-5: rgb(237 236 233 / 50%);
-$gray-6: rgb(237 236 233 / 60%);
-$gray-7: rgb(237 236 233 / 70%);
-$gray-8: rgb(237 236 233 / 80%);
-$gray-9: rgb(237 236 233 / 90%);
-$active: rgb(35 131 226);
-$baby-purple: #cdb4db;
-$baby-blue: #bde0fe;
+// Design tokens (docs/design/169-visual-refresh). Colors and shadows change
+// per theme, so they point at CSS custom properties that _theme.scss sets;
+// everything else is a plain value.
 
-/* dark theme default */
-$dark: #171a1b;
-$dark-lighter: #222;
+/* surfaces */
+$bg: var(--bg);
+$bg-sidebar: var(--bg-sidebar);
+$bg-hover: var(--bg-hover);
+$bg-active: var(--bg-active);
+$bg-floating: var(--bg-floating);
+$bg-block: var(--bg-block);
+$bg-tabs: var(--bg-tabs);
+$overlay: var(--overlay);
 
-/* colors catppuccin latte */
+/* text and lines */
+$text: var(--text);
+$text-secondary: var(--text-secondary);
+$text-tertiary: var(--text-tertiary);
+$text-inverse: var(--text-inverse);
+$border: var(--border);
+$accent: var(--accent);
+$code-inline: var(--code-inline);
+
+/* code syntax (GitHub Primer) */
+$code-keyword: var(--code-keyword);
+$code-string: var(--code-string);
+$code-function: var(--code-function);
+$code-number: var(--code-number);
+$code-comment: var(--code-comment);
+
+/* tag colors */
+$tag-text: var(--tag-text);
+
+// multi-select tag backgrounds, by the color name a tag can set
+// (TagColor in @types); keep TAG_COLORS in util/tagColorClass.ts in sync
+$tag-colors: (
+  "purple": var(--tag-purple-bg),
+  "blue": var(--tag-blue-bg),
+  "yellow": var(--tag-yellow-bg),
+  "brown": var(--tag-brown-bg),
+  "green": var(--tag-green-bg),
+  "orange": var(--tag-orange-bg),
+  "gray": var(--tag-gray-bg),
+  "pink": var(--tag-pink-bg),
+  "red": var(--tag-red-bg),
+);
+
+/* shadow */
+$shadow-floating: var(--shadow-floating);
+$shadow-sidebar: var(--shadow-sidebar);
+
+/* colors catppuccin latte, used by _theme.scss */
 $latte-rosewater: #dc8a78;
 $latte-flamingo: #dd7878;
 $latte-pink: #ea76cb;
@@ -56,7 +76,7 @@ $latte-surface0: #ccd0da;
 $latte-mantle: #e6e9ef;
 $latte-base: #eff1f5;
 
-/* colors catppuccin mocha */
+/* colors catppuccin mocha, used by _theme.scss */
 $mocha-rosewater: #f5e0dc;
 $mocha-flamingo: #f2cdcd;
 $mocha-pink: #f5c2e7;
@@ -84,59 +104,99 @@ $mocha-base: #1e1e2e;
 $mocha-mantle: #181825;
 $mocha-crust: #11111b;
 
-/* font */
-$default: "Hanken Grotesk", sans-serif;
-$mono: "Roboto Mono", iawriter-mono, nitti, menlo, courier, monospace;
-$serif: lyon-text, georgia, ui-serif, serif;
+/* typography */
+$font-sans:
+  ui-sans-serif,
+  -apple-system,
+  blinkmacsystemfont,
+  "Segoe UI Variable Display",
+  "Segoe UI",
+  helvetica,
+  arial,
+  sans-serif,
+  "Apple Color Emoji",
+  "Segoe UI Emoji";
+$font-mono: "SFMono-Regular", menlo, consolas, "Liberation Mono", monospace;
+$font-serif: lyon-text, georgia, ui-serif, serif;
+$fs-xs: 12px;
+$fs-sm: 14px;
+$fs-md: 16px;
+$fs-h3: 20px;
+$fs-h2: 24px;
+$fs-h1: 30px;
+$fs-title: 40px;
+$fs-title-mobile: 32px;
+$fs-code: 0.85em;
+$fw-regular: 400;
+$fw-medium: 500;
+$fw-semibold: 600;
+$fw-bold: 700;
+$lh-body: 1.5;
+$lh-heading: 1.3;
 
-/* font weight */
-$fw-100: 100;
-$fw-200: 200;
-$fw-300: 300;
-$fw-400: 400;
-$fw-500: 500;
-$fw-600: 600;
-$fw-700: 700;
-$fw-800: 800;
-$fw-900: 900;
-
-/* box shadow */
-$box-shadow-1:
-  rgb(15 15 15 / 5%) 0px 0px 0px 1px,
-  rgb(15 15 15 / 10%) 0px 3px 6px,
-  rgb(15 15 15 / 20%) 0px 9px 24px;
-$box-shadow-2: rgb(0 0 0 / 2.4%) -1px 0px 0px 0px inset;
-$box-shadow-3:
-  rgb(15 15 15 / 5%) 0px 0px 0px 0px,
-  rgb(15 15 15 / 10%) 0px 0px 1px,
-  rgb(15 15 15 / 20%) 0px 0px 6px;
-
-/* focus ring */
-$focus-ring-width: 2px;
-$focus-ring-offset: 2px;
+/* spacing, a 4px-based scale */
+$space-1: 2px;
+$space-2: 4px;
+$space-3: 6px;
+$space-4: 8px;
+$space-5: 12px;
+$space-6: 16px;
+$space-7: 24px;
+$space-8: 32px;
+$space-9: 48px;
+$space-10: 96px;
 
 /* radius */
-$radius-small: 4px;
-$radius: 5px;
+$radius-sm: 4px;
+$radius-md: 6px;
+$radius-lg: 10px;
+$radius-pill: 999px;
 
-/* code syntax (GitHub Primer), light and dark */
-$code-keyword: #cf222e;
-$code-string: #0a3069;
-$code-function: #8250df;
-$code-number: #0550ae;
-$code-comment: #6e7781;
-$code-keyword-dark: #ff7b72;
-$code-string-dark: #a5d6ff;
-$code-function-dark: #d2a8ff;
-$code-number-dark: #79c0ff;
-$code-comment-dark: #8b949e;
+/* layout */
+$sidebar-width: 240px;
+$sidebar-max-mobile: 85vw;
+$header-height: 44px;
+$tabs-height: 36px;
+$item-height: 28px;
+$page-width: 708px;
+$page-gutter: 96px;
+$page-gutter-mobile: 20px;
+$banner-height: 220px;
+$banner-height-mobile: 160px;
+$icon-size: 78px;
+$icon-size-mobile: 64px;
+$icon-size-inline: 20px;
+$line: 1px;
+$line-thick: 1.5px;
+$line-quote: 3px;
+$tab-width: 200px;
+$tab-width-mobile: 150px;
+$prop-name-width: 160px;
+$prop-name-width-mobile: 120px;
+$card-min-width: 200px;
+$card-cover-height: 120px;
+$tag-height: 20px;
+$menu-min-width: 200px;
+$modal-width: 960px;
+$settings-width: 480px;
+$theme-preview-height: 72px;
+$theme-preview-sidebar: 28%;
+$theme-preview-title: 60%;
+$theme-preview-accent: 40%;
+$breadcrumb-crumb-min-width: calc($space-8 * 2);
+$nested-link-size: calc($sidebar-width - $space-7);
+$duration: 0.15s;
 
-/* font size dinamic */
-$fs-xs: 0.74rem;
-$fs-small: 0.9rem;
-$fs-medium: 1rem;
-$fs-large: 1.3rem;
-$fs-xl: 1.8rem;
+/* z-index */
+$z-content: 0;
+$z-raised: 1; // above its siblings inside a component
+$z-header: 1;
+$z-sidebar: 3;
+$z-tabs: 888;
+$z-overlay: 999;
+$z-modal: 2000;
+$z-dropdown: 2500; // a dropdown can open from inside a modal
+$z-tooltip: 3000; // a tooltip can show from inside a dropdown
 
 /* screen size */
 $screen-xs: 480px;
@@ -145,16 +205,3 @@ $screen-medium: 991px;
 $screen-large: 1199px;
 $screen-xl: 1919px;
 $screen-2xl: 1919.1px;
-$aside-click-size: 240px;
-$default-spacing: 9px;
-$tabs-height: 34px;
-$header-height: 50px;
-$breadcrumb-crumb-min-width: 4rem;
-$nested-link-size: calc($aside-click-size - 20px);
-
-/* hover background per theme class, used by _theme and _mixin */
-$theme-bg-hover: (
-  "dark-theme": $gray-3,
-  "cat-latte": $latte-surface1,
-  "cat-mocha": $mocha-surface1,
-);

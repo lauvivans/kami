@@ -17,6 +17,7 @@ const props = defineProps<{ src: string; alt?: string }>();
 
   img {
     width: 100%;
+    border-radius: $radius-md;
   }
 }
 
@@ -37,6 +38,23 @@ const props = defineProps<{ src: string; alt?: string }>();
     img {
       width: 100%;
     }
+  }
+}
+
+// Inside a list item the image sits in the text line, like an icon next to
+// a link. Last in the file so it wins over the page-width rules above.
+.bullet-item .img-wrapper,
+.todo-item .img-wrapper {
+  display: inline-flex;
+  vertical-align: middle;
+
+  // Vue drops the whitespace between tags on separate lines, so keep a gap.
+  margin-inline-end: $space-2;
+
+  img {
+    width: auto;
+    max-height: $icon-size-inline;
+    border-radius: 0;
   }
 }
 </style>

@@ -27,55 +27,48 @@ function slotText(): string {
 
 <style scoped lang="scss">
 .code {
-  font-family: $mono;
-  font-weight: $fw-500;
-  font-size: $fs-small;
+  font-family: $font-mono;
+  font-weight: $fw-medium;
+  font-size: $fs-code;
 
   &--inline {
-    padding: calc($default-spacing / 9) calc($default-spacing / 2);
-    border-radius: $radius-small;
-    color: $latte-red;
-    background-color: $black-1;
+    padding: $space-1 $space-2;
+    border-radius: $radius-sm;
+    color: $code-inline;
+    background-color: $bg-hover;
   }
 
   &--block {
-    --code-keyword: #{$code-keyword};
-    --code-string: #{$code-string};
-    --code-function: #{$code-function};
-    --code-number: #{$code-number};
-    --code-comment: #{$code-comment};
-
     overflow-x: auto;
-    margin: $default-spacing 0;
-    padding: calc($default-spacing * 3) calc($default-spacing * 2);
-    border-radius: $radius;
-    line-height: 1.5;
+    margin: $space-4 0;
+    padding: $space-7 $space-6;
+    border-radius: $radius-md;
+    line-height: $lh-body;
     white-space: pre;
     tab-size: 2;
-    background-color: $gray;
+    background-color: $bg-block;
   }
 }
 
-// GitHub's code colors. The dark themes force `span` colors with
-// !important, so these need it too.
+// GitHub's code colors, set per theme in _theme.scss.
 .code--block {
   :deep(.hljs-keyword),
   :deep(.hljs-selector-tag),
   :deep(.hljs-name) {
-    color: var(--code-keyword) !important;
+    color: $code-keyword;
   }
 
   :deep(.hljs-string),
   :deep(.hljs-regexp),
   :deep(.hljs-attribute) {
-    color: var(--code-string) !important;
+    color: $code-string;
   }
 
   :deep(.hljs-title),
   :deep(.hljs-section),
   /* stylelint-disable-next-line selector-class-pattern -- class name set by highlight.js */
   :deep(.hljs-built_in) {
-    color: var(--code-function) !important;
+    color: $code-function;
   }
 
   :deep(.hljs-number),
@@ -83,31 +76,16 @@ function slotText(): string {
   :deep(.hljs-type),
   :deep(.hljs-attr),
   :deep(.hljs-selector-class) {
-    color: var(--code-number) !important;
+    color: $code-number;
   }
 
   :deep(.hljs-comment),
   :deep(.hljs-meta) {
-    color: var(--code-comment) !important;
+    color: $code-comment;
   }
 
   :deep(.hljs-comment) {
     font-style: italic;
-  }
-}
-</style>
-
-<style lang="scss">
-// Unscoped: a scoped style can't target the theme class on <body>.
-// `.code.code--block` outranks the scoped `.code--block[data-v-…]`.
-.dark-theme,
-.cat-mocha {
-  .code.code--block {
-    --code-keyword: #{$code-keyword-dark};
-    --code-string: #{$code-string-dark};
-    --code-function: #{$code-function-dark};
-    --code-number: #{$code-number-dark};
-    --code-comment: #{$code-comment-dark};
   }
 }
 </style>

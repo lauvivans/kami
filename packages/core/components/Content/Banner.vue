@@ -19,29 +19,32 @@ const { page } = defineProps<{ page: PageInfo }>();
 <style lang="scss">
 .page-banner {
   width: 100%;
-  height: 210px;
-  max-height: 210px;
+  height: $banner-height;
   position: relative;
+
+  @media (max-width: $screen-small) {
+    height: $banner-height-mobile;
+  }
 
   a {
     all: unset;
     display: block;
     position: absolute;
-    background-color: $gray;
-    color: $black;
+    background-color: $bg-floating;
+    color: $text;
     bottom: 0;
     right: 0;
-    margin-right: 20px;
-    margin-bottom: 15px;
-    padding: 8px;
-    border-radius: 4px;
+    margin-right: $space-6;
+    margin-bottom: $space-5;
+    padding: $space-4;
+    border-radius: $radius-sm;
     cursor: pointer;
-    font-size: 0.9rem;
-    z-index: 50;
+    font-size: $fs-sm;
+    z-index: $z-raised;
 
     &:hover {
-      color: $black-8;
-      background-color: $gray-9;
+      color: $text-secondary;
+      background-color: $bg-block;
     }
   }
 

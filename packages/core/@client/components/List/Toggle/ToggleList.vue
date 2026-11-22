@@ -1,108 +1,63 @@
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
-import { useDisplay } from "@core/hooks";
 import Icon from "@core/@client/components/Icon.vue";
 import { Icons } from "@core/enum";
 
-const detailsContentRef = ref();
-const props = defineProps<{ iconToOpen: Icons; iconToClose: Icons }>();
-const { toggleDisplay, setDisplayToNone } = useDisplay();
-const icon = ref(props.iconToOpen);
-
-const toToggle = () => {
-  toggleDisplay(detailsContentRef);
-
-  const displayState = detailsContentRef.value
-    ? detailsContentRef.value.style.display
-    : null;
-
-  if (displayState === "block") {
-    icon.value = props.iconToClose;
-  } else {
-    icon.value = props.iconToOpen;
-  }
-};
-
-onMounted(() => {
-  setDisplayToNone(detailsContentRef);
-});
+// The open icon rotates when the list opens; iconToClose is kept so
+// existing portfolios still type-check, and is no longer shown.
+const props = defineProps<{ iconToOpen: Icons; iconToClose?: Icons }>();
 </script>
 
 <template>
   <div class="toggle-list">
-    <!-- The table only lays out the icon column, so it is not a data table. -->
-    <table class="details" role="presentation">
-      <thead>
-        <tr class="details__summary">
-          <td class="details__summary--icon">
-            <button
-              type="button"
-              :aria-expanded="icon === props.iconToClose"
-              :aria-label="icon === props.iconToClose ? 'Collapse' : 'Expand'"
-              @click.prevent.stop="toToggle"
-            >
-              <Icon :icon="icon" />
-            </button>
-          </td>
-          <td class="details__summary--content">
-            <slot name="summaryContent" ref="summaryContentRef" />
-          </td>
-        </tr>
-      </thead>
-
-      <tbody>
-        <tr>
-          <td></td>
-          <td>
-            <div class="details__content" ref="detailsContentRef">
-              <slot name="detailsContent"></slot>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <details class="details">
+      <summary class="details__summary">
+        <Icon class="details__chevron" :icon="props.iconToOpen" />
+        <span class="details__summary--content">
+          <slot name="summaryContent" />
+        </span>
+      </summary>
+      <div class="details__content">
+        <slot name="detailsContent"></slot>
+      </div>
+    </details>
   </div>
 </template>
 
 <style lang="scss">
-th {
-  text-align: start;
-  margin: 0;
-  padding: 0;
-}
-
-.toggle-list {
-  width: 100%;
-}
-
 .details {
   width: 100%;
 
   &__summary {
-    @extend %hover-default;
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-1 0;
+    cursor: pointer;
+    list-style: none;
 
-    &--icon {
-      width: 10%;
-      padding: 4px;
-
-      > button {
-        @extend %button;
-      }
-
-      > button > div {
-        font-size: $fs-medium + 0.1rem;
-        color: $black;
-      }
+    &::-webkit-details-marker {
+      display: none;
     }
 
     &--content {
-      width: 90%;
-      vertical-align: middle;
+      flex: 1;
+      min-width: 0;
+    }
+
+    // nested under the summary to win over the .icon color
+    .details__chevron {
+      font-size: $fs-md;
+      color: $text-secondary;
+      transition: transform $duration;
     }
   }
 
+  &[open] > &__summary > &__chevron {
+    transform: rotate(90deg);
+  }
+
   &__content {
-    margin: 5px 0;
+    padding-left: $space-7;
   }
 }
 </style>
