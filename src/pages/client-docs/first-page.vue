@@ -15,7 +15,8 @@ import { aboutPage as page, aboutMetadata as meta } from "@/code-samples";
 const quote = `<Quote>A quote from a person or a source.</Quote>`;
 const links = `<Link href="/my-projects">Go to my projects</Link>
 <LinkMention :page="metadata.pages['my-projects']" emoji="🚀">Go to my projects</LinkMention>
-<LinkMention href="https://github.com/" emoji="🐙">GitHub</LinkMention>`;
+<LinkMention href="https://github.com/" emoji="🐙">GitHub</LinkMention>
+<Bookmark title="My project" subtitle="What it does" link="https://github.com/" icon="/icons/my-project.png" />`;
 </script>
 
 <template>
@@ -86,7 +87,11 @@ const links = `<Link href="/my-projects">Go to my projects</Link>
     <Code inline>href</Code> starts with <Code inline>/</Code> opens that page
     of the portfolio in the same tab. Any other address opens in a new tab.
     <Code inline>LinkMention</Code> with <Code inline>page</Code> shows the
-    page's icon and title, or the text you give it:</Text
+    page's icon and title, or the text you give it. <Code inline>Bookmark</Code>
+    shows a link as a card with a title, an optional
+    <Code inline>subtitle</Code> and the URL; <Code inline>icon</Code> takes a
+    favicon path from <Code inline>public/</Code>, shown before the
+    URL:</Text
   >
   <Code lang="vue">{{ links }}</Code>
 
