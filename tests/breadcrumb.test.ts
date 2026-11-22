@@ -31,7 +31,7 @@ function mountAt(pageId: string) {
   return mount(Breadcrumb, {
     props: { metadata },
     attrs: { class: "custom" },
-    global: { stubs: { RouterLink: RouterLinkStub } },
+    global: { stubs: { RouterLink: RouterLinkStub, teleport: true } },
   });
 }
 

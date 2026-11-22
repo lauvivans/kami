@@ -108,31 +108,34 @@ const handleCrumb = (page: PageInfo) => {
       <div v-if="index !== shownCrumbs.length - 1">/</div>
     </div>
   </div>
-  <Modal
-    :provideName="MENU_PROVIDE_NAME"
-    :hideModal="hideModal"
-    :addModalListener="addModalListener"
-    :modalStyles="menuStyles"
-  >
-    <nav class="breadcrumb__menu" aria-label="Hidden pages">
-      <router-link
-        v-for="page in hiddenCrumbs"
-        :key="page.id"
-        class="breadcrumb__page"
-        :to="page.path"
-        @click="handleCrumb(page)"
-      >
-        <div>
-          <img
-            v-if="page.icon"
-            style="max-width: 1.1rem; height: auto"
-            :src="page.icon.path"
-          />
-          <span :title="page.title">{{ page.title }}</span>
-        </div>
-      </router-link>
-    </nav>
-  </Modal>
+  <!-- In body, out of the fixed header, so the overlay covers the tabs too -->
+  <Teleport to="body">
+    <Modal
+      :provideName="MENU_PROVIDE_NAME"
+      :hideModal="hideModal"
+      :addModalListener="addModalListener"
+      :modalStyles="menuStyles"
+    >
+      <nav class="breadcrumb__menu" aria-label="Hidden pages">
+        <router-link
+          v-for="page in hiddenCrumbs"
+          :key="page.id"
+          class="breadcrumb__page"
+          :to="page.path"
+          @click="handleCrumb(page)"
+        >
+          <div>
+            <img
+              v-if="page.icon"
+              style="max-width: 1.1rem; height: auto"
+              :src="page.icon.path"
+            />
+            <span :title="page.title">{{ page.title }}</span>
+          </div>
+        </router-link>
+      </nav>
+    </Modal>
+  </Teleport>
 </template>
 
 <style lang="scss">
