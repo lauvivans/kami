@@ -8,11 +8,11 @@ import {
   onMounted,
   onBeforeUnmount,
 } from "vue";
-import { useIsMobile, useModal } from "../hooks";
-import NestedLink from "./NestedLink.vue";
-import { Divider } from "../@client/components";
+import { useIsMobile, useModal } from "@core/hooks";
+import NestedLink from "@core/components/NestedLink.vue";
+import { Divider } from "@core/@client/components";
 import Modal from "@core/components/Modal/Modal.vue";
-import SelectBtn from "./SelectList/SelectBtn.vue";
+import SelectBtn from "@core/components/SelectList/SelectBtn.vue";
 import Icon from "@core/@client/components/Icon.vue";
 import { useStore } from "@core/store";
 import { Icons, Theme } from "@core/enum";
