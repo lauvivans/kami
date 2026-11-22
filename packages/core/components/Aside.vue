@@ -163,13 +163,7 @@ onBeforeUnmount(() => {
       @mouseleave="toggleNavHover()"
     >
       <nav :class="navClasses">
-        <div
-          class="nav-btn"
-          role="button"
-          id="nav-btn"
-          @click="toggleNavState"
-          @mouseenter="toggleNavHover(true)"
-        >
+        <div class="nav-btn" role="button" id="nav-btn" @click="toggleNavState">
           <Icon :icon="navBtnIcon" />
         </div>
         <div class="nav-list-wrapper">
