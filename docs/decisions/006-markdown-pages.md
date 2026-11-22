@@ -73,14 +73,14 @@ The generated module for the sample post is 906 bytes gzip for a 979-byte Markdo
 
 ## Elements without a block
 
-| Markdown        | Today in the plugin          | Plan                    |
-| --------------- | ---------------------------- | ----------------------- |
-| Numbered list   | Rendered as a bullet list    | New numbered list block |
-| Table (GFM)     | Dropped, with a warning      | New table block         |
-| Heading 5 and 6 | Rendered as level 4          | Keep                    |
-| Footnote        | Not parsed (not in `marked`) | Out of scope            |
-| Raw HTML        | Dropped, with a warning      | Keep, for safety        |
-| Quote           | `Quote` block                | Done                    |
+| Markdown        | Today in the plugin          | Plan             |
+| --------------- | ---------------------------- | ---------------- |
+| Numbered list   | `NumberedList` block         | Done             |
+| Table (GFM)     | Dropped, with a warning      | New table block  |
+| Heading 5 and 6 | Rendered as level 4          | Keep             |
+| Footnote        | Not parsed (not in `marked`) | Out of scope     |
+| Raw HTML        | Dropped, with a warning      | Keep, for safety |
+| Quote           | `Quote` block                | Done             |
 
 ## Consequences
 

@@ -109,8 +109,8 @@ const tsconfig =`"types": ["vite/client", "@lauvivans/kami/markdown"]`;
     <BulletItem
       >Bullet lists become <Code inline>BulletList</Code>, and lists of
       <Code inline>- [ ]</Code> and <Code inline>- [x]</Code> become
-      <Code inline>ToDoList</Code>. Numbered lists show as bullets for
-      now.</BulletItem
+      <Code inline>ToDoList</Code>. Numbered lists become
+      <Code inline>NumberedList</Code> and keep their start number.</BulletItem
     >
     <BulletItem
       >Inline code and fenced code become <Code inline>Code</Code>. A fence

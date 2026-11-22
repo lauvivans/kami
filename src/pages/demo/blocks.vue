@@ -8,6 +8,8 @@ import {
   Quote,
   BulletList,
   BulletItem,
+  NumberedList,
+  NumberedItem,
   ToDoList,
   ToggleList,
   Columns,
@@ -56,6 +58,12 @@ const code = {
     <Link href="https://github.com/lauvivans/kami">GitHub</Link>
   </BulletItem>
 </BulletList>`,
+  numbered: `<NumberedList :items="['Grind', 'Tamp']" />
+
+<!-- start sets the first number -->
+<NumberedList :start="3">
+  <NumberedItem>Pull the shot</NumberedItem>
+</NumberedList>`,
   todo: `<ToDoList
   :items="[
     { name: 'Done', isChecked: true },
@@ -137,6 +145,13 @@ console.log(greeting);`;
     </BulletItem>
   </BulletList>
   <Code lang="vue">{{ code.bullets }}</Code>
+
+  <Heading :level="3">Numbered list</Heading>
+  <NumberedList :items="['Grind', 'Tamp']" />
+  <NumberedList :start="3">
+    <NumberedItem>Pull the shot</NumberedItem>
+  </NumberedList>
+  <Code lang="vue">{{ code.numbered }}</Code>
 
   <Heading :level="3">To-do list</Heading>
   <ToDoList

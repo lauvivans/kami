@@ -152,10 +152,14 @@ class Page {
 
   list(list: Tokens.List): string {
     const todo = list.items.every((item) => item.task);
-    if (list.ordered) this.warnings.push("numbered lists render as bullets");
     const [listBlock, itemBlock] = todo
       ? ["ToDoList", "ToDoItem"]
-      : ["BulletList", "BulletItem"];
+      : list.ordered
+        ? ["NumberedList", "NumberedItem"]
+        : ["BulletList", "BulletItem"];
+    const start = Number(list.start);
+    const listProps =
+      !todo && list.ordered && start !== 1 ? `{ start: ${start} }` : "null";
     const items = list.items.map((item) => {
       const content = item.tokens.filter((t) => t.type !== "checkbox");
       // A tight item holds text tokens, a loose one holds paragraphs.
@@ -169,7 +173,7 @@ class Page {
       const props = todo ? `{ isChecked: ${Boolean(item.checked)} }` : "null";
       return `h(${this.block(itemBlock)}, ${props}, ${this.children(nodes)})`;
     });
-    return `h(${this.block(listBlock)}, null, ${this.children(items)})`;
+    return `h(${this.block(listBlock)}, ${listProps}, ${this.children(items)})`;
   }
 }
 
