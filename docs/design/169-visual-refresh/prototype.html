@@ -222,8 +222,37 @@
         color: var(--text-secondary);
       }
 
+      /* Collapsed on desktop: the sidebar floats in when the pointer reaches
+         the left edge or the sidebar button, and leaves with the pointer. */
       .app--collapsed .sidebar {
+        position: fixed;
+        top: calc(var(--tabs-height) + var(--header-height));
+        left: var(--space-4);
+        width: var(--sidebar-width);
+        max-height: calc(
+          100dvh - var(--tabs-height) - var(--header-height) - var(--space-9)
+        );
+        border-radius: var(--radius-lg);
+        background: var(--bg-floating);
+        box-shadow: var(--shadow-floating);
+        transform: translateX(calc(-100% - var(--space-6)));
+        transition: transform var(--duration);
+      }
+
+      .app--collapsed.app--peek .sidebar {
+        transform: none;
+      }
+
+      .edge {
+        position: fixed;
+        inset: 0 auto 0 0;
+        width: var(--space-6);
+        z-index: var(--z-sidebar);
         display: none;
+      }
+
+      .app--collapsed .edge {
+        display: block;
       }
 
       .sidebar__owner {
@@ -1108,6 +1137,7 @@
         </div>
       </aside>
 
+      <div class="edge" aria-hidden="true"></div>
       <div class="main">
         <nav class="tabs" aria-label="Open tabs">
           <div class="tab tab--active">
@@ -1364,7 +1394,26 @@
           app.classList.toggle(
             mobile.matches ? "app--mobile-open" : "app--collapsed"
           );
+          app.classList.remove("app--peek");
         });
+
+      const peek = (show) => {
+        if (!mobile.matches && app.classList.contains("app--collapsed")) {
+          app.classList.toggle("app--peek", show);
+        }
+      };
+      document
+        .querySelector(".edge")
+        .addEventListener("mouseenter", () => peek(true));
+      document
+        .getElementById("toggle-sidebar")
+        .addEventListener("mouseenter", () => peek(true));
+      document
+        .querySelector(".sidebar")
+        .addEventListener("mouseleave", () => peek(false));
+      document
+        .querySelector(".page")
+        .addEventListener("mouseenter", () => peek(false));
 
       document.querySelector(".page").addEventListener("pointerdown", () => {
         app.classList.remove("app--mobile-open");
