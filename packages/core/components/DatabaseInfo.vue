@@ -84,6 +84,8 @@ function getColor() {
     @extend %hover-default;
 
     &--val {
+      // Lets the value cell shrink so the tags wrap on narrow screens.
+      width: auto !important;
       vertical-align: middle;
     }
   }
