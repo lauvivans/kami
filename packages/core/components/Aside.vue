@@ -40,6 +40,8 @@ const mainContentDefault = inject<Ref<boolean>>(ASIDE_MAIN_CONTENT);
 
 const props = defineProps<{ metadata: IMetadata }>();
 
+store.storeDropStaleTabs(props.metadata.pages);
+
 const asideClasses = computed(() => {
   return {
     "aside-default": asideDefault.value,
