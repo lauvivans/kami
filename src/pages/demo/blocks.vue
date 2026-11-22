@@ -80,7 +80,7 @@ const code = {
   <Callout emoji="2️⃣">Second block</Callout>
   <Callout emoji="3️⃣">Third block</Callout>
 </ShowMore>`,
-  image: `<Image src="/banners/page-example.webp" />`,
+  image: `<Image src="/banners/page-example.webp" alt="An example banner" />`,
   others: `<Divider />
 <Empty />
 <Loader />`,
@@ -187,7 +187,8 @@ console.log(greeting);`;
   <Code lang="vue">{{ code.showMore }}</Code>
 
   <Heading :level="3">Image</Heading>
-  <Image src="/banners/page-example.webp" />
+  <Text>Click the image to open it in full screen.</Text>
+  <Image src="/banners/page-example.webp" alt="An example banner" />
   <Code lang="vue">{{ code.image }}</Code>
 
   <Heading :level="3">Divider, empty space and loader</Heading>

@@ -17,6 +17,8 @@ const links = `<Link href="/my-projects">Go to my projects</Link>
 <LinkMention :page="metadata.pages['my-projects']" emoji="🚀">Go to my projects</LinkMention>
 <LinkMention href="https://github.com/" emoji="🐙">GitHub</LinkMention>
 <Bookmark title="My project" subtitle="What it does" link="https://github.com/" icon="/icons/my-project.png" image="/banners/my-project.webp" />`;
+const image = `<Image src="/images/certificate.png" alt="My certificate" />
+<Image src="/images/divider.png" :zoomable="false" />`;
 const showMore = `<ShowMore :limit="3" label="Ver mais" less-label="Ver menos">
   <Bookmark v-for="post in posts" :key="post.link" v-bind="post" />
 </ShowMore>`;
@@ -102,6 +104,18 @@ const showMore = `<ShowMore :limit="3" label="Ver mais" less-label="Ver menos">
     hidden on phones:</Text
   >
   <Code lang="vue">{{ links }}</Code>
+
+  <Heading :level="3">Images</Heading>
+  <Text
+    ><Code inline>Image</Code> takes a path from <Code inline>public/</Code> in
+    <Code inline>src</Code> and a description in <Code inline>alt</Code>, read
+    by screen readers; leave <Code inline>alt</Code> out for a decorative
+    image. A click, or Enter and Space from the keyboard, opens the image in
+    full screen, and Escape, the close button or a click outside closes it.
+    <Code inline>:zoomable="false"</Code> turns this off. An image inside a
+    list item shows as an icon in the text line and never opens:</Text
+  >
+  <Code lang="vue">{{ image }}</Code>
 
   <Heading :level="3">Show a long list a few at a time</Heading>
   <Text
