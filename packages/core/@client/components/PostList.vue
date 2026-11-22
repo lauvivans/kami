@@ -92,7 +92,11 @@ const groups = computed(() => {
     justify-content: space-between;
     align-items: baseline;
     column-gap: $space-4;
-    padding: $space-2 $space-1;
+
+    // The negative margin keeps the text in line with the month heading,
+    // and the hover background reaches past it.
+    margin-inline: calc(-1 * $space-4);
+    padding: $space-3 $space-4;
     border-radius: $radius-md;
     color: $text;
     text-decoration: none;
