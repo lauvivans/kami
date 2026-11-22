@@ -91,6 +91,20 @@ describe("Database table layout", () => {
   });
 });
 
+describe("Database gallery layout", () => {
+  it("shows the multi-select tags of each page on its card", () => {
+    const wrapper = mount(DatabaseGalleryLayout, {
+      props: { cardPreviewIsCover: true, pages },
+    });
+
+    const cards = wrapper.findAll(".gallery__card-wrapper");
+    const tags = cards[0]!.findAll(".multi-select > div");
+    expect(tags.map((tag) => tag.text())).toEqual(["Vue", "TypeScript"]);
+    expect(tags[1]!.classes()).toContain("multi-select__tag--green");
+    expect(cards[1]!.find(".multi-select").exists()).toBe(false);
+  });
+});
+
 describe("Database views", () => {
   const tabs = (wrapper: ReturnType<typeof shallowMount>) =>
     wrapper.findAll(".database-block__view");
