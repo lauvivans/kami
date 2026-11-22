@@ -18,7 +18,6 @@ export default function useModal({ provideName }: { provideName: string }) {
       store.storeCurrentModalPageId("");
 
       body.removeEventListener("click", handleGlobalClick);
-      body.removeEventListener("touchstart", handleGlobalClick);
     }
   }
 
@@ -35,7 +34,7 @@ export default function useModal({ provideName }: { provideName: string }) {
     }, 250);
   }
 
-  function handleGlobalClick(e: PointerEvent | TouchEvent) {
+  function handleGlobalClick(e: MouseEvent) {
     if (modalRef.value && modalRef.value) {
       const res = Array.from(modalRef.value.querySelectorAll("*")).some(
         (child) => child === e.target
@@ -51,7 +50,6 @@ export default function useModal({ provideName }: { provideName: string }) {
 
   function addModalListener() {
     body.addEventListener("click", handleGlobalClick);
-    body.addEventListener("touchstart", handleGlobalClick);
   }
 
   return {

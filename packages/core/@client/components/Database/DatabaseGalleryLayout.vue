@@ -59,7 +59,6 @@ function handleCard(page: PageInfo) {
         v-for="page in pages"
         :key="page.id"
         @click.stop="handleCard(page)"
-        @touchstart.stop="handleCard(page)"
       >
         <div
           class="gallery__card-content"
