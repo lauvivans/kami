@@ -52,11 +52,34 @@ describe("markdown pages", () => {
     expect(code).toContain(JSON.stringify("a "));
     expect(code).toContain(JSON.stringify(" & b "));
     expect(code).toContain(`() => ${JSON.stringify("&amp;")}`);
-    expect(warnings).toContain('block "table" is not supported');
-    expect(warnings).toContain("raw HTML is dropped");
+    expect(new Set(warnings)).toEqual(new Set(["raw HTML is dropped"]));
     expect(toModule("<div>a</div>\n", "kami").warnings).toContain(
       "raw HTML is dropped"
     );
+  });
+
+  it("renders a GFM table with its header row and alignment", () => {
+    const wrapper = mountPost();
+    const table = wrapper.find(".table table");
+    expect(table.findAll("thead th").map((th) => th.text())).toEqual([
+      "Drink",
+      "Dose",
+      "Yield",
+    ]);
+    expect(table.find("th").attributes("scope")).toBe("col");
+    expect(table.findAll("tbody tr")).toHaveLength(3);
+    expect(table.find("tbody td strong").text()).toBe("Espresso");
+    const [name, dose] = table.findAll("tbody tr")[0]!.findAll("td");
+    expect(name!.attributes("style")).toBeUndefined();
+    expect(dose!.attributes("style")).toContain("text-align: right");
+  });
+
+  it("maps a header-only table without warnings", () => {
+    const { code, warnings } = toModule("| a | b |\n|:-:|---|\n", "kami");
+    expect(code).toContain(
+      `h(Table, null, () => [h("thead", null, [h("tr", null, [h("th", { scope: "col", style: { textAlign: "center" } }, ["a"]), h("th", { scope: "col" }, ["b"])])])])`
+    );
+    expect(warnings).toEqual([]);
   });
 
   it("keeps the start number of a numbered list", () => {
