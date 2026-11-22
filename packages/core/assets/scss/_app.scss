@@ -45,10 +45,8 @@
       &__content {
         // the left padding leaves room for the sidebar button
         @include mixin.spacing(
-          $pt: var.$space-5,
           $pl: calc(var.$space-8 + var.$space-4),
-          $pr: var.$space-5,
-          $pb: var.$space-4
+          $pr: var.$space-5
         );
       }
     }
@@ -75,12 +73,7 @@
 
     .header {
       &__content {
-        @include mixin.spacing(
-          $pt: var.$space-5,
-          $pl: var.$space-5,
-          $pr: var.$space-5,
-          $pb: var.$space-4
-        );
+        @include mixin.spacing($pl: var.$space-5, $pr: var.$space-5);
       }
     }
   }

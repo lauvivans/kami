@@ -103,7 +103,9 @@ const handleCrumb = (page: PageInfo) => {
           <span :title="page.title">{{ page.title }}</span>
         </div>
       </router-link>
-      <div v-if="index !== shownCrumbs.length - 1">/</div>
+      <div v-if="index !== shownCrumbs.length - 1" class="breadcrumb__sep">
+        /
+      </div>
     </div>
   </div>
   <Dropdown v-model:open="menuOpen" :anchor="moreButton">
@@ -162,6 +164,15 @@ const handleCrumb = (page: PageInfo) => {
     > div {
       flex-shrink: 0;
     }
+
+    &:last-child .breadcrumb__page > div {
+      color: $text;
+    }
+  }
+
+  &__sep {
+    color: $text-tertiary;
+    padding: 0 $space-1;
   }
 
   &__icon {
@@ -183,6 +194,11 @@ const handleCrumb = (page: PageInfo) => {
       align-items: center;
 
       @extend %hover-default;
+
+      box-sizing: border-box;
+      height: $item-height;
+      padding: 0 $space-3;
+      font-weight: $fw-regular;
 
       span {
         @extend %ellipsis;
