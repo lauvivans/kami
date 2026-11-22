@@ -22,6 +22,7 @@ beforeEach(() => vi.useFakeTimers());
 
 afterEach(() => {
   vi.useRealTimers();
+  vi.restoreAllMocks();
   document.body.innerHTML = "";
 });
 
@@ -61,5 +62,32 @@ describe("Tooltip", () => {
     document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
     await flushPromises();
     expect(tooltip()).toBeNull();
+  });
+
+  it("stays inside the viewport near its bottom right corner", async () => {
+    const [clientWidth, clientHeight] = [1000, 800];
+    vi.spyOn(document.documentElement, "clientWidth", "get").mockReturnValue(
+      clientWidth
+    );
+    vi.spyOn(document.documentElement, "clientHeight", "get").mockReturnValue(
+      clientHeight
+    );
+    vi.spyOn(HTMLElement.prototype, "getBoundingClientRect").mockImplementation(
+      function (this: HTMLElement) {
+        return (this.getAttribute("role") === "tooltip"
+          ? { width: 200, height: 20 }
+          : {
+              top: clientHeight - 28,
+              bottom: clientHeight,
+              left: clientWidth - 50,
+            }) as unknown as DOMRect;
+      }
+    );
+    const wrapper = mountLink(300);
+    await wrapper.find("a").trigger("pointerenter");
+    vi.runAllTimers();
+    await flushPromises();
+    expect(tooltip()!.style.top).toBe(`${clientHeight - 48}px`);
+    expect(tooltip()!.style.left).toBe(`${clientWidth - 200}px`);
   });
 });
