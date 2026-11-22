@@ -24,6 +24,17 @@ $gray-9: rgb(237 236 233 / 90%);
 $active: rgb(35 131 226);
 $baby-purple: #cdb4db;
 $baby-blue: #bde0fe;
+$baby-yellow: #ffd275;
+$baby-brown: #ba9378;
+$baby-green: #d0f0c0;
+$baby-orange: #fec89a;
+$baby-gray: #ccc5b9;
+
+// multi-select tag backgrounds; tagColorClass() in util/ picks one per tag,
+// so keep its TAG_COLORS in sync with this list's length
+$tag-colors:
+  $baby-purple, $baby-blue, $baby-yellow, $baby-brown, $baby-green,
+  $baby-orange, $baby-gray;
 
 /* dark theme default */
 $dark: #171a1b;

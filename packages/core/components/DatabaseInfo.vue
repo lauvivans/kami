@@ -2,24 +2,9 @@
 import { Icons } from "@core/enum";
 import Icon from "@core/@client/components/Icon.vue";
 import type { PageInfo } from "@core/@types";
+import { tagColorClass } from "@core/util/tagColorClass";
 
 const props = defineProps<{ page: PageInfo }>();
-
-//purple, blue, yellow, brown, green, orange and gray
-const colors = [
-  "cdb4db",
-  "bde0fe",
-  "ffd275",
-  "ba9378",
-  "d0f0c0",
-  "fec89a",
-  "ccc5b9",
-];
-
-function getColor() {
-  const randomNumber = Math.floor(Math.random() * 6);
-  return "#" + colors[randomNumber];
-}
 </script>
 
 <template>
@@ -52,7 +37,7 @@ function getColor() {
             <div
               v-for="item in value.value"
               :key="item"
-              :style="{ 'background-color': getColor() }"
+              :class="tagColorClass(item)"
             >
               {{ item }}
             </div>
@@ -65,6 +50,8 @@ function getColor() {
 </template>
 
 <style lang="scss">
+@use "sass:list";
+
 .database {
   margin-bottom: 20px;
 
@@ -101,6 +88,13 @@ function getColor() {
     padding: 0.3rem 0.5rem;
     width: max-content;
     border-radius: 2px;
+  }
+
+  // one class per color in $tag-colors, picked by tagColorClass()
+  @for $i from 1 through list.length($tag-colors) {
+    &__tag--#{$i - 1} {
+      background-color: list.nth($tag-colors, $i);
+    }
   }
 }
 </style>

@@ -3,6 +3,7 @@ import { computed } from "vue";
 import Icon from "@core/@client/components/Icon.vue";
 import { Icons } from "@core/enum";
 import type { PageInfo } from "@core/@types";
+import { tagColorClass } from "@core/util/tagColorClass";
 
 const props = defineProps<{
   pages: PageInfo[];
@@ -62,7 +63,11 @@ const valueOf = (page: PageInfo, key: string) =>
                 v-if="Array.isArray(valueOf(page, key))"
                 class="multi-select database-table__tags"
               >
-                <div v-for="item in valueOf(page, key)" :key="item">
+                <div
+                  v-for="item in valueOf(page, key)"
+                  :key="item"
+                  :class="tagColorClass(item)"
+                >
                   {{ item }}
                 </div>
               </div>
@@ -155,10 +160,6 @@ const valueOf = (page: PageInfo, key: string) =>
 
   &__tags {
     flex-wrap: nowrap;
-
-    div {
-      background-color: $gray;
-    }
   }
 }
 </style>
