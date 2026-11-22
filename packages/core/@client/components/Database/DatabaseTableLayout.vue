@@ -1,1 +1,0 @@
-<template>Database table</template>

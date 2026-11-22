@@ -1,22 +1,161 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import type { PageInfo } from "@core/@types";
-import DatabaseGalleryLayout from "./DatabaseGalleryLayout.vue";
-import DatabaseTableLayout from "./DatabaseTableLayout.vue";
+import Icon from "@core/@client/components/Icon.vue";
+import { Icons } from "@core/enum";
+import MainModalView from "@core/components/Modal/MainModalView.vue";
+import { useModal } from "@core/hooks";
+import { useStore } from "@core/store";
+import DatabaseGalleryLayout from "@core/components/Database/DatabaseGalleryLayout.vue";
+import DatabaseTableLayout from "@core/components/Database/DatabaseTableLayout.vue";
+
+type View = "gallery" | "table";
 
 const props = defineProps<{
-  layout: "gallery" | "table";
+  // the view the database opens with; the visitor can switch with the tabs
+  layout: View;
   title?: string;
   cardPreviewIsCover?: boolean;
   pages: PageInfo[];
 }>();
+
+const views: { id: View; label: string; icon: Icons }[] = [
+  { id: "gallery", label: "Gallery", icon: Icons.gridView },
+  { id: "table", label: "Table", icon: Icons.list },
+];
+
+const view = ref<View>(props.layout);
+
+const pageModal = ref<PageInfo>();
+
+const { showModal, hideModal, addModalListener } = useModal({
+  provideName: "pageModal",
+});
+
+function openPage(page: PageInfo) {
+  pageModal.value = page;
+  useStore.storeCurrentModalPageId(page.id);
+  // waits for MainModalView to mount before showing it
+  setTimeout(showModal, 250);
+}
 </script>
 
 <template>
-  <DatabaseGalleryLayout
-    v-if="props.layout === 'gallery'"
-    :card-preview-is-cover="props.cardPreviewIsCover"
-    :title="props.title"
-    :pages="props.pages"
+  <div class="database-block">
+    <div class="database-block__navbar">
+      <div class="database-block__menu">
+        <div class="database-block__views">
+          <button
+            v-for="item in views"
+            :key="item.id"
+            type="button"
+            class="database-block__view"
+            :class="{ 'database-block__view--active': view === item.id }"
+            :aria-pressed="view === item.id"
+            @click="view = item.id"
+          >
+            <Icon :icon="item.icon" />
+            <span>{{ item.label }}</span>
+          </button>
+        </div>
+        <div class="database-block__actions">
+          <button type="button">Filter</button>
+          <button type="button">Sort</button>
+        </div>
+      </div>
+
+      <h3 v-if="props.title" class="database-block__title">
+        {{ props.title }}
+      </h3>
+    </div>
+
+    <DatabaseGalleryLayout
+      v-if="view === 'gallery'"
+      :card-preview-is-cover="props.cardPreviewIsCover"
+      :pages="props.pages"
+      @open="openPage"
+    />
+    <DatabaseTableLayout v-else :pages="props.pages" @open="openPage" />
+  </div>
+  <MainModalView
+    v-if="pageModal"
+    provideName="pageModal"
+    :page="pageModal"
+    :hideMainModal="hideModal"
+    :addMainModalListener="addModalListener"
   />
-  <DatabaseTableLayout v-else />
 </template>
+
+<style lang="scss">
+.database-block {
+  &:hover,
+  &:focus-within {
+    .database-block__actions {
+      visibility: visible;
+    }
+  }
+
+  &__navbar {
+    @include flex-layout($row-gap: 15px);
+
+    margin-bottom: 30px;
+  }
+
+  &__menu {
+    @include flex-layout($flex-direction: row);
+
+    justify-content: space-between;
+    border-bottom: 1px solid $black-2;
+  }
+
+  &__views {
+    @include flex-layout($flex-direction: row, $column-gap: 10px);
+  }
+
+  &__view {
+    all: unset;
+    display: flex;
+    align-items: center;
+    column-gap: 3px;
+    cursor: pointer;
+    color: $black-6;
+    padding-bottom: $default-spacing;
+    border-bottom: 2px solid transparent;
+
+    &--active {
+      font-weight: $fw-700;
+      color: inherit;
+      border-bottom-color: $black;
+    }
+
+    &:focus-visible {
+      outline: 2px solid $active;
+    }
+  }
+
+  &__actions {
+    @include flex-layout($flex-direction: row, $column-gap: 10px);
+
+    visibility: hidden;
+
+    button {
+      all: unset;
+      color: $black-8;
+      cursor: pointer;
+      box-sizing: border-box;
+      padding: 7px 5px;
+      margin-bottom: 5px;
+
+      &:hover {
+        border-radius: 10%;
+        background-color: $gray-4;
+      }
+    }
+  }
+
+  &__title {
+    font-weight: $fw-700;
+    font-size: $fs-large;
+  }
+}
+</style>

@@ -166,7 +166,10 @@ const metadata: IMetadata = {
       pages: ["coffee-menu"],
       databaseInfo: {
         Created: { icon: "clock", value: "March 2026" },
-        Languages: { icon: "code", value: ["Vue", "TypeScript"] },
+        Languages: {
+          icon: "code",
+          value: ["Vue", { name: "TypeScript", color: "purple" }],
+        },
         Status: { icon: "check", value: "Done" },
       },
     },

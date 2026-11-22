@@ -24,6 +24,23 @@ $gray-9: rgb(237 236 233 / 90%);
 $active: rgb(35 131 226);
 $baby-purple: #cdb4db;
 $baby-blue: #bde0fe;
+$baby-yellow: #ffd275;
+$baby-brown: #ba9378;
+$baby-green: #d0f0c0;
+$baby-orange: #fec89a;
+$baby-gray: #ccc5b9;
+
+// multi-select tag backgrounds, by the color name a tag can set
+// (TagColor in @types); keep TAG_COLORS in util/tagColorClass.ts in sync
+$tag-colors: (
+  "purple": $baby-purple,
+  "blue": $baby-blue,
+  "yellow": $baby-yellow,
+  "brown": $baby-brown,
+  "green": $baby-green,
+  "orange": $baby-orange,
+  "gray": $baby-gray,
+);
 
 /* dark theme default */
 $dark: #171a1b;
