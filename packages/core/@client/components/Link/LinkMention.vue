@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from "vue";
 import Icon from "@core/@client/components/Icon.vue";
 import type { PageInfo } from "@core/@types";
 import { Icons } from "@core/enum";
@@ -8,18 +9,26 @@ const props = defineProps<{
   emoji: string;
   page?: PageInfo;
 }>();
+// A path such as "/my-projects" is a portfolio page; "//host" is another site.
+const to = computed(
+  () =>
+    props.page?.path ??
+    (props.href && /^\/(?!\/)/.test(props.href) ? props.href : undefined)
+);
 </script>
 
 <template>
-  <router-link class="link" :to="props.page.path" v-if="props.page">
+  <router-link class="link" :to="to" v-if="to">
     <div>
-      <img v-if="props.page.icon" :src="props.page.icon.path" />
+      <img v-if="props.page?.icon" :src="props.page.icon.path" />
       <template v-else>{{ props.emoji }}</template>
       <Icon class="link__arrow" :icon="Icons.arrowLink" />
     </div>
-    <span>{{ props.page.title }}</span></router-link
+    <span
+      ><slot>{{ props.page?.title }}</slot></span
+    ></router-link
   >
-  <a class="link" target="_blank" :href="props.href" v-else>
+  <a class="link" target="_blank" rel="noopener" :href="props.href" v-else>
     <div>
       {{ props.emoji }}
       <Icon class="link__arrow" :icon="Icons.arrowLink" />

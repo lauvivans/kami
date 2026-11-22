@@ -13,6 +13,9 @@ import metadata from "@/metadata";
 import { aboutPage as page, aboutMetadata as meta } from "@/code-samples";
 
 const quote = `<Quote>A quote from a person or a source.</Quote>`;
+const links = `<Link href="/my-projects">Go to my projects</Link>
+<LinkMention :page="metadata.pages['my-projects']" emoji="🚀">Go to my projects</LinkMention>
+<LinkMention href="https://github.com/" emoji="🐙">GitHub</LinkMention>`;
 </script>
 
 <template>
@@ -76,6 +79,16 @@ const quote = `<Quote>A quote from a person or a source.</Quote>`;
     ><Code inline>metadata.favorites</Code> lists the pages shown under Favorites in
     the sidebar. Pages without a parent are listed under Private.</Text
   >
+
+  <Heading :level="3">Link to a page</Heading>
+  <Text
+    >A <Code inline>Link</Code> or <Code inline>LinkMention</Code> whose
+    <Code inline>href</Code> starts with <Code inline>/</Code> opens that page
+    of the portfolio in the same tab. Any other address opens in a new tab.
+    <Code inline>LinkMention</Code> with <Code inline>page</Code> shows the
+    page's icon and title, or the text you give it:</Text
+  >
+  <Code lang="vue">{{ links }}</Code>
 
   <Callout emoji="👀"
     >The Blocks page in the demo shows every block with the code that renders
