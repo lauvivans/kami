@@ -23,6 +23,8 @@ enum Icons {
   text = "eva:text-outline",
   close = "eva:close-outline",
   search = "eva:search-outline",
+  filter = "eva:funnel-outline",
+  sort = "eva:swap-outline",
   arrowLink = "eva:diagonal-arrow-right-up-fill",
 }
 
