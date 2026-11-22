@@ -71,7 +71,7 @@ const code = {
 </Columns>`,
   links: `<Text>An inline <Link href="https://vuejs.org/">link</Link>.</Text>
 <LinkMention :page="metadata.pages['coffee-shop']" emoji="☕" />
-<LinkMention href="https://github.com/lauvivans/kami" emoji="🐙" />
+<LinkMention href="https://github.com/lauvivans/kami" emoji="🐙">Kami on GitHub</LinkMention>
 <Bookmark title="Kami" subtitle="Source code" link="https://github.com/lauvivans/kami" icon="/icons/page-example.png" />`,
   image: `<Image src="/banners/page-example.webp" />`,
   others: `<Divider />
@@ -160,7 +160,7 @@ console.log(greeting);`;
   <Heading :level="3">Links</Heading>
   <Text>An inline <Link :href="vueUrl">link</Link>.</Text>
   <LinkMention :page="metadata.pages['coffee-shop']" emoji="☕" />
-  <LinkMention :href="repoUrl" emoji="🐙" />
+  <LinkMention :href="repoUrl" emoji="🐙">Kami on GitHub</LinkMention>
   <Bookmark
     title="Kami"
     subtitle="Source code"

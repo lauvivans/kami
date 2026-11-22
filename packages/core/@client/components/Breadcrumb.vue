@@ -2,6 +2,7 @@
 import type { IMetadata, PageInfo } from "@core/@types";
 import { useStore } from "@core/store";
 import Dropdown from "@core/components/Dropdown.vue";
+import Tooltip from "@core/components/Tooltip.vue";
 import { computed, ref, shallowRef, watch } from "vue";
 
 // Two root nodes (breadcrumb + dropdown), so attributes from the parent go to the breadcrumb
@@ -100,7 +101,7 @@ const handleCrumb = (page: PageInfo) => {
             class="breadcrumb__icon"
             :src="page.icon.path"
           />
-          <span :title="page.title">{{ page.title }}</span>
+          <Tooltip :text="page.title" />
         </div>
       </router-link>
       <div v-if="index !== shownCrumbs.length - 1" class="breadcrumb__sep">
@@ -123,7 +124,7 @@ const handleCrumb = (page: PageInfo) => {
             class="breadcrumb__icon"
             :src="page.icon.path"
           />
-          <span :title="page.title">{{ page.title }}</span>
+          <Tooltip :text="page.title" />
         </div>
       </router-link>
     </nav>
