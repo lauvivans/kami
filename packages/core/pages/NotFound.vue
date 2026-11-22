@@ -50,13 +50,9 @@ const props = defineProps(["previousRoute"]);
       display: block;
       width: max-content;
       background-color: $accent;
-      color: $text-inverse !important;
+      color: $text-inverse;
       padding: $space-4;
       border-radius: $radius-sm;
-
-      &:hover {
-        color: $text-inverse !important;
-      }
     }
   }
 }
