@@ -45,15 +45,16 @@ body {
   ::selection {
     background-color: var.$bg-active;
   }
+}
 
-  :any-link {
-    color: var.$text-secondary;
-    transition: color 0.3s;
+// Default link colors with zero specificity, so any component rule overrides them.
+:where(body :any-link) {
+  color: var.$text-secondary;
+  transition: color 0.3s;
+}
 
-    &:hover {
-      color: var.$text !important;
-    }
-  }
+:where(body :any-link:hover) {
+  color: var.$text;
 }
 
 // Native buttons keep the browser's text color, which doesn't follow the theme.
