@@ -2,6 +2,22 @@
 
 > Versions up to 1.1.6 were published as `@lauravivan/notion-portfolio`. The notes for 2.0.0 to 2.0.8 are only on the [GitHub releases page](https://github.com/lauvivans/kami/releases). From the next version on, release-please writes this file.
 
+## [3.1.0](https://github.com/lauvivans/kami/compare/v3.0.0...v3.1.0) (2026-11-22)
+
+
+### Features
+
+* add a numbered list block ([#230](https://github.com/lauvivans/kami/issues/230)) ([d93b78a](https://github.com/lauvivans/kami/commit/d93b78af3e27385b41c43ce07041e99cd63e0155)), closes [#227](https://github.com/lauvivans/kami/issues/227)
+* add a posts list block ([#231](https://github.com/lauvivans/kami/issues/231)) ([e137c47](https://github.com/lauvivans/kami/commit/e137c477fcc1a34ebc9e7352a8850243ec1be195)), closes [#226](https://github.com/lauvivans/kami/issues/226)
+* add a table block ([#232](https://github.com/lauvivans/kami/issues/232)) ([2c5fb0d](https://github.com/lauvivans/kami/commit/2c5fb0d79c01e953252321806dad1c27a396cb18)), closes [#228](https://github.com/lauvivans/kami/issues/228)
+* open images in a full-screen viewer ([#223](https://github.com/lauvivans/kami/issues/223)) ([a4da7e8](https://github.com/lauvivans/kami/commit/a4da7e8f4689ef98e24ae730377a4953355b3ff0)), closes [#193](https://github.com/lauvivans/kami/issues/193)
+* write pages in Markdown ([#229](https://github.com/lauvivans/kami/issues/229)) ([cdce73e](https://github.com/lauvivans/kami/commit/cdce73e493c549fc906939352689d5a570a5878e)), closes [#225](https://github.com/lauvivans/kami/issues/225)
+
+
+### Bug Fixes
+
+* add the image to the bookmark block ([#221](https://github.com/lauvivans/kami/issues/221)) ([50c9ac7](https://github.com/lauvivans/kami/commit/50c9ac7dc8d572fb6fae9d01a6100e566f25af7a)), closes [#220](https://github.com/lauvivans/kami/issues/220)
+
 ## [3.0.0](https://github.com/lauvivans/kami/compare/v2.2.0...v3.0.0) (2026-11-22)
 
 
