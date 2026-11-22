@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import Modal from "./Modal.vue";
+import { ref } from "vue";
+import Modal from "@core/components/Modal/Modal.vue";
 import Icon from "@core/@client/components/Icon.vue";
 import type { PageInfo } from "@core/@types";
 import { Banner, Wrapper, Content, Title } from "@core/components/Content";
 import { Icons } from "@core/enum";
-import Settings from "../Settings.vue";
-import { useModal } from "@core/hooks";
-import DatabaseInfo from "../DatabaseInfo.vue";
+import Settings from "@core/components/Settings.vue";
+import DatabaseInfo from "@core/components/DatabaseInfo.vue";
 
 const props = defineProps<{
   hideMainModal: () => void;
@@ -15,11 +15,8 @@ const props = defineProps<{
   page: PageInfo;
 }>();
 
-const MAIN_MODAL_PROVIDE_NAME = "mainModalMenu";
-
-const { showModal, hideModal, addModalListener } = useModal({
-  provideName: MAIN_MODAL_PROVIDE_NAME,
-});
+const settingsOpen = ref(false);
+const settingsBtn = ref<HTMLElement | null>(null);
 
 const handleNavigate = () => {
   props.hideMainModal();
@@ -31,7 +28,6 @@ const handleNavigate = () => {
     <Modal
       class="page-modal"
       :provideName="props.provideName"
-      :isStatic="true"
       :hideModal="props.hideMainModal"
       :addModalListener="props.addMainModalListener"
     >
@@ -46,9 +42,12 @@ const handleNavigate = () => {
         <button
           class="page-modal__btn-settings"
           id="settings-btn"
-          @click="showModal"
+          ref="settingsBtn"
+          @click="settingsOpen = !settingsOpen"
           type="button"
           aria-label="Open settings"
+          aria-haspopup="menu"
+          :aria-expanded="settingsOpen"
         >
           <Icon :icon="Icons.moreHorizontal" />
         </button>
@@ -62,10 +61,8 @@ const handleNavigate = () => {
         </Content>
       </Wrapper>
       <Settings
-        :addSettingsModalListener="addModalListener"
-        :menuProvider="MAIN_MODAL_PROVIDE_NAME"
-        :hideSettingsModal="hideModal"
-        :modalStyles="{ top: '77px', right: '20px' }"
+        v-model:open="settingsOpen"
+        :anchor="settingsBtn"
         :pageId="props.page.id"
       />
     </Modal>

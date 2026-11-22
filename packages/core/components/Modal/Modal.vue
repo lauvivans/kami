@@ -5,8 +5,6 @@ const props = defineProps<{
   hideModal: () => void;
   addModalListener: () => void;
   provideName: string;
-  isStatic?: boolean;
-  modalStyles?: {};
 }>();
 
 const modalRef = inject<Ref<HTMLDivElement>>(props.provideName);
@@ -23,11 +21,7 @@ onMounted(() => {
 
 <template>
   <div class="overlay" ref="modalRef">
-    <dialog
-      class="modal"
-      :class="props.isStatic ? 'modal-static' : 'modal-dynamic'"
-      :style="props.modalStyles"
-    >
+    <dialog class="modal modal-static">
       <slot></slot>
     </dialog>
   </div>
@@ -74,24 +68,6 @@ dialog {
     max-width: 90%;
     min-width: 90%;
   }
-}
-
-.modal-dynamic {
-  position: absolute;
-  z-index: 2500;
-  min-width: 200px;
-  padding: 6px;
-  box-shadow: $box-shadow-3;
-  background-color: $white;
-  border-radius: 6px;
-  outline: none;
-  animation: fade-in 0.4s ease-in-out;
-  animation-fill-mode: forwards;
-  left: unset;
-  transform: unset;
-  width: auto;
-  height: auto;
-  max-height: fit-content;
 }
 
 @media (max-width: $screen-xs) {

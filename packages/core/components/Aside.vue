@@ -29,7 +29,6 @@ const store = useStore;
 const isAsideOpen = getAsideOpen();
 const SETTINGS_MODAL_PROVIDE = "settingsModal";
 const SEARCH_MODAL_PROVIDE = "searchModal";
-const THEME_OPTIONS_PROVIDE = "themesMenu";
 const navDefault = ref(!isAsideOpen);
 const navHover = ref(false);
 const navClick = ref(isAsideOpen);
@@ -226,7 +225,6 @@ onBeforeUnmount(() => {
       :provideName="SETTINGS_MODAL_PROVIDE"
       :addModalListener="addSettingsModalListener"
       :hideModal="hideSettingsModal"
-      :isStatic="true"
     >
       <div class="modal__settings">
         <h2 class="modal__settings-title">My settings</h2>
@@ -238,7 +236,6 @@ onBeforeUnmount(() => {
           </div>
           <SelectBtn
             :options="Object.entries(Theme)"
-            :menuProvideName="THEME_OPTIONS_PROVIDE"
             :optionSelected="Theme[`${store.getTheme}`]"
             @toSelect="toggleTheme"
           />
@@ -250,7 +247,6 @@ onBeforeUnmount(() => {
       :provideName="SEARCH_MODAL_PROVIDE"
       :addModalListener="addSearchModalListener"
       :hideModal="hideSearchModal"
-      :isStatic="true"
     >
       <div>Not build yet</div>
     </Modal>

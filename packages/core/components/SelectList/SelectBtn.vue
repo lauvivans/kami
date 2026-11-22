@@ -1,45 +1,36 @@
 <script setup lang="ts">
-import Modal from "@core/components/Modal/Modal.vue";
-import OptionList from "./OptionList.vue";
+import Dropdown from "@core/components/Dropdown.vue";
+import OptionList from "@core/components/SelectList/OptionList.vue";
 import { ref } from "vue";
 import Icon from "@core/@client/components/Icon.vue";
-import { useModal } from "@core/hooks";
 import { Icons } from "@core/enum";
 
 const props = defineProps<{
   options: [string, string][];
-  menuProvideName: string;
   optionSelected: string;
 }>();
 
 const optionSelected = ref(props.optionSelected);
 const emit = defineEmits(["toSelect"]);
 
-const { showModal, hideModal, addModalListener } = useModal({
-  provideName: props.menuProvideName,
-});
+const open = ref(false);
+const button = ref<HTMLElement | null>(null);
 
 function optionClicked(option: string) {
   optionSelected.value = option;
   emit("toSelect", option);
-  hideModal();
+  open.value = false;
 }
 </script>
 
 <template>
   <div>
-    <div class="select-btn" @click="showModal">
+    <div class="select-btn" ref="button" @click="open = !open">
       <button>{{ props.optionSelected }}</button>
       <Icon :icon="Icons.arrowDown" />
     </div>
 
-    <Modal
-      :provideName="props.menuProvideName"
-      class="select-btn-menu"
-      :modalStyles="{ top: '10px', right: '110px' }"
-      :hideModal="hideModal"
-      :addModalListener="addModalListener"
-    >
+    <Dropdown v-model:open="open" :anchor="button" align="right">
       <div class="theme-options">
         <OptionList
           :options="props.options"
@@ -47,7 +38,7 @@ function optionClicked(option: string) {
           :optionSelected="optionSelected"
         ></OptionList>
       </div>
-    </Modal>
+    </Dropdown>
   </div>
 </template>
 
@@ -72,16 +63,6 @@ function optionClicked(option: string) {
     padding: 0;
     cursor: pointer;
     color: $black-6;
-  }
-}
-
-.select-btn-menu {
-  .menu {
-    min-width: 280px !important;
-
-    @media (max-width: $screen-small) {
-      min-width: 150px !important;
-    }
   }
 }
 </style>

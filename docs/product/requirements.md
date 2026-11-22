@@ -38,7 +38,8 @@ What Kami offers and the rules it follows.
 ## Themes and settings
 
 - Four themes, picked in Settings in the sidebar: Light (default), Dark, Catppuccin Latte and Catppuccin Mocha (shown as "Cat Latte" and "Cat Mocha"). The choice applies to the whole portfolio.
-- Each page has its own settings, from the header button:
+- Menus opened from a button (the page settings, the theme list in Settings and the breadcrumb `…` menu) are plain dropdowns, like Notion's: they open next to their button with no overlay, the rest of the page stays clickable, and they close on a press outside or on Escape. A press inside a menu opened from another menu keeps both open.
+- Each page has its own settings, from the header button or the button in the page modal:
   - font: Default (Roboto), Serif (Roboto Serif) or Mono (Roboto Mono);
   - small text, on or off;
   - full width, on or off.

@@ -19,7 +19,7 @@ const Overlay = defineComponent({
   },
 });
 
-// A page modal with a settings menu nested inside it, as MainModalView has.
+// A modal with another modal nested inside it.
 function mountModals() {
   let page!: ReturnType<typeof useModal>;
   let settings!: ReturnType<typeof useModal>;
