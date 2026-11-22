@@ -2,6 +2,24 @@
 
 > Versions up to 1.1.6 were published as `@lauravivan/notion-portfolio`. The notes for 2.0.0 to 2.0.8 are only on the [GitHub releases page](https://github.com/lauvivans/kami/releases). From the next version on, release-please writes this file.
 
+## [2.2.0](https://github.com/lauvivans/kami/compare/v2.1.0...v2.2.0) (2026-11-22)
+
+
+### Features
+
+* add a table view to databases ([#158](https://github.com/lauvivans/kami/issues/158)) ([929e567](https://github.com/lauvivans/kami/commit/929e567d8ac2268c4b5cffd49e15fb64e38c5b30)), closes [#49](https://github.com/lauvivans/kami/issues/49)
+* collapse long breadcrumbs into a menu ([#157](https://github.com/lauvivans/kami/issues/157)) ([52b8579](https://github.com/lauvivans/kami/commit/52b8579631431ddb9b017cd6c7c7a174f5317188)), closes [#50](https://github.com/lauvivans/kami/issues/50)
+* open the settings menus as dropdowns without an overlay ([#166](https://github.com/lauvivans/kami/issues/166)) ([0118ce3](https://github.com/lauvivans/kami/commit/0118ce3408e2dd81fd2734687138a9fcf8a171cd)), closes [#163](https://github.com/lauvivans/kami/issues/163)
+
+
+### Bug Fixes
+
+* drop restored tabs whose page no longer exists ([#160](https://github.com/lauvivans/kami/issues/160)) ([3dd7544](https://github.com/lauvivans/kami/commit/3dd75448a7cef3fcb230d0a87faff435e73dd92c)), closes [#151](https://github.com/lauvivans/kami/issues/151)
+* handle taps on tabs and the sidebar button with click only ([#165](https://github.com/lauvivans/kami/issues/165)) ([93a4352](https://github.com/lauvivans/kami/commit/93a4352d8b517da35f99460dbee33aef534b4339)), closes [#162](https://github.com/lauvivans/kami/issues/162)
+* keep database page text within narrow screens ([#155](https://github.com/lauvivans/kami/issues/155)) ([b92cf5f](https://github.com/lauvivans/kami/commit/b92cf5fe3921fc258208d90120917b508699dadb)), closes [#153](https://github.com/lauvivans/kami/issues/153)
+* keep list item content on one line ([#156](https://github.com/lauvivans/kami/issues/156)) ([d86d5f6](https://github.com/lauvivans/kami/commit/d86d5f6d23d5eb242de09d9bf9f9cd4d712c994b)), closes [#154](https://github.com/lauvivans/kami/issues/154)
+* open gallery database cards only on tap on touch devices ([#159](https://github.com/lauvivans/kami/issues/159)) ([43bf38b](https://github.com/lauvivans/kami/commit/43bf38ba328c5812f99279ae13bbf5c39ccd0d7f)), closes [#152](https://github.com/lauvivans/kami/issues/152)
+
 ## [2.1.0](https://github.com/lauvivans/kami/compare/v2.0.9...v2.1.0) (2026-11-21)
 
 
