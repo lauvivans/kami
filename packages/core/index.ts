@@ -18,6 +18,7 @@ export {
   Loader,
   NumberedItem,
   NumberedList,
+  PostList,
   Quote,
   ShowMore,
   Text,

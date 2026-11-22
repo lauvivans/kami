@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Text, Code } from "@lauvivans/kami";
+import { Text, Code, PostList } from "@lauvivans/kami";
+import { posts } from "../metadata";
 </script>
 
 <template>
@@ -8,4 +9,5 @@ import { Text, Code } from "@lauvivans/kami";
     under this page, newest first. Its front matter sets the title, date,
     banner and icon.</Text
   >
+  <PostList :pages="posts" />
 </template>

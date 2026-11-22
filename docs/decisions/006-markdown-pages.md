@@ -87,6 +87,6 @@ The generated module for the sample post is 906 bytes gzip for a 979-byte Markdo
 - **The plugin ships with the library** as a subpath export (`@lauvivans/kami/vite`), built for Node in a second entry. The browser entry stays as it is. `marked` and `yaml` become dependencies of the package, since the template's `vite.config.ts` imports the plugin. They run only during the build.
 - **The template** gets the plugin in `vite.config.ts`, the `*.md` type declaration and an example post.
 - **A helper builds pages from the files,** for example `markdownPages(files, { parentPage: "blog", path: "/blog" })`, sorted by date, so authors don't write the glob mapping by hand. `PageInfo` gets an optional `date`.
-- **A posts list block** lists the pages built from the files, grouped by year and month.
+- **A posts list block** (`PostList`, #226) lists the pages built from the files, grouped by year and month.
 - **Every post is in the main bundle** with an eager glob. With many posts, the implementation should load the front matter eagerly and the page lazily (two globs, one with `import: "frontmatter"`), and the page component has to accept an async component.
 - **Supply chain:** `marked` releases often (six versions between October and November 2026). The proof of concept pins `18.2.0`, since `18.2.1` was six days old at the time of the spike. Updates get the usual check.

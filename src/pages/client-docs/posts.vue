@@ -32,7 +32,7 @@ This post is a **Markdown file**.
 
 const meta = `import { markdownPages, type MarkdownModule } from "@lauvivans/kami";
 
-const posts = markdownPages(
+export const posts = markdownPages(
   import.meta.glob<MarkdownModule>("../pages/posts/*.md", { eager: true }),
   { parentPage: "posts", path: "/posts" }
 );
@@ -51,7 +51,19 @@ const metadata: IMetadata = {
   // user and favorites
 };`;
 
-const viteConfig = `import { markdown } from "@lauvivans/kami/vite";
+// The escaped closing tag keeps the SFC parser from ending this script block.
+/* eslint-disable no-useless-escape */
+const postList = `<script setup lang="ts">
+import { PostList } from "@lauvivans/kami";
+import { posts } from "../metadata";
+<\/script>
+
+<template>
+  <PostList :pages="posts" />
+</template>`;
+/* eslint-enable no-useless-escape */
+
+const viteConfig =`import { markdown } from "@lauvivans/kami/vite";
 
 export default defineConfig({
   plugins: [markdown(), vue()],
@@ -150,6 +162,14 @@ const tsconfig =`"types": ["vite/client", "@lauvivans/kami/markdown"]`;
     <Code inline>src/metadata/index.ts</Code> already does this:</Text
   >
   <Code lang="ts">{{ meta }}</Code>
+  <Text
+    >The <Code inline>PostList</Code> block lists them on a page, grouped by
+    month, newest first, each with its title and date. It takes the pages from
+    <Code inline>markdownPages</Code> and an optional
+    <Code inline>locale</Code> for the month names, such as
+    <Code inline>"pt-BR"</Code>. The template's Posts page uses it:</Text
+  >
+  <Code lang="vue">{{ postList }}</Code>
 
   <Heading :level="3">A portfolio made before posts</Heading>
   <Text

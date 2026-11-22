@@ -22,7 +22,7 @@ import CoffeeMenu from "../pages/demo/coffee-menu.vue";
 import SeasonalDrinks from "../pages/demo/seasonal-drinks.vue";
 
 // Each Markdown file in pages/demo/posts becomes a page under Demo.
-const posts = markdownPages(
+export const posts = markdownPages(
   import.meta.glob<MarkdownModule>("../pages/demo/posts/*.md", { eager: true }),
   { parentPage: "demo", path: "/demo/posts" }
 );

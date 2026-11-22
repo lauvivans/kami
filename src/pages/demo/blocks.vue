@@ -22,9 +22,10 @@ import {
   Loader,
   Database,
   ShowMore,
+  PostList,
   Icons,
 } from "@core/index.ts";
-import metadata from "@/metadata";
+import metadata, { posts } from "@/metadata";
 
 // vue-tsc 3.3 misreads a URL passed to a component in the template and
 // breaks the type check of every expression after it, so URLs live here.
@@ -82,6 +83,8 @@ const code = {
 <LinkMention :page="metadata.pages['coffee-shop']" emoji="☕" />
 <LinkMention href="https://github.com/lauvivans/kami" emoji="🐙">Kami on GitHub</LinkMention>
 <Bookmark title="Kami" subtitle="Source code" link="https://github.com/lauvivans/kami" icon="/icons/page-example.png" image="/banners/page-example.webp" />`,
+  postList: `<!-- posts comes from markdownPages; locale sets the month names -->
+<PostList :pages="posts" locale="en-US" />`,
   showMore: `<!-- limit blocks show at first; the button shows the next ones -->
 <ShowMore :limit="1">
   <Callout emoji="1️⃣">First block</Callout>
@@ -192,6 +195,14 @@ console.log(greeting);`;
     image="/banners/page-example.webp"
   />
   <Code lang="vue">{{ code.links }}</Code>
+
+  <Heading :level="3">Posts list</Heading>
+  <Text
+    >The pages from <Code inline>markdownPages</Code>, grouped by month, newest
+    first.</Text
+  >
+  <PostList :pages="posts" />
+  <Code lang="vue">{{ code.postList }}</Code>
 
   <Heading :level="3">Show more</Heading>
   <ShowMore :limit="1">
