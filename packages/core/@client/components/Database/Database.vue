@@ -67,9 +67,10 @@ function toggleMenu(name: Menu) {
   filterProperty.value = filter.value?.property;
 }
 
-// The menu is teleported to body, so focus moves into it on open and back to
-// its button on close; this "pre" watcher runs while the menu is still in the DOM.
-watch(menu, (name, previous) => {
+// The menu is teleported to body, so focus moves into it when it opens or its
+// items change, and back to its button on close; this "pre" watcher runs while
+// the menu is still in the DOM.
+watch([menu, filterProperty], ([name], [previous]) => {
   if (name) {
     nextTick(() =>
       menuRef.value?.querySelector<HTMLElement>("button, input")?.focus()

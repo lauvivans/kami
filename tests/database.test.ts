@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { nextTick } from "vue";
 import { mount, shallowMount } from "@vue/test-utils";
 import { Database } from "@core/index.ts";
 import DatabaseTableLayout from "@core/components/Database/DatabaseTableLayout.vue";
@@ -194,6 +195,35 @@ describe("Database filter and sort", () => {
 
     await item(wrapper, "Clear sort").trigger("click");
     expect(actions(wrapper)[1]!.text()).toBe("Sort");
+  });
+
+  it("moves focus into the menu and back to its button", async () => {
+    const wrapper = mount(Database, {
+      props: { layout: "gallery", pages },
+      attachTo: document.body,
+      global: {
+        stubs: { DatabaseGalleryLayout: true, DatabaseTableLayout: true },
+      },
+    });
+    const menuButton = (text: string) =>
+      [...document.querySelectorAll<HTMLElement>(".database-menu button")].find(
+        (button) => button.textContent?.trim() === text
+      )!;
+    const focused = () => document.activeElement?.textContent?.trim();
+
+    await actions(wrapper)[0]!.trigger("click");
+    await nextTick();
+    expect(focused()).toBe("Created");
+
+    menuButton("Languages").click();
+    await nextTick();
+    await nextTick();
+    expect(focused()).toBe("‹ Languages");
+
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    await nextTick();
+    expect(document.activeElement).toBe(actions(wrapper)[0]!.element);
+    wrapper.unmount();
   });
 
   it("closes the menu on Escape", async () => {
