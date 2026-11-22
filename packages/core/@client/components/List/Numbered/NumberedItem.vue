@@ -23,7 +23,9 @@ provide(INLINE_IMAGE, true);
   // The number sits on the first line: same padding and line height as Text.
   &::before {
     content: counter(numbered-list) ".";
-    min-width: $space-6;
+
+    // Wide enough for "10." at the body size, so two-digit items line up.
+    min-width: $space-7;
     padding: $space-1 0;
     line-height: $lh-body;
     color: $text;
