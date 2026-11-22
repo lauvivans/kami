@@ -81,20 +81,19 @@
   }
 
   .footer {
-    font-size: var.$fs-xs;
     position: absolute;
     right: var.$space-6;
-    bottom: var.$space-5;
+    bottom: var.$space-6;
     z-index: var.$z-header;
-    color: var.$text-secondary;
-    background-color: var.$bg-floating;
-    border: var.$line solid var.$border;
-    box-shadow: var.$shadow-floating;
+    padding: var.$space-1 var.$space-4;
     border-radius: var.$radius-pill;
-    padding: var.$space-5;
+    font-size: var.$fs-xs;
+    color: var.$text-tertiary;
+    background-color: var.$bg;
+    box-shadow: var.$shadow-floating;
 
     @media (max-width: var.$screen-small) {
-      bottom: calc(var.$tabs-height + var.$space-5);
+      display: none;
     }
   }
 }
