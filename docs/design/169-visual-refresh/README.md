@@ -2,7 +2,7 @@
 
 Kami's look follows an older version of Notion. This folder holds the design for refreshing it: what changed in Notion, how each Kami piece compares, the token changes, a decision on the footer badge, and the implementation issues that follow.
 
-- `prototype.html`: open it in a browser. The moon button in the header switches to the dark theme. A window narrower than 767px shows the mobile layout. Cards in the gallery open the page modal.
+- `prototype.html`: open it in a browser. The "Prototype theme" bar at the bottom previews the four themes (Default, Dark, Catppuccin Latte, Catppuccin Mocha). The bar only exists in the prototype: Kami keeps the theme choice in Settings. A window narrower than 767px shows the mobile layout. Cards in the gallery open the page modal.
 - Every size, color, radius and shadow in the prototype comes from the custom properties in its `:root`, which are the proposed tokens below.
 
 ## Sources
@@ -52,16 +52,16 @@ The notes don't announce a new font or a new dark mode after 2022.
 | Columns                         | Grid.                                                                                                             | Unchanged on desktop; a single column on mobile.                                                                                                                                         |
 | Divider                         | 1px line in `$gray`.                                                                                              | 1px line in the `border` token.                                                                                                                                                          |
 | Bookmark                        | 20px padding, 10px radius, title at weight 300; theme border in the lighter text color.                           | `border` token, 6px radius, hover background, title, description and URL in three sizes.                                                                                                 |
-| Database (table, gallery)       | Table and gallery views; tags in pastel colors.                                                                           | View tabs with icons; gallery cards with a 10px radius, cover and tags; table with light borders and muted headers. Tag palette moves to Notion's nine muted colors (adds pink and red). |
+| Database (table, gallery)       | Table and gallery views; tags in pastel colors.                                                                   | View tabs with icons; gallery cards with a 10px radius, cover and tags; table with light borders and muted headers. Tag palette moves to Notion's nine muted colors (adds pink and red). |
 | Image                           | Full width; 43% wide on full-width pages.                                                                         | Unchanged sizing; 6px radius.                                                                                                                                                            |
 | TextHighlight                   | Weight 900 and underlined.                                                                                        | Weight 600 with an optional background from the tag tokens, so highlights and tags share one palette.                                                                                    |
 | Empty                           | A 27px spacer (3 × `$default-spacing`).                                                                           | Height from the spacing scale (`space-7`, 24px).                                                                                                                                         |
 | Loader                          | 50px spinner drawn with black gradients.                                                                          | Same spinner, drawn with `text-tertiary` and `text` so it shows in dark themes.                                                                                                          |
-| Breadcrumb                      | Ellipsis rules for long trails.                                                                                         | Unchanged behavior, new look (see Header).                                                                                                                                               |
+| Breadcrumb                      | Ellipsis rules for long trails.                                                                                   | Unchanged behavior, new look (see Header).                                                                                                                                               |
 | Modals (page, settings, search) | `80vh` max height (`70vh` on phones), 5px radius, 2rem padding.                                                   | 10px radius; the page modal uses the visible height minus a 48px margin (8px on phones) and `dvh` (#173). Settings and search keep sizing to their content.                              |
 | Not found page                  | `100vh`.                                                                                                          | `100dvh` (#168).                                                                                                                                                                         |
 | Dark theme                      | `#171a1b` page, `#222` sidebar, white text.                                                                       | Page `rgb(25 25 25)`, sidebar `rgb(32 32 32)`, text white at 81%, muted tag colors for dark.                                                                                             |
-| Catppuccin themes               | Own palettes in `_theme.scss`.                                                                                    | Kept; they map onto the same new token names so they stay in sync.                                                                                                                       |
+| Catppuccin themes               | Own palettes in `_theme.scss`.                                                                                    | Kept; they fill the same token names from the palettes already in `_var.scss`, so every theme stays in sync. The prototype shows both.                                                   |
 | Mobile                          | Bottom tabs, sidebar as a full panel.                                                                             | Bottom tabs, sidebar as a floating panel up to 85% of the width that closes on a tap outside, no footer badge.                                                                           |
 
 ## Proposed tokens
@@ -85,9 +85,9 @@ The tokens move to semantic names, so themes override meanings ("sidebar backgro
 
 The badge ("by Kami (^.^)") lives in the template's `App.vue`, and the library only styles `.footer`. It floats over the page and, on phones, sits on top of the content just above the tabs.
 
-Recommendation: restyle it and keep it in the template as an opt-in credit. A small pill with muted text ("by Kami"), the floating shadow, hidden below 767px. Portfolio owners can delete the line from their `App.vue` without touching the library. The prototype shows this version.
+Decision: restyle it and keep it in the template as an opt-in credit. A small pill with muted text ("by Kami"), the floating shadow, hidden below 767px. Portfolio owners can delete the line from their `App.vue` without touching the library. The prototype shows this version.
 
-Decision: pending the maintainer's approval on the PR.
+Approved by the maintainer on PR #175.
 
 ## Implementation issues (for approval)
 

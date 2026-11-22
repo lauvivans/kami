@@ -127,7 +127,8 @@
         --duration: 0.15s;
       }
 
-      :root[data-theme="dark"] {
+      :root[data-theme="dark"],
+      :root[data-theme="mocha"] {
         --bg: rgb(25 25 25);
         --bg-sidebar: rgb(32 32 32);
         --bg-hover: rgb(255 255 255 / 6%);
@@ -157,6 +158,72 @@
           0 0 0 1px rgb(255 255 255 / 9%), 0 3px 6px rgb(0 0 0 / 40%),
           0 9px 24px rgb(0 0 0 / 50%);
         --shadow-sidebar: inset -1px 0 0 rgb(255 255 255 / 5%);
+      }
+
+      /* Catppuccin themes: the same token names, filled from the palettes
+         already in _var.scss. Tags keep the light or dark tag colors. */
+      :root[data-theme="latte"] {
+        --bg: #eff1f5; /* base */
+        --bg-sidebar: #e6e9ef; /* mantle */
+        --bg-hover: rgb(76 79 105 / 8%);
+        --bg-active: rgb(76 79 105 / 12%);
+        --bg-floating: #eff1f5;
+        --bg-block: #e6e9ef;
+        --bg-tabs: #ccd0da; /* surface0 */
+        --text: #4c4f69; /* text */
+        --text-secondary: #6c6f85; /* subtext0 */
+        --text-tertiary: #9ca0b0; /* overlay0 */
+        --text-inverse: #eff1f5;
+        --border: rgb(76 79 105 / 12%);
+        --accent: #04a5e5; /* sky */
+        --code-inline: #d20f39; /* red */
+        --tag-text: #4c4f69;
+      }
+
+      :root[data-theme="mocha"] {
+        --bg: #1e1e2e; /* base */
+        --bg-sidebar: #181825; /* mantle */
+        --bg-hover: rgb(205 214 244 / 6%);
+        --bg-active: rgb(205 214 244 / 10%);
+        --bg-floating: #313244; /* surface0 */
+        --bg-block: #313244;
+        --bg-tabs: #11111b; /* crust */
+        --text: #cdd6f4; /* text */
+        --text-secondary: #a6adc8; /* subtext0 */
+        --text-tertiary: #7f849c; /* overlay1 */
+        --text-inverse: #1e1e2e;
+        --border: rgb(205 214 244 / 10%);
+        --accent: #74c7ec; /* sapphire */
+        --code-inline: #f38ba8; /* red */
+        --tag-text: #cdd6f4;
+      }
+
+      /* Prototype only: picks the theme to preview. Kami keeps the theme
+         choice in Settings, so this bar is not part of the proposal. */
+      .preview-bar {
+        position: fixed;
+        left: 50%;
+        bottom: calc(var(--tabs-height) + var(--space-6));
+        transform: translateX(-50%);
+        z-index: var(--z-modal);
+        display: flex;
+        align-items: center;
+        gap: var(--space-4);
+        padding: var(--space-2) var(--space-2) var(--space-2) var(--space-5);
+        border-radius: var(--radius-pill);
+        background: var(--text);
+        color: var(--text-inverse);
+        font-size: var(--fs-xs);
+        box-shadow: var(--shadow-floating);
+      }
+
+      .preview-bar select {
+        font: inherit;
+        color: var(--text);
+        background: var(--bg);
+        border: 0;
+        border-radius: var(--radius-pill);
+        padding: var(--space-1) var(--space-4);
       }
 
       *,
@@ -1059,9 +1126,6 @@
       <symbol id="i-x" viewBox="0 0 16 16">
         <path d="M4 4l8 8M12 4l-8 8" />
       </symbol>
-      <symbol id="i-moon" viewBox="0 0 16 16">
-        <path d="M13 9.5A5.5 5.5 0 016.5 3a5.5 5.5 0 106.5 6.5z" />
-      </symbol>
       <symbol id="i-check" viewBox="0 0 16 16">
         <path d="M3.5 8.5l3 3 6-7" />
       </symbol>
@@ -1170,13 +1234,6 @@
             <span class="crumbs__sep">/</span>
             <span class="crumb"><span>📚 Projects</span></span>
           </div>
-          <button
-            class="icon-btn"
-            id="toggle-theme"
-            aria-label="Toggle dark theme"
-          >
-            <svg><use href="#i-moon" /></svg>
-          </button>
           <button class="icon-btn" aria-label="Page settings">
             <svg><use href="#i-dots" /></svg>
           </button>
@@ -1336,6 +1393,16 @@
       </div>
     </div>
 
+    <label class="preview-bar">
+      Prototype theme
+      <select id="preview-theme">
+        <option value="light">Default</option>
+        <option value="dark">Dark</option>
+        <option value="latte">Catppuccin Latte</option>
+        <option value="mocha">Catppuccin Mocha</option>
+      </select>
+    </label>
+
     <div class="overlay" id="overlay">
       <div
         class="modal"
@@ -1384,9 +1451,11 @@
       const app = document.getElementById("app");
       const mobile = matchMedia("(max-width: 767px)");
 
-      document.getElementById("toggle-theme").addEventListener("click", () => {
-        root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
-      });
+      document
+        .getElementById("preview-theme")
+        .addEventListener("change", (e) => {
+          root.dataset.theme = e.target.value;
+        });
 
       document
         .getElementById("toggle-sidebar")
