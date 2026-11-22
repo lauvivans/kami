@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import type { IMetadata, PageInfo } from "@core/@types";
 import { useStore } from "@core/store";
-import { computed } from "vue";
+import { useModal } from "@core/hooks";
+import Modal from "@core/components/Modal/Modal.vue";
+import { computed, ref } from "vue";
 
 const props = defineProps<{ metadata: IMetadata }>();
 
@@ -36,8 +38,34 @@ const breadcrumbs = computed(() => {
   return [];
 });
 
+// Like Notion: past 3 levels, show the first and the last two pages and move the rest into a menu
+const hiddenCrumbs = computed(() =>
+  breadcrumbs.value.length > 3 ? breadcrumbs.value.slice(1, -2) : []
+);
+
+const shownCrumbs = computed(() =>
+  hiddenCrumbs.value.length
+    ? [breadcrumbs.value[0], null, ...breadcrumbs.value.slice(-2)]
+    : breadcrumbs.value
+);
+
+const MENU_PROVIDE_NAME = "breadcrumbMenu";
+
+const { showModal, hideModal, addModalListener } = useModal({
+  provideName: MENU_PROVIDE_NAME,
+});
+
+const menuStyles = ref({});
+
+const openMenu = (e: MouseEvent) => {
+  const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+  menuStyles.value = { top: `${rect.bottom}px`, left: `${rect.left}px` };
+  showModal();
+};
+
 const handleCrumb = (page: PageInfo) => {
   store.storeUpdateTabs(page);
+  hideModal();
 };
 </script>
 
@@ -45,11 +73,22 @@ const handleCrumb = (page: PageInfo) => {
   <div class="breadcrumb">
     <div
       class="breadcrumb__crumb"
-      v-for="(page, index) in breadcrumbs"
-      :key="page.id"
+      :class="{ 'breadcrumb__crumb--more': !page }"
+      v-for="(page, index) in shownCrumbs"
+      :key="page?.id ?? 'more'"
     >
+      <button
+        v-if="!page"
+        class="breadcrumb__page"
+        type="button"
+        aria-label="Show hidden pages"
+        aria-haspopup="menu"
+        @click="openMenu"
+      >
+        <div>…</div>
+      </button>
       <router-link
-        v-if="page.path"
+        v-else-if="page.path"
         class="breadcrumb__page"
         :to="page.path"
         @click="handleCrumb(page)"
@@ -63,9 +102,34 @@ const handleCrumb = (page: PageInfo) => {
           <span :title="page.title">{{ page.title }}</span>
         </div>
       </router-link>
-      <div v-if="index !== breadcrumbs.length - 1">/</div>
+      <div v-if="index !== shownCrumbs.length - 1">/</div>
     </div>
   </div>
+  <Modal
+    :provideName="MENU_PROVIDE_NAME"
+    :hideModal="hideModal"
+    :addModalListener="addModalListener"
+    :modalStyles="menuStyles"
+  >
+    <nav class="breadcrumb__menu" aria-label="Hidden pages">
+      <router-link
+        v-for="page in hiddenCrumbs"
+        :key="page.id"
+        class="breadcrumb__page"
+        :to="page.path"
+        @click="handleCrumb(page)"
+      >
+        <div>
+          <img
+            v-if="page.icon"
+            style="max-width: 1.1rem; height: auto"
+            :src="page.icon.path"
+          />
+          <span :title="page.title">{{ page.title }}</span>
+        </div>
+      </router-link>
+    </nav>
+  </Modal>
 </template>
 
 <style lang="scss">
@@ -86,9 +150,19 @@ const handleCrumb = (page: PageInfo) => {
       min-width: $breadcrumb-crumb-min-width;
     }
 
+    // "…" is already short, so it keeps its own width
+    &--more:not(:last-child) {
+      flex-shrink: 0;
+      min-width: 0;
+    }
+
     > div {
       flex-shrink: 0;
     }
+  }
+
+  &__menu {
+    @include flex-layout;
   }
 
   &__page {

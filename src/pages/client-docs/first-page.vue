@@ -32,7 +32,9 @@ import { aboutPage as page, aboutMetadata as meta } from "@/code-samples";
     <BulletItem
       ><Code inline>pages</Code> lists the ids of the sub-pages, and
       <Code inline>parentPage</Code> points a sub-page to its parent. The sidebar
-      and the breadcrumb follow them.</BulletItem
+      and the breadcrumb follow them. Past 3 levels, the breadcrumb shows the
+      first page and the last two, and the pages in between open from
+      <Code inline>…</Code>.</BulletItem
     >
     <BulletItem
       ><Code inline>banner</Code> and <Code inline>icon</Code> take an image path from
