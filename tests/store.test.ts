@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { useStore } from "@core/store";
 import type { PageInfo } from "@core/@types";
 import { LOCAL_STORAGE_THEME } from "@core/util/local-storage/constants";
-import { setTabs } from "@core/util/local-storage";
+import { setActiveTab, setTabs } from "@core/util/local-storage";
 
 const store = useStore;
 
@@ -45,6 +45,38 @@ describe("settings store", () => {
     store.storeUpdateTabs(page("about"));
     expect(store.tabs).toHaveLength(1);
     expect(store.tabs[0]?.pageId).toBe("about");
+  });
+
+  it("drops restored tabs whose page left the metadata", () => {
+    const tab = (id: string) => ({
+      pageId: id,
+      pageName: id,
+      pagePath: `/${id}`,
+    });
+    setTabs([tab("home"), tab("removed"), tab("about")]);
+    setActiveTab(2);
+    store.$reset();
+
+    store.storeDropStaleTabs({ home: page("home"), about: page("about") });
+    expect(store.tabs).toEqual([tab("home"), tab("about")]);
+    expect(store.activeTab).toBe(1);
+  });
+
+  it("falls back to the first tab when the active one is dropped", () => {
+    setTabs([
+      { pageId: "home", pageName: "home", pagePath: "/home" },
+      { pageId: "about", pageName: "about", pagePath: "/old-about" },
+    ]);
+    setActiveTab(1);
+    store.$reset();
+
+    store.storeDropStaleTabs({ home: page("home"), about: page("about") });
+    expect(store.tabs.map((t) => t.pageId)).toEqual(["home"]);
+    expect(store.activeTab).toBe(0);
+
+    store.storeDropStaleTabs({});
+    expect(store.tabs).toEqual([]);
+    expect(store.activeTab).toBe(0);
   });
 
   it("gives the current page default settings", () => {
