@@ -13,7 +13,6 @@ import NestedLink from "./NestedLink.vue";
 import { Divider } from "../@client/components";
 import Modal from "@core/components/Modal/Modal.vue";
 import SelectBtn from "./SelectList/SelectBtn.vue";
-import { isTouchDevice } from "../util";
 import Icon from "@core/@client/components/Icon.vue";
 import { useStore } from "@core/store";
 import { Icons, Theme } from "@core/enum";
@@ -31,6 +30,7 @@ const SETTINGS_MODAL_PROVIDE = "settingsModal";
 const SEARCH_MODAL_PROVIDE = "searchModal";
 const navDefault = ref(!isAsideOpen);
 const navHover = ref(false);
+const navWrapper = ref<HTMLElement>();
 const navClick = ref(isAsideOpen);
 const navBtnIcon = ref(isAsideOpen ? Icons.doubleArrowLeft : Icons.sandwich);
 const asideDefault = ref(!isAsideOpen);
@@ -89,7 +89,7 @@ function toggleNavState() {
     navClick.value = false;
     store.storeIsAsideOpen(false);
 
-    if (!isTouchDevice()) {
+    if (canHover()) {
       navHover.value = true;
     }
   } else {
@@ -102,15 +102,18 @@ function toggleNavState() {
   }
 }
 
+// Touch screens fire mouseenter on tap, so only a pointer that can hover opens the floating sidebar.
+const canHover = () => window.matchMedia("(hover: hover)").matches;
+
 function toggleNavHover(toShow = false) {
   if (asideDefault.value) {
-    const touchDevice = isTouchDevice();
+    navHover.value = toShow && canHover();
+  }
+}
 
-    if (touchDevice) {
-      navHover.value = false;
-    } else {
-      navHover.value = toShow;
-    }
+function closeNavHoverOutside(event: Event) {
+  if (!navWrapper.value?.contains(event.target as Node)) {
+    navHover.value = false;
   }
 }
 
@@ -142,16 +145,23 @@ function saveAsideOpen() {
 
 onMounted(() => {
   window.addEventListener("beforeunload", saveAsideOpen);
+  document.addEventListener("pointerdown", closeNavHoverOutside);
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener("beforeunload", saveAsideOpen);
+  document.removeEventListener("pointerdown", closeNavHoverOutside);
 });
 </script>
 
 <template>
   <aside :class="asideClasses">
-    <div class="nav-wrapper" @mouseenter="toggleNavHover(true)">
+    <div
+      class="nav-wrapper"
+      ref="navWrapper"
+      @mouseenter="toggleNavHover(true)"
+      @mouseleave="toggleNavHover()"
+    >
       <nav :class="navClasses">
         <div
           class="nav-btn"
@@ -208,17 +218,6 @@ onBeforeUnmount(() => {
         </div>
       </nav>
     </div>
-    <div
-      style="
-        position: absolute;
-        top: -47px;
-        left: 230px;
-        width: 600px;
-        height: 100vh;
-      "
-      :style="{ display: navHover ? 'block' : 'none' }"
-      @mouseenter="toggleNavHover()"
-    ></div>
   </aside>
   <Teleport to="body">
     <Modal
