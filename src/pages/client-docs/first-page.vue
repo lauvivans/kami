@@ -16,7 +16,7 @@ const quote = `<Quote>A quote from a person or a source.</Quote>`;
 const links = `<Link href="/my-projects">Go to my projects</Link>
 <LinkMention :page="metadata.pages['my-projects']" emoji="🚀">Go to my projects</LinkMention>
 <LinkMention href="https://github.com/" emoji="🐙">GitHub</LinkMention>
-<Bookmark title="My project" subtitle="What it does" link="https://github.com/" icon="/icons/my-project.png" />`;
+<Bookmark title="My project" subtitle="What it does" link="https://github.com/" icon="/icons/my-project.png" image="/banners/my-project.webp" />`;
 const showMore = `<ShowMore :limit="3" label="Ver mais" less-label="Ver menos">
   <Bookmark v-for="post in posts" :key="post.link" v-bind="post" />
 </ShowMore>`;
@@ -97,8 +97,9 @@ const showMore = `<ShowMore :limit="3" label="Ver mais" less-label="Ver menos">
     page's icon and title, or the text you give it. <Code inline>Bookmark</Code>
     shows a link as a card with a title, an optional
     <Code inline>subtitle</Code> and the URL; <Code inline>icon</Code> takes a
-    favicon path from <Code inline>public/</Code>, shown before the
-    URL:</Text
+    favicon path from <Code inline>public/</Code>, shown before the URL, and
+    <Code inline>image</Code> a picture shown on the right side of the card,
+    hidden on phones:</Text
   >
   <Code lang="vue">{{ links }}</Code>
 

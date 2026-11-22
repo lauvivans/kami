@@ -13,6 +13,18 @@ describe("Bookmark", () => {
     );
     expect(wrapper.find(".bookmark__subtitle").exists()).toBe(false);
     expect(wrapper.find(".bookmark__icon").exists()).toBe(false);
+    expect(wrapper.find(".bookmark__image").exists()).toBe(false);
+  });
+
+  it("shows the image after the text", () => {
+    const wrapper = mount(Bookmark, {
+      props: { title: "Kami", link, image: "/banners/page-example.webp" },
+    });
+    const image = wrapper.element.lastElementChild;
+    expect(image?.classList.contains("bookmark__image")).toBe(true);
+    expect(image?.querySelector("img")?.getAttribute("src")).toBe(
+      "/banners/page-example.webp"
+    );
   });
 
   it("shows the icon before the URL", () => {
