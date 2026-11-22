@@ -35,22 +35,27 @@ const handleNavigate = () => {
         <router-link
           @click="handleNavigate"
           :to="props.page.path"
-          aria-label="Go to page expanded"
+          aria-label="Open as full page"
         >
           <Icon class="page-modal__expand" :icon="Icons.expand" />
         </router-link>
-        <button
-          class="page-modal__btn-settings"
-          id="settings-btn"
-          ref="settingsBtn"
-          @click="settingsOpen = !settingsOpen"
-          type="button"
-          aria-label="Open settings"
-          aria-haspopup="menu"
-          :aria-expanded="settingsOpen"
-        >
-          <Icon :icon="Icons.moreHorizontal" />
-        </button>
+        <div class="page-modal__actions">
+          <button
+            class="page-modal__btn-settings"
+            id="settings-btn"
+            ref="settingsBtn"
+            @click="settingsOpen = !settingsOpen"
+            type="button"
+            aria-label="Open settings"
+            aria-haspopup="menu"
+            :aria-expanded="settingsOpen"
+          >
+            <Icon :icon="Icons.moreHorizontal" />
+          </button>
+          <button type="button" aria-label="Close" @click="props.hideMainModal">
+            <Icon :icon="Icons.close" />
+          </button>
+        </div>
       </div>
       <Wrapper>
         <Banner :page="props.page" />
@@ -71,14 +76,23 @@ const handleNavigate = () => {
 
 <style lang="scss">
 .page-modal {
-  // The page wrapper shrinks to the modal's max height, so the end of a long page stays reachable.
+  // The visible height minus a margin; dvh follows the mobile toolbar.
+  // The page wrapper scrolls, so the end of a long page stays reachable.
   .modal-static {
     display: flex;
     flex-direction: column;
+    width: min($modal-width, calc(100% - 2 * $space-9));
+    max-width: none;
+    height: calc(100dvh - 2 * $space-9);
+    max-height: none;
+    padding: 0;
+    overflow: hidden;
   }
 
   .page-wrapper {
-    margin-top: $space-7 !important;
+    flex: 1;
+    height: auto;
+    margin-top: 0;
   }
 
   // The modal's own header sits above the page, so a page without a banner
@@ -90,30 +104,28 @@ const handleNavigate = () => {
   &__header {
     display: flex;
     justify-content: space-between;
+    flex-shrink: 0;
+    padding: $space-4 $space-5;
 
     button {
       @extend %button;
     }
   }
 
-  &__btn-settings,
+  &__actions {
+    display: flex;
+    column-gap: $space-2;
+  }
+
   &__expand {
     @extend %button;
   }
 }
 
-@media (max-width: $screen-xs) {
-  .page-modal {
-    width: 100%;
-
-    // Fill the visible screen minus a margin of $space-6 above and below;
-    // dvh follows the mobile toolbar, vh is the fallback.
-    .modal-static {
-      height: calc(100vh - 2 * $space-6);
-      height: calc(100dvh - 2 * $space-6);
-      max-height: none;
-      padding: $space-4;
-    }
+@media (max-width: $screen-small) {
+  .page-modal .modal-static {
+    width: calc(100% - 2 * $space-4);
+    height: calc(100dvh - 2 * $space-4);
   }
 }
 </style>

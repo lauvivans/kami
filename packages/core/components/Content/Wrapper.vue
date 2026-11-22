@@ -24,7 +24,6 @@ const store = useStore;
   position: relative;
   width: 100%;
   margin-top: calc($header-height + $tabs-height);
-  height: calc(100vh - ($header-height + $tabs-height));
   height: calc(100dvh - ($header-height + $tabs-height));
 
   // Keeps the z-indexes inside the page (banner, mentions) below the header.
