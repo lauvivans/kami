@@ -154,6 +154,10 @@ function onViewerClick(event: MouseEvent) {
   padding: $space-9 $space-6;
   cursor: zoom-out;
 
+  // An open page modal turns off clicks on <body> (useModal), and the viewer
+  // is teleported there, outside the modal's overlay.
+  pointer-events: auto;
+
   &[open] {
     display: flex;
     align-items: center;
