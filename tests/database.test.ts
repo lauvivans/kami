@@ -124,3 +124,86 @@ describe("Database views", () => {
     expect(wrapper.findComponent(DatabaseGalleryLayout).exists()).toBe(true);
   });
 });
+
+describe("Database filter and sort", () => {
+  const mountDatabase = () =>
+    mount(Database, {
+      props: { layout: "gallery", pages },
+      global: {
+        stubs: {
+          teleport: true,
+          DatabaseGalleryLayout: true,
+          DatabaseTableLayout: true,
+        },
+      },
+    });
+  type Wrapper = ReturnType<typeof mountDatabase>;
+  const tabs = (wrapper: Wrapper) => wrapper.findAll(".database-block__view");
+  const actions = (wrapper: Wrapper) =>
+    wrapper.findAll(".database-block__actions button");
+  const item = (wrapper: Wrapper, text: string) =>
+    wrapper
+      .findAll(".database-menu button")
+      .find((button) => button.text() === text)!;
+  const shownIds = (wrapper: Wrapper, view: "gallery" | "table" = "gallery") =>
+    (
+      wrapper
+        .findComponent(
+          view === "gallery" ? DatabaseGalleryLayout : DatabaseTableLayout
+        )
+        .props("pages") as PageInfo[]
+    ).map((page) => page.id);
+
+  it("filters every view by a tag and clears the filter", async () => {
+    const wrapper = mountDatabase();
+
+    await actions(wrapper)[0]!.trigger("click");
+    expect(
+      wrapper.findAll(".database-menu button").map((button) => button.text())
+    ).toEqual(["Created", "Languages", "Status"]);
+    await item(wrapper, "Languages").trigger("click");
+    await wrapper.find(".database-menu input").setValue(true);
+
+    expect(shownIds(wrapper)).toEqual(["coffee"]);
+    expect(actions(wrapper)[0]!.text()).toBe("Filter: Vue");
+
+    await tabs(wrapper)[1]!.trigger("click");
+    expect(shownIds(wrapper, "table")).toEqual(["coffee"]);
+    await tabs(wrapper)[0]!.trigger("click");
+
+    // close and reopen: the menu opens on the active property's values
+    await actions(wrapper)[0]!.trigger("click");
+    await actions(wrapper)[0]!.trigger("click");
+    await item(wrapper, "Clear filter").trigger("click");
+
+    expect(shownIds(wrapper)).toEqual(["coffee", "books"]);
+    expect(actions(wrapper)[0]!.text()).toBe("Filter");
+    expect(wrapper.find(".database-menu button").exists()).toBe(false);
+  });
+
+  it("sorts by the title and shows the sort on the button", async () => {
+    const wrapper = mountDatabase();
+
+    await actions(wrapper)[1]!.trigger("click");
+    await item(wrapper, "Name").trigger("click");
+    expect(shownIds(wrapper)).toEqual(["books", "coffee"]);
+
+    await item(wrapper, "Descending ↓").trigger("click");
+    expect(shownIds(wrapper)).toEqual(["coffee", "books"]);
+    expect(actions(wrapper)[1]!.text()).toBe("Sort: Name ↓");
+
+    await item(wrapper, "Clear sort").trigger("click");
+    expect(actions(wrapper)[1]!.text()).toBe("Sort");
+  });
+
+  it("closes the menu on Escape", async () => {
+    const wrapper = mountDatabase();
+
+    await actions(wrapper)[1]!.trigger("click");
+    expect(wrapper.find(".database-menu button").exists()).toBe(true);
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    await wrapper.vm.$nextTick();
+
+    expect(wrapper.find(".database-menu button").exists()).toBe(false);
+  });
+});

@@ -48,7 +48,11 @@ import { aboutPage as page, aboutMetadata as meta } from "@/code-samples";
       (purple, blue, yellow, brown, green, orange or gray); without one, it gets
       a color from its text. A <Code inline>Database</Code> block
       in the table view lists its pages as rows, with one column per
-      property.</BulletItem
+      property. Its Filter button keeps the pages that have any of the values
+      picked for one property, and Sort orders them by the title or a property,
+      ascending or descending. Values compare as text, so "2" comes before
+      "10", and a list of tags sorts by its first tag. Both apply to every view
+      and reset on reload.</BulletItem
     >
   </BulletList>
   <Text
