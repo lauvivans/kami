@@ -7,7 +7,7 @@ import {
 } from "@lauvivans/kami";
 
 // Each Markdown file in src/pages/posts becomes a page under Posts.
-const posts = markdownPages(
+export const posts = markdownPages(
   import.meta.glob<MarkdownModule>("../pages/posts/*.md", { eager: true }),
   { parentPage: "posts", path: "/posts" }
 );
