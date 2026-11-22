@@ -88,6 +88,9 @@
     padding: var.$space-1 var.$space-4;
     border-radius: var.$radius-pill;
     font-size: var.$fs-xs;
+
+    // the prototype pill takes its height from the body line height
+    line-height: var.$lh-body;
     color: var.$text-tertiary;
     background-color: var.$bg;
     box-shadow: var.$shadow-floating;
