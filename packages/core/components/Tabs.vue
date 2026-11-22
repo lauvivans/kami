@@ -69,21 +69,15 @@ onBeforeUnmount(() => {
       :key="index"
       :class="store.activeTab == index ? 'tabs__tab--active' : ''"
       @click.stop="updateActiveTab(index)"
-      @touchstart="updateActiveTab(index)"
     >
       <span>{{ page.pageName }}</span>
-      <button
-        class="tabs__tab--close"
-        @click.stop="removeTab(index)"
-        @touchstart="removeTab(index)"
-      >
+      <button class="tabs__tab--close" @click.stop="removeTab(index)">
         <Icon :icon="Icons.close" />
       </button>
     </div>
     <button
       class="tabs__add"
       @click.stop="addTab()"
-      @touchstart="addTab()"
       v-if="store.tabs.length < 10"
     >
       <Icon :icon="Icons.add" />

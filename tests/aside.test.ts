@@ -64,3 +64,14 @@ describe("Aside after navigation", () => {
     wrapper.unmount();
   });
 });
+
+describe("Aside button", () => {
+  it("toggles the sidebar once on a tap", async () => {
+    const wrapper = mountAside(true, false);
+    const button = wrapper.find("#nav-btn");
+    await button.trigger("touchstart");
+    await button.trigger("click");
+    expect(store.isAsideOpen).toBe(true);
+    wrapper.unmount();
+  });
+});
