@@ -148,9 +148,12 @@ const handleCrumb = (page: PageInfo) => {
     align-items: center;
     min-width: 0;
 
+    // Sized by content; the automatic minimum is then the smaller of the
+    // content and `width`, so a short title like "Menu" leaves no gap.
     &:not(:last-child) {
-      flex-shrink: 1000;
-      min-width: $breadcrumb-crumb-min-width;
+      flex: 0 1000 content;
+      width: $breadcrumb-crumb-min-width;
+      min-width: auto;
     }
 
     // "…" is already short, so it keeps its own width
