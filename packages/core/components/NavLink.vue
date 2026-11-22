@@ -130,11 +130,11 @@ function updateTabs(page: PageInfo) {
 .nav-link__toggle-list {
   &--active {
     .details .details__summary {
-      background-color: $bg-active !important;
+      background-color: $bg-active;
     }
 
     .details__content .details .details__summary {
-      background-color: transparent !important;
+      background-color: transparent;
     }
 
     .nav-link__pagename {
