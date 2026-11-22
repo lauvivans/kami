@@ -100,10 +100,11 @@ const handleNavigate = () => {
   .page-modal {
     width: 100%;
 
-    // Fill the visible screen minus a small margin; dvh follows the mobile toolbar, vh is the fallback.
+    // Fill the visible screen minus a margin of 2 * $default-spacing above and
+    // below; dvh follows the mobile toolbar, vh is the fallback.
     .modal-static {
-      height: calc(100vh - 2 * $default-spacing);
-      height: calc(100dvh - 2 * $default-spacing);
+      height: calc(100vh - 4 * $default-spacing);
+      height: calc(100dvh - 4 * $default-spacing);
       max-height: none;
       padding: $default-spacing 0.5rem;
     }
