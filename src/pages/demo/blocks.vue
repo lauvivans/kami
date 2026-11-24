@@ -8,6 +8,8 @@ import {
   Quote,
   BulletList,
   BulletItem,
+  NumberedList,
+  NumberedItem,
   ToDoList,
   ToggleList,
   Columns,
@@ -20,9 +22,11 @@ import {
   Loader,
   Database,
   ShowMore,
+  PostList,
+  Table,
   Icons,
 } from "@core/index.ts";
-import metadata from "@/metadata";
+import metadata, { posts } from "@/metadata";
 
 // vue-tsc 3.3 misreads a URL passed to a component in the template and
 // breaks the type check of every expression after it, so URLs live here.
@@ -56,6 +60,12 @@ const code = {
     <Link href="https://github.com/lauvivans/kami">GitHub</Link>
   </BulletItem>
 </BulletList>`,
+  numbered: `<NumberedList :items="['Grind', 'Tamp']" />
+
+<!-- start sets the first number -->
+<NumberedList :start="3">
+  <NumberedItem>Pull the shot</NumberedItem>
+</NumberedList>`,
   todo: `<ToDoList
   :items="[
     { name: 'Done', isChecked: true },
@@ -73,14 +83,25 @@ const code = {
   links: `<Text>An inline <Link href="https://vuejs.org/">link</Link>.</Text>
 <LinkMention :page="metadata.pages['coffee-shop']" emoji="☕" />
 <LinkMention href="https://github.com/lauvivans/kami" emoji="🐙">Kami on GitHub</LinkMention>
-<Bookmark title="Kami" subtitle="Source code" link="https://github.com/lauvivans/kami" icon="/icons/page-example.png" />`,
+<Bookmark title="Kami" subtitle="Source code" link="https://github.com/lauvivans/kami" icon="/icons/page-example.png" image="/banners/page-example.webp" />`,
+  table: `<!-- align takes one entry per column: left, center, right or null -->
+<Table
+  :head="['Drink', 'Dose', 'Yield']"
+  :rows="[
+    ['Espresso', '18 g', '36 g'],
+    ['Ristretto', '18 g', '18 g'],
+  ]"
+  :align="[null, 'right', 'right']"
+/>`,
+  postList: `<!-- posts comes from markdownPages; locale sets the month names -->
+<PostList :pages="posts" locale="en-US" />`,
   showMore: `<!-- limit blocks show at first; the button shows the next ones -->
 <ShowMore :limit="1">
   <Callout emoji="1️⃣">First block</Callout>
   <Callout emoji="2️⃣">Second block</Callout>
   <Callout emoji="3️⃣">Third block</Callout>
 </ShowMore>`,
-  image: `<Image src="/banners/page-example.webp" alt="Example banner" />`,
+  image: `<Image src="/banners/page-example.webp" alt="An example banner" />`,
   others: `<Divider />
 <Empty />
 <Loader />`,
@@ -138,6 +159,13 @@ console.log(greeting);`;
   </BulletList>
   <Code lang="vue">{{ code.bullets }}</Code>
 
+  <Heading :level="3">Numbered list</Heading>
+  <NumberedList :items="['Grind', 'Tamp']" />
+  <NumberedList :start="3">
+    <NumberedItem>Pull the shot</NumberedItem>
+  </NumberedList>
+  <Code lang="vue">{{ code.numbered }}</Code>
+
   <Heading :level="3">To-do list</Heading>
   <ToDoList
     :items="[
@@ -174,8 +202,32 @@ console.log(greeting);`;
     subtitle="Source code"
     :link="repoUrl"
     icon="/icons/page-example.png"
+    image="/banners/page-example.webp"
   />
   <Code lang="vue">{{ code.links }}</Code>
+
+  <Heading :level="3">Table</Heading>
+  <Text
+    >A simple table with a header row. A table wider than the page scrolls
+    sideways inside its own box.</Text
+  >
+  <Table
+    :head="['Drink', 'Dose', 'Yield']"
+    :rows="[
+      ['Espresso', '18 g', '36 g'],
+      ['Ristretto', '18 g', '18 g'],
+    ]"
+    :align="[null, 'right', 'right']"
+  />
+  <Code lang="vue">{{ code.table }}</Code>
+
+  <Heading :level="3">Posts list</Heading>
+  <Text
+    >The pages from <Code inline>markdownPages</Code>, grouped by month, newest
+    first.</Text
+  >
+  <PostList :pages="posts" />
+  <Code lang="vue">{{ code.postList }}</Code>
 
   <Heading :level="3">Show more</Heading>
   <ShowMore :limit="1">
@@ -186,7 +238,8 @@ console.log(greeting);`;
   <Code lang="vue">{{ code.showMore }}</Code>
 
   <Heading :level="3">Image</Heading>
-  <Image src="/banners/page-example.webp" alt="Example banner" />
+  <Text>Click the image to open it in full screen.</Text>
+  <Image src="/banners/page-example.webp" alt="An example banner" />
   <Code lang="vue">{{ code.image }}</Code>
 
   <Heading :level="3">Divider, empty space and loader</Heading>

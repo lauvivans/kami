@@ -1,6 +1,13 @@
+import { h } from "vue";
 import { describe, expect, it, vi } from "vitest";
 import { mount } from "@vue/test-utils";
-import { Icons, ToDoList, ToggleList } from "@core/index.ts";
+import {
+  Icons,
+  NumberedItem,
+  NumberedList,
+  ToDoList,
+  ToggleList,
+} from "@core/index.ts";
 
 describe("ToDoList", () => {
   it("renders each label inside the Text block without warnings", () => {
@@ -68,5 +75,34 @@ describe("ToggleList", () => {
     expect(summary.exists()).toBe(true);
     expect(summary.text()).toBe("Summary");
     expect(wrapper.find("details > .details__content").text()).toBe("Hidden");
+  });
+});
+
+describe("NumberedList", () => {
+  it("renders an ordered list that counts from 1", () => {
+    const wrapper = mount(NumberedList, { props: { items: ["a", "b"] } });
+    const list = wrapper.find("ol.numbered-list");
+
+    expect(list.attributes("start")).toBe("1");
+    expect(list.attributes("style")).toContain(
+      "counter-reset: numbered-list 0"
+    );
+    expect(
+      wrapper.findAll(".numbered-item").map((item) => item.text())
+    ).toEqual(["a", "b"]);
+  });
+
+  it("starts at the given number", () => {
+    const wrapper = mount(NumberedList, {
+      props: { start: 3 },
+      slots: { default: () => h(NumberedItem, null, () => "c") },
+    });
+    const list = wrapper.find("ol.numbered-list");
+
+    expect(list.attributes("start")).toBe("3");
+    expect(list.attributes("style")).toContain(
+      "counter-reset: numbered-list 2"
+    );
+    expect(wrapper.find(".numbered-item").text()).toBe("c");
   });
 });

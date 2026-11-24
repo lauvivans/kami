@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { useId } from "vue";
+import { provide, useId } from "vue";
 import Text from "@core/@client/components/Text.vue";
 import Icon from "@core/@client/components/Icon.vue";
 import { Icons } from "@core/enum";
+import { INLINE_IMAGE } from "@core/constants/image";
+
+provide(INLINE_IMAGE, true);
 
 const value = defineModel<boolean>("isChecked");
 const labelId = useId();

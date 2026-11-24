@@ -1,0 +1,13 @@
+<script setup lang="ts">
+import { Text, Code, PostList } from "@lauvivans/kami";
+import { posts } from "../metadata";
+</script>
+
+<template>
+  <Text
+    >Every Markdown file in <Code inline>src/pages/posts/</Code> becomes a post
+    under this page, newest first. Its front matter sets the title, date,
+    banner and icon.</Text
+  >
+  <PostList :pages="posts" />
+</template>

@@ -7,5 +7,5 @@
     "noEmit": true,
     "types": ["vite/client", "node"]
   },
-  "include": ["tests"]
+  "include": ["tests", "packages/core/markdown.d.ts"]
 }

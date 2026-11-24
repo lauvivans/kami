@@ -16,8 +16,12 @@ export {
   Image,
   LinkMention,
   Loader,
+  NumberedItem,
+  NumberedList,
+  PostList,
   Quote,
   ShowMore,
+  Table,
   Text,
   ToDoItem,
   ToDoList,
@@ -26,11 +30,20 @@ export {
   Columns,
   ToggleList,
 } from "./@client/components";
-export { isTouchDevice } from "./util";
+export { isTouchDevice, markdownPages } from "./util";
 export { MainLayout } from "./layouts";
 export { NotFoundPage } from "./pages";
 export { useStore, piniaInstance } from "./store";
 export { useAside, useDisplay, useIsMobile } from "./hooks";
-export type { PageInfo, IMetadata, DatabaseTag, TagColor } from "./@types";
+export type {
+  PageInfo,
+  IMetadata,
+  DatabaseTag,
+  TagColor,
+  TableAlign,
+  MarkdownFrontmatter,
+  MarkdownModule,
+} from "./@types";
+export type { MarkdownPagesOptions } from "./util/markdownPages";
 export type { CodeLanguage } from "./util/highlight";
 export { Icons } from "./enum";

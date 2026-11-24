@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import { provide } from "vue";
 import { Text } from "../..";
 import Icon from "@core/@client/components/Icon.vue";
 import { Icons } from "@core/enum";
+import { INLINE_IMAGE } from "@core/constants/image";
+
+provide(INLINE_IMAGE, true);
 </script>
 
 <template>

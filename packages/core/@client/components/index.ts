@@ -10,8 +10,18 @@ export { default as TextHighlight } from "./TextHighlight.vue";
 export { default as Code } from "./Code.vue";
 export { default as Quote } from "./Quote.vue";
 export { default as ShowMore } from "./ShowMore.vue";
+export { default as PostList } from "./PostList.vue";
+export { default as Table } from "./Table.vue";
 
-export { BulletItem, BulletList, ToDoItem, ToDoList, ToggleList } from "./List";
+export {
+  BulletItem,
+  BulletList,
+  NumberedItem,
+  NumberedList,
+  ToDoItem,
+  ToDoList,
+  ToggleList,
+} from "./List";
 export { Database } from "./Database";
 export { Bookmark, LinkMention, Link } from "./Link";
 export { Column, Columns } from "./Column";
