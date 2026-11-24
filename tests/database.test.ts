@@ -103,6 +103,22 @@ describe("Database gallery layout", () => {
     expect(tags[1]!.classes()).toContain("multi-select__tag--green");
     expect(cards[1]!.find(".multi-select").exists()).toBe(false);
   });
+
+  it("makes each card an article opened by its title button", async () => {
+    const wrapper = mount(DatabaseGalleryLayout, {
+      props: { cardPreviewIsCover: true, pages },
+    });
+
+    const card = wrapper.get(".gallery__card-wrapper");
+    expect(card.element.tagName).toBe("ARTICLE");
+    expect(card.attributes("role")).toBeUndefined();
+    const button = card.get(".gallery__card-button");
+    expect(button.element.tagName).toBe("BUTTON");
+    expect(button.text()).toBe(pages[0]!.title);
+
+    await button.trigger("click");
+    expect(wrapper.emitted("open")).toEqual([[pages[0]]]);
+  });
 });
 
 describe("Database views", () => {
@@ -317,7 +333,9 @@ describe("Database load limit", () => {
     await loadMore(wrapper).trigger("click");
     await nextTick();
     expect(cards()).toHaveLength(4);
-    expect(document.activeElement).toBe(cards()[2]!.element);
+    expect(document.activeElement).toBe(
+      cards()[2]!.get(".gallery__card-button").element
+    );
     wrapper.unmount();
   });
 

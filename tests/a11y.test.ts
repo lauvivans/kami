@@ -125,12 +125,12 @@ describe("axe", () => {
 });
 
 describe("keyboard", () => {
-  it("opens the sidebar with Enter", async () => {
+  // Native buttons get Enter, Space and the tab order from the browser.
+  it("uses real buttons in the sidebar", () => {
     const aside = mountAttached(Aside, { metadata });
-    const navBtn = aside.get("#nav-btn");
-    const expanded = navBtn.attributes("aria-expanded");
-    await navBtn.trigger("keydown", { key: "Enter" });
-    expect(navBtn.attributes("aria-expanded")).not.toBe(expanded);
+    expect(aside.find('[role="button"]').exists()).toBe(false);
+    expect(aside.get("#nav-btn").element.tagName).toBe("BUTTON");
+    expect(aside.get("#settings-btn").element.tagName).toBe("BUTTON");
   });
 
   // The page settings render only while their dropdown is open.
@@ -140,23 +140,24 @@ describe("keyboard", () => {
     await nextTick();
   }
 
-  it("toggles a setting with Space and reports its state", async () => {
+  it("toggles a setting with a real button and reports its state", async () => {
     await openPageSettings();
     const toggle = document.querySelector<HTMLElement>('[role="switch"]')!;
+    expect(toggle.tagName).toBe("BUTTON");
     expect(toggle.getAttribute("aria-checked")).toBe("false");
-    toggle.dispatchEvent(new KeyboardEvent("keydown", { key: " " }));
+    toggle.click();
     await nextTick();
     expect(toggle.getAttribute("aria-checked")).toBe("true");
   });
 
-  it("picks a font in the page settings with Enter", async () => {
+  it("picks a font in the page settings with a real button", async () => {
     await openPageSettings();
     const pick = vi.spyOn(store, "storeDynamicPageInfo");
     const font = document.querySelector<HTMLElement>(
       ".modal-settings__font-wrapper"
     )!;
-    expect(font.getAttribute("role")).toBe("button");
-    font.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter" }));
+    expect(font.tagName).toBe("BUTTON");
+    font.click();
     expect(pick).toHaveBeenCalledOnce();
     pick.mockRestore();
   });

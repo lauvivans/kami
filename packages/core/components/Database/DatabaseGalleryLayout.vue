@@ -24,15 +24,13 @@ const tagsOf = (page: PageInfo): DatabaseTag[] =>
 <template>
   <div class="gallery">
     <div class="gallery__cards-wrapper">
-      <div
+      <!-- The whole card takes the mouse click; the title button is the
+           way in for the keyboard and screen readers. -->
+      <article
         class="gallery__card-wrapper"
         v-for="page in pages"
         :key="page.id"
-        role="button"
-        tabindex="0"
-        :aria-label="page.title"
         @click.stop="handleCard(page)"
-        @keydown.enter.space.prevent="handleCard(page)"
       >
         <!-- The preview repeats the page; inert keeps its links out of the tab order. -->
         <div
@@ -61,7 +59,14 @@ const tagsOf = (page: PageInfo): DatabaseTag[] =>
               v-if="page.icon"
               :src="page.icon.path"
             />
-            <div>{{ page.title }}</div>
+            <button
+              type="button"
+              class="gallery__card-button"
+              aria-haspopup="dialog"
+              @click.stop="handleCard(page)"
+            >
+              {{ page.title }}
+            </button>
           </div>
           <div v-if="tagsOf(page).length" class="multi-select">
             <div
@@ -73,7 +78,7 @@ const tagsOf = (page: PageInfo): DatabaseTag[] =>
             </div>
           </div>
         </div>
-      </div>
+      </article>
     </div>
   </div>
 </template>
@@ -102,9 +107,8 @@ const tagsOf = (page: PageInfo): DatabaseTag[] =>
       background-color: $bg-hover;
     }
 
-    // "Load more" moves focus to the first new card
-    &:focus-visible {
-      outline: $line-thick solid $accent;
+    &:has(:focus-visible) {
+      background-color: $bg-hover;
     }
   }
 
@@ -141,6 +145,12 @@ const tagsOf = (page: PageInfo): DatabaseTag[] =>
 
     align-items: center;
     font-weight: $fw-medium;
+  }
+
+  // "Load more" moves focus here, on the first new card
+  &__card-button {
+    all: unset;
+    cursor: pointer;
   }
 
   &__page-icon {

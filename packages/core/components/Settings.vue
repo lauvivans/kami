@@ -63,22 +63,18 @@ watch(activeFontSize, (newFontSize) => {
     <div class="modal-settings__style">
       <span>Style</span>
       <div class="modal-settings__fonts">
-        <div
+        <button
           v-for="[key, value] in fontFamilyEntries"
           :key="key"
+          type="button"
           class="modal-settings__font-wrapper"
-          role="button"
-          tabindex="0"
           :aria-pressed="isActiveFont(key)"
           @click="store.storeDynamicPageInfo({ fontFamily: key })"
-          @keydown.enter.space.prevent="
-            store.storeDynamicPageInfo({ fontFamily: key })
-          "
           :class="{ 'modal-settings__font-wrapper--active': isActiveFont(key) }"
         >
           <span class="modal-settings__ag">Ag</span>
           <span class="modal-settings__font-name">{{ value }}</span>
-        </div>
+        </button>
       </div>
     </div>
 
@@ -133,6 +129,8 @@ watch(activeFontSize, (newFontSize) => {
   }
 
   &__font-wrapper {
+    all: unset;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     row-gap: $space-4;

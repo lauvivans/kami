@@ -168,18 +168,16 @@ onBeforeUnmount(() => {
     >
       <div v-if="asideDefault" class="nav-edge" aria-hidden="true"></div>
       <nav :class="navClasses">
-        <div
+        <button
+          type="button"
           class="nav-btn"
-          role="button"
-          tabindex="0"
           id="nav-btn"
           :aria-label="navClick ? 'Close sidebar' : 'Open sidebar'"
           :aria-expanded="navClick"
           @click="toggleNavState"
-          @keydown.enter.space.prevent="toggleNavState"
         >
           <Icon :icon="navBtnIcon" />
-        </div>
+        </button>
         <div class="nav-list-wrapper">
           <ul class="nav-list">
             <li class="nav-list__nav-item">
@@ -192,25 +190,18 @@ onBeforeUnmount(() => {
               </span>
             </li>
             <li class="nav-list__nav-item">
-              <div
-                role="button"
-                tabindex="0"
-                @click="showSearchModal"
-                @keydown.enter.space.prevent="showSearchModal"
-              >
+              <button type="button" @click="showSearchModal">
                 <Icon :icon="Icons.search" />
                 <span>Search</span>
-              </div>
-              <div
-                role="button"
-                tabindex="0"
+              </button>
+              <button
+                type="button"
                 id="settings-btn"
                 @click="showSettingsModal"
-                @keydown.enter.space.prevent="showSettingsModal"
               >
                 <Icon :icon="Icons.settings" />
                 <span>Settings</span>
-              </div>
+              </button>
             </li>
             <li class="nav-list__nav-item">
               <div>
@@ -449,7 +440,11 @@ onBeforeUnmount(() => {
     }
 
     // Search and Settings
-    &__nav-item:nth-child(2) > div {
+    &__nav-item:nth-child(2) > button {
+      all: unset;
+      box-sizing: border-box;
+      width: 100%;
+
       @include flex-layout($flex-direction: row, $column-gap: $space-3);
 
       align-items: center;

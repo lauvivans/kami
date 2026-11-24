@@ -63,7 +63,7 @@ async function loadMore() {
   await nextTick();
   viewRef.value
     ?.querySelectorAll<HTMLElement>(
-      ".gallery__card-wrapper, .database-table__page"
+      ".gallery__card-button, .database-table__page"
     )
     [first]?.focus();
 }
