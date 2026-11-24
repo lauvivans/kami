@@ -7,14 +7,14 @@ const { page } = defineProps<{ page: PageInfo }>();
 <template>
   <div class="page-title">
     <div v-if="page.icon" class="page-title__img-wrapper">
-      <img :src="page.icon.path" /><a
+      <img alt="" :src="page.icon.path" /><a
         v-if="page.icon.link && page.icon.author"
         target="_blank"
         :href="page.icon.link"
         >{{ page.icon.author }}</a
       >
     </div>
-    <span>{{ page.title }}</span>
+    <h1>{{ page.title }}</h1>
   </div>
 </template>
 
@@ -42,7 +42,9 @@ const { page } = defineProps<{ page: PageInfo }>();
     object-fit: contain;
   }
 
-  span {
+  // beats the global h1 rules of the Heading block
+  h1 {
+    margin: 0;
     font-size: $fs-title;
     font-weight: $fw-bold;
     line-height: $lh-heading;
@@ -58,7 +60,7 @@ const { page } = defineProps<{ page: PageInfo }>();
 
 @media (min-width: $screen-small) {
   .font-size-small .page-title {
-    span {
+    h1 {
       font-size: $fs-title-mobile;
     }
   }
@@ -71,7 +73,7 @@ const { page } = defineProps<{ page: PageInfo }>();
       height: $icon-size-mobile;
     }
 
-    span {
+    h1 {
       font-size: $fs-title-mobile;
     }
   }

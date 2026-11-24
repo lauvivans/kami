@@ -15,17 +15,22 @@ defineExpose({
 </script>
 
 <template>
-  <div class="toggle" @click="props.toToggle">
+  <button
+    type="button"
+    class="toggle"
+    role="switch"
+    :aria-checked="props.active"
+    @click="props.toToggle"
+  >
     <slot></slot>
-    <div
+    <span
       class="toggle-btn"
       :class="props.active ? 'toggle-btn--active' : ''"
-      @click.stop.prevent="props.toToggle"
       ref="toggleRef"
     >
-      <div class="toggle-btn__circle"></div>
-    </div>
-  </div>
+      <span class="toggle-btn__circle"></span>
+    </span>
+  </button>
 </template>
 
 <style lang="scss">
@@ -33,6 +38,10 @@ $toggle-btn-width: $item-height + $space-1;
 $toggle-btn-height: $space-6 + $space-1;
 
 .toggle {
+  all: unset;
+  box-sizing: border-box;
+  width: 100%;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -50,6 +59,7 @@ $toggle-btn-height: $space-6 + $space-1;
 .toggle-btn {
   @include sizing($toggle-btn-width, $toggle-btn-height);
 
+  display: block;
   border-radius: $radius-pill;
   padding: $space-1;
   cursor: pointer;
@@ -57,6 +67,7 @@ $toggle-btn-height: $space-6 + $space-1;
   position: relative;
 
   &__circle {
+    display: block;
     border-radius: 50%;
     background-color: $bg-floating;
     position: absolute;

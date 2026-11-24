@@ -83,6 +83,34 @@ describe("useModal", () => {
     wrapper.unmount();
   });
 
+  it("closes only the innermost modal with Esc", () => {
+    vi.useFakeTimers();
+    const { page, settings, pageEl, settingsEl, wrapper } = mountModals();
+    open(page);
+    open(settings);
+
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    expect(settingsEl.style.display).toBe("none");
+    expect(pageEl.style.display).toBe("block");
+
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    expect(pageEl.style.display).toBe("none");
+    wrapper.unmount();
+  });
+
+  it("stops answering Esc after an open modal unmounts", () => {
+    vi.useFakeTimers();
+    const { page, wrapper } = mountModals();
+    open(page);
+    wrapper.unmount();
+
+    const next = mountModals();
+    open(next.page);
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    expect(next.pageEl.style.display).toBe("none");
+    next.wrapper.unmount();
+  });
+
   it("gives the page its clicks back when an open modal unmounts", () => {
     vi.useFakeTimers();
     const { page, wrapper } = mountModals();

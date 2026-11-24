@@ -5,6 +5,8 @@ const props = defineProps<{
   hideModal: () => void;
   addModalListener: () => void;
   provideName: string;
+  // the dialog's accessible name
+  label?: string;
 }>();
 
 const modalRef = inject<Ref<HTMLDivElement>>(props.provideName);
@@ -21,7 +23,12 @@ onMounted(() => {
 
 <template>
   <div class="overlay" ref="modalRef">
-    <dialog class="modal modal-static">
+    <dialog
+      class="modal modal-static"
+      :aria-label="props.label"
+      aria-modal="true"
+      tabindex="-1"
+    >
       <slot></slot>
     </dialog>
   </div>

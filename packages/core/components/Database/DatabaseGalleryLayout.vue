@@ -24,15 +24,18 @@ const tagsOf = (page: PageInfo): DatabaseTag[] =>
 <template>
   <div class="gallery">
     <div class="gallery__cards-wrapper">
-      <div
+      <!-- The whole card takes the mouse click; the title button is the
+           way in for the keyboard and screen readers. -->
+      <article
         class="gallery__card-wrapper"
         v-for="page in pages"
         :key="page.id"
-        tabindex="-1"
         @click.stop="handleCard(page)"
       >
+        <!-- The preview repeats the page; inert keeps its links out of the tab order. -->
         <div
           class="gallery__card-content"
+          inert
           :class="{
             'gallery__card-content--padded': !props.cardPreviewIsCover,
           }"
@@ -45,17 +48,25 @@ const tagsOf = (page: PageInfo): DatabaseTag[] =>
             :hideDatabase="true"
           />
           <div v-else class="gallery__card-content--banner">
-            <img v-if="page.banner" :src="page.banner.path" />
+            <img alt="" v-if="page.banner" :src="page.banner.path" />
           </div>
         </div>
         <div class="gallery__card-body">
           <div class="gallery__card-title">
             <img
+              alt=""
               class="gallery__page-icon"
               v-if="page.icon"
               :src="page.icon.path"
             />
-            <div>{{ page.title }}</div>
+            <button
+              type="button"
+              class="gallery__card-button"
+              aria-haspopup="dialog"
+              @click.stop="handleCard(page)"
+            >
+              {{ page.title }}
+            </button>
           </div>
           <div v-if="tagsOf(page).length" class="multi-select">
             <div
@@ -67,7 +78,7 @@ const tagsOf = (page: PageInfo): DatabaseTag[] =>
             </div>
           </div>
         </div>
-      </div>
+      </article>
     </div>
   </div>
 </template>
@@ -96,9 +107,8 @@ const tagsOf = (page: PageInfo): DatabaseTag[] =>
       background-color: $bg-hover;
     }
 
-    // "Load more" moves focus to the first new card
-    &:focus-visible {
-      outline: $line-thick solid $accent;
+    &:has(:focus-visible) {
+      background-color: $bg-hover;
     }
   }
 
@@ -135,6 +145,12 @@ const tagsOf = (page: PageInfo): DatabaseTag[] =>
 
     align-items: center;
     font-weight: $fw-medium;
+  }
+
+  // "Load more" moves focus here, on the first new card
+  &__card-button {
+    all: unset;
+    cursor: pointer;
   }
 
   &__page-icon {

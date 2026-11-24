@@ -30,6 +30,7 @@ const handleNavigate = () => {
       :provideName="props.provideName"
       :hideModal="props.hideMainModal"
       :addModalListener="props.addMainModalListener"
+      :label="props.page.title"
     >
       <div class="page-modal__header">
         <router-link

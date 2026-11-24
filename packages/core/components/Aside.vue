@@ -168,9 +168,16 @@ onBeforeUnmount(() => {
     >
       <div v-if="asideDefault" class="nav-edge" aria-hidden="true"></div>
       <nav :class="navClasses">
-        <div class="nav-btn" role="button" id="nav-btn" @click="toggleNavState">
+        <button
+          type="button"
+          class="nav-btn"
+          id="nav-btn"
+          :aria-label="navClick ? 'Close sidebar' : 'Open sidebar'"
+          :aria-expanded="navClick"
+          @click="toggleNavState"
+        >
           <Icon :icon="navBtnIcon" />
-        </div>
+        </button>
         <div class="nav-list-wrapper">
           <ul class="nav-list">
             <li class="nav-list__nav-item">
@@ -183,14 +190,18 @@ onBeforeUnmount(() => {
               </span>
             </li>
             <li class="nav-list__nav-item">
-              <div role="button" @click="showSearchModal">
+              <button type="button" @click="showSearchModal">
                 <Icon :icon="Icons.search" />
                 <span>Search</span>
-              </div>
-              <div role="button" id="settings-btn" @click="showSettingsModal">
+              </button>
+              <button
+                type="button"
+                id="settings-btn"
+                @click="showSettingsModal"
+              >
                 <Icon :icon="Icons.settings" />
                 <span>Settings</span>
-              </div>
+              </button>
             </li>
             <li class="nav-list__nav-item">
               <div>
@@ -229,6 +240,7 @@ onBeforeUnmount(() => {
       :provideName="SETTINGS_MODAL_PROVIDE"
       :addModalListener="addSettingsModalListener"
       :hideModal="hideSettingsModal"
+      label="Settings"
     >
       <div class="settings-modal__head">
         <h2>Settings</h2>
@@ -276,6 +288,7 @@ onBeforeUnmount(() => {
       :provideName="SEARCH_MODAL_PROVIDE"
       :addModalListener="addSearchModalListener"
       :hideModal="hideSearchModal"
+      label="Search"
     >
       <div>Not build yet</div>
     </Modal>
@@ -368,7 +381,8 @@ onBeforeUnmount(() => {
   .nav-click {
     @include flex-layout($flex-direction: row-reverse, $row-gap: $space-8);
 
-    &:hover {
+    &:hover,
+    &:focus-within {
       .nav-btn {
         visibility: visible;
       }
@@ -426,7 +440,11 @@ onBeforeUnmount(() => {
     }
 
     // Search and Settings
-    &__nav-item:nth-child(2) > div {
+    &__nav-item:nth-child(2) > button {
+      all: unset;
+      box-sizing: border-box;
+      width: 100%;
+
       @include flex-layout($flex-direction: row, $column-gap: $space-3);
 
       align-items: center;

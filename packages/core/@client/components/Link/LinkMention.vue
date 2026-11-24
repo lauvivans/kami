@@ -20,7 +20,7 @@ const to = computed(
 <template>
   <router-link class="link" :to="to" v-if="to">
     <div>
-      <img v-if="props.page?.icon" :src="props.page.icon.path" />
+      <img alt="" v-if="props.page?.icon" :src="props.page.icon.path" />
       <template v-else>{{ props.emoji }}</template>
       <Icon class="link__arrow" :icon="Icons.arrowLink" />
     </div>

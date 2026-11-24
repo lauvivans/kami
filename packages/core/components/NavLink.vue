@@ -44,7 +44,7 @@ function updateTabs(page: PageInfo) {
         >
           <div>
             <div class="nav-link__icon" v-if="props.page.icon">
-              <img :src="props.page.icon.path" />
+              <img alt="" :src="props.page.icon.path" />
             </div>
             <Tooltip class="nav-link__pagename" :text="props.page.title" />
           </div>

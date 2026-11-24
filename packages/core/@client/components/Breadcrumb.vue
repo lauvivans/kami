@@ -97,6 +97,7 @@ const handleCrumb = (page: PageInfo) => {
       >
         <div>
           <img
+            alt=""
             v-if="page.icon"
             class="breadcrumb__icon"
             :src="page.icon.path"
@@ -120,6 +121,7 @@ const handleCrumb = (page: PageInfo) => {
       >
         <div>
           <img
+            alt=""
             v-if="page.icon"
             class="breadcrumb__icon"
             :src="page.icon.path"
@@ -188,6 +190,11 @@ const handleCrumb = (page: PageInfo) => {
   &__page {
     all: unset;
     min-width: 0;
+
+    // Drawn inside the link, so the overflow-clipped breadcrumb keeps the ring.
+    &:focus-visible {
+      outline-offset: -$line-thick !important;
+    }
 
     > div {
       display: flex;

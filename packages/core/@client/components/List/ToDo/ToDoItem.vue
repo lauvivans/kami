@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { provide } from "vue";
+import { provide, useId } from "vue";
 import Text from "@core/@client/components/Text.vue";
 import Icon from "@core/@client/components/Icon.vue";
 import { Icons } from "@core/enum";
@@ -8,15 +8,25 @@ import { INLINE_IMAGE } from "@core/constants/image";
 provide(INLINE_IMAGE, true);
 
 const value = defineModel<boolean>("isChecked");
+const labelId = useId();
 </script>
 
 <template>
   <li class="todo-item">
     <span class="todo-item__box">
-      <input class="todo-item__checkbox" type="checkbox" v-model="value" />
+      <input
+        class="todo-item__checkbox"
+        type="checkbox"
+        v-model="value"
+        :aria-labelledby="labelId"
+      />
       <Icon v-if="value" class="todo-item__check" :icon="Icons.check" />
     </span>
-    <Text class="todo-item__item" :class="{ 'todo-item__item--done': value }">
+    <Text
+      :id="labelId"
+      class="todo-item__item"
+      :class="{ 'todo-item__item--done': value }"
+    >
       <slot />
     </Text>
   </li>

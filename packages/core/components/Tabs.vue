@@ -71,13 +71,27 @@ onBeforeUnmount(() => {
       :class="store.activeTab == index ? 'tabs__tab--active' : ''"
       @click.stop="updateActiveTab(index)"
     >
-      <Tooltip :text="page.pageName" />
-      <button class="tabs__tab--close" @click.stop="removeTab(index)">
+      <!-- Activates through the tab's click handler; it is here for keyboard focus. -->
+      <button
+        type="button"
+        class="tabs__name"
+        :aria-current="store.activeTab == index ? 'page' : undefined"
+      >
+        <Tooltip :text="page.pageName" />
+      </button>
+      <button
+        type="button"
+        class="tabs__tab--close"
+        :aria-label="`Close tab ${page.pageName}`"
+        @click.stop="removeTab(index)"
+      >
         <Icon :icon="Icons.close" />
       </button>
     </div>
     <button
+      type="button"
       class="tabs__add"
+      aria-label="New tab"
       @click.stop="addTab()"
       v-if="store.tabs.length < 10"
     >
@@ -143,6 +157,14 @@ onBeforeUnmount(() => {
       @extend %ellipsis;
     }
 
+    // Written out: an @extend would come before `all: unset` and be wiped.
+    .tabs__name {
+      all: unset;
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+    }
+
     @media (max-width: $screen-small) {
       width: $tab-width-mobile;
       height: $item-height;
@@ -169,6 +191,7 @@ onBeforeUnmount(() => {
 
   // the active tab keeps its close button, since touch screens have no hover
   &__tab:hover,
+  &__tab:focus-within,
   &__tab--active {
     .tabs__tab--close {
       visibility: visible;
